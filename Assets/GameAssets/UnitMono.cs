@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
@@ -8,7 +7,7 @@ namespace GameAssets
     public class UnitMono : MonoBehaviour
     {
         private MoveHandler moveHandler;
-        private CameraPositionHelper cameraPositionHelper;
+        private IWorldCursor worldCursor;
 
         public void Awake()
         {
@@ -17,17 +16,14 @@ namespace GameAssets
                 StoppingDistance = 0.1f
             };
 
-            cameraPositionHelper = new CameraPositionHelper(Camera.main);
+            worldCursor = WorldCursor.Instance;
         }
 
         public void Update()
         {
             if(Mouse.current.leftButton.wasPressedThisFrame)
             {
-                var worldPosition = cameraPositionHelper
-                    .GetWorldPosition(Mouse.current.position.ReadValue());
-
-                worldPosition.Some(position => moveHandler.SetDestination(position));
+                worldCursor.WorldPosition.Some(pos => moveHandler.SetDestination(pos));
             }
 
             moveHandler.UpdateWithTime(Time.deltaTime);
