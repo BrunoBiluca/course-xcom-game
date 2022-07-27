@@ -5,19 +5,23 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class MoveHandler : INavegationAgent
+    public class TransformNavegationAgent : INavegationAgent
     {
         private readonly ITransform transform;
         private Optional<Vector3> target;
         private float updateTime;
+        private float rotateSpeed;
 
-        public MoveHandler(ITransform transform)
+        public event Action OnReachDestination;
+
+        public TransformNavegationAgent(ITransform transform)
         {
             this.transform = transform;
 
             target = Optional<Vector3>.None();
             Speed = 1f;
             updateTime = 1f;
+            rotateSpeed = 10f;
         }
 
         public Vector3 CurrentPosition => transform.Position;
@@ -51,8 +55,13 @@ namespace GameAssets
             var moveDirection = (destination - CurrentPosition);
             transform.Position += Speed * updateTime * moveDirection.normalized;
 
-            if(DistanceMagnitude() < StoppingDistance)
+            transform.Foward = Vector3.Lerp(
+                transform.Foward, moveDirection, Time.deltaTime * rotateSpeed
+            );
+
+            if(DistanceMagnitude() <= StoppingDistance)
             {
+                OnReachDestination?.Invoke();
                 ResetPath();
                 return;
             }

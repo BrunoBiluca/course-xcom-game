@@ -10,7 +10,7 @@ namespace GameAssets.Tests
         public void Should_not_move_if_there_is_no_destination_setup()
         {
             var mockTransform = new DummyTransform();
-            var moveHandler = new MoveHandler(mockTransform);
+            var moveHandler = new TransformNavegationAgent(mockTransform);
 
             moveHandler.Update();
 
@@ -21,7 +21,7 @@ namespace GameAssets.Tests
         public void Given_a_destination_should_move_after_update()
         {
             var mockTransform = new DummyTransform();
-            var moveHandler = new MoveHandler(mockTransform);
+            var moveHandler = new TransformNavegationAgent(mockTransform);
             moveHandler.Speed = 1;
 
             moveHandler.SetDestination(new Vector3(2, 0, 0));
@@ -39,7 +39,7 @@ namespace GameAssets.Tests
         public void Given_a_destination_should_move_until_reaches_stopping_distance()
         {
             var mockTransform = new DummyTransform();
-            var moveHandler = new MoveHandler(mockTransform) {
+            var moveHandler = new TransformNavegationAgent(mockTransform) {
                 StoppingDistance = 0.2f
             };
 
@@ -52,12 +52,12 @@ namespace GameAssets.Tests
             AssertHelper.AreEqual(moveHandler.CurrentPosition, new Vector3(2.0f, 0, 0));
         }
 
-        
+
         [Test]
         public void Given_a_destination_should_move_according_to_the_amount_rate()
         {
             var mockTransform = new DummyTransform();
-            var moveHandler = new MoveHandler(mockTransform);
+            var moveHandler = new TransformNavegationAgent(mockTransform);
 
             var destination = new Vector3(2f, 0, 0);
             moveHandler.SetDestination(destination);
@@ -78,26 +78,30 @@ namespace GameAssets.Tests
         public void Given_a_destination_should_move_until_reaches_it()
         {
             var mockTransform = new DummyTransform();
-            var moveHandler = new MoveHandler(mockTransform);
+            var transformNavegation = new TransformNavegationAgent(mockTransform);
+
+            var haveReachedDestination = false;
+            transformNavegation.OnReachDestination += () => haveReachedDestination = true;
 
             var destination = new Vector3(2, 0, 0);
-            moveHandler.SetDestination(destination);
-            moveHandler.Speed = 1f;
+            transformNavegation.SetDestination(destination);
+            transformNavegation.Speed = 1f;
 
-            AssertHelper.AreEqual(moveHandler.CurrentPosition, Vector3.zero);
+            AssertHelper.AreEqual(transformNavegation.CurrentPosition, Vector3.zero);
 
-            moveHandler.Update();
+            transformNavegation.Update();
 
-            AssertHelper.AreNotEqual(moveHandler.CurrentPosition, destination);
+            AssertHelper.AreNotEqual(transformNavegation.CurrentPosition, destination);
 
-            moveHandler.Update();
+            transformNavegation.Update();
 
-            AssertHelper.AreEqual(moveHandler.CurrentPosition, destination);
+            Assert.IsTrue(haveReachedDestination);
+            AssertHelper.AreEqual(transformNavegation.CurrentPosition, destination);
 
-            moveHandler.Update();
-            moveHandler.Update();
+            transformNavegation.Update();
+            transformNavegation.Update();
 
-            AssertHelper.AreEqual(moveHandler.CurrentPosition, destination);
+            AssertHelper.AreEqual(transformNavegation.CurrentPosition, destination);
         }
     }
 }
