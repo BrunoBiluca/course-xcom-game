@@ -1,16 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityFoundation.Code;
 
 namespace GameAssets
 {
-    public class WorldCursorDebug : Singleton<WorldCursorDebug>, IWorldCursor
+    public class WorldCursorDebug : Singleton<WorldCursorDebug>
     {
         private WorldCursor worldCursor;
         private GameObject debugVisual;
 
         [field: SerializeField] private bool DebugMode { get; set; }
-
-        public Optional<Vector3> WorldPosition => worldCursor.WorldPosition;
 
         public void Start()
         {
@@ -22,7 +21,7 @@ namespace GameAssets
 
         public void Update()
         {
-            worldCursor.Update();
+            if(worldCursor == null) return;
 
             if(DebugMode)
             {

@@ -1,10 +1,9 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class UnitMono : MonoBehaviour
+    public class UnitMono : MonoBehaviour, ISelectable
     {
         private TransformNavegationAgent transformNav;
         private IWorldCursor worldCursor;
@@ -23,23 +22,38 @@ namespace GameAssets
                 new AnimatorDecorator(GetComponentInChildren<Animator>())
             );
 
-            transformNav.OnReachDestination 
-                += () => animController.Play(new WalkingAnimation(false));
+            transformNav.OnReachDestination += FinishNavegation;
         }
 
         public void Update()
         {
-            if(Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                worldCursor
-                    .WorldPosition
-                    .Some(pos => {
-                        transformNav.SetDestination(pos);
-                        animController.Play(new WalkingAnimation(true));
-                    });
-            }
-
             transformNav.UpdateWithTime(Time.deltaTime);
+        }
+
+        private void UpdateNavegationDestination()
+        {
+            worldCursor
+                .WorldPosition
+                .Some(pos => {
+                    transformNav.SetDestination(pos);
+                    animController.Play(new WalkingAnimation(true));
+                });
+        }
+
+        private void FinishNavegation()
+        {
+            animController.Play(new WalkingAnimation(false));
+        }
+
+        public Collider GetCollider()
+        {
+            return GetComponent<Collider>();
+        }
+
+        public void SetSelected(bool state)
+        {
+            worldCursor.OnSecondaryClick += UpdateNavegationDestination;
+            transform.Find("selection_mark").gameObject.SetActive(state);
         }
     }
 }
