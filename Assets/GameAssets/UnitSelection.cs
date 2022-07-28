@@ -8,11 +8,13 @@ namespace GameAssets
     {
         private readonly IRaycastHandler raycast;
         private LayerMask layerMask;
+        private Optional<ISelectable> currentUnit;
 
         public UnitSelection(IRaycastHandler raycast)
         {
             this.raycast = raycast;
             layerMask = 0;
+            currentUnit = Optional<ISelectable>.None();
         }
 
         public UnitSelection SetLayers(LayerMask layerMask)
@@ -25,7 +27,16 @@ namespace GameAssets
         {
             var target = raycast.GetObjectOf<ISelectable>(screenPosition, layerMask);
 
-            return Optional<ISelectable>.Some(target);
+            currentUnit.Some(u => u.SetSelected(false));
+
+            var result = Optional<ISelectable>.Some(target);
+            if(result.IsPresent)
+            {
+                result.Get().SetSelected(true);
+            }
+
+            currentUnit = result;
+            return result;
         }
     }
 }

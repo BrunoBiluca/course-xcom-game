@@ -24,8 +24,7 @@ namespace GameAssets
             if(!worldCursor.ScreenPosition.IsPresentAndGet(out Vector2 pos))
                 return;
 
-            var target = unitSelection.Select(pos);
-            target.Some(t => t.SetSelected(true));
+            unitSelection.Select(pos);
         }
     }
 }

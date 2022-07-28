@@ -50,10 +50,14 @@ namespace GameAssets
             return GetComponent<Collider>();
         }
 
-        public void SetSelected(bool state)
+        public void SetSelected(bool isSelected)
         {
-            worldCursor.OnSecondaryClick += UpdateNavegationDestination;
-            transform.Find("selection_mark").gameObject.SetActive(state);
+            if(isSelected)
+                worldCursor.OnSecondaryClick += UpdateNavegationDestination;
+            else
+                worldCursor.OnSecondaryClick -= UpdateNavegationDestination;
+
+            transform.Find("selection_mark").gameObject.SetActive(isSelected);
         }
     }
 }

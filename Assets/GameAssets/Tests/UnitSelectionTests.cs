@@ -5,7 +5,7 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets.Tests
 {
-    public class UnitSelectionTests
+    public partial class UnitSelectionTests
     {
         [Test]
         public void Should_not_select_any_unit_if_found_none()
@@ -21,19 +21,32 @@ namespace GameAssets.Tests
         [Test]
         public void Should_select_unit_if_found_on_coordenate()
         {
-            var unit = new GameObject("unit").AddComponent<UnitMono>();
-            unit.gameObject.AddComponent<BoxCollider>();
+            var testCase = new TestCase();
+            testCase.FoundUnit();
+            var unitSelection = new UnitSelection(testCase.GetRaycastHandler());
 
-            var raycastHandler = new Mock<IRaycastHandler>();
-            raycastHandler
-                .Setup(rh => rh.GetObjectOf<ISelectable>(Vector2.zero, 0))
-                .Returns(unit);
-
-            var unitSelection = new UnitSelection(raycastHandler.Object);
-
-            var selectedUnit = unitSelection.Select(unit.transform.position);
+            var selectedUnit = unitSelection.Select(Vector3.zero);
 
             Assert.IsTrue(selectedUnit.IsPresent);
         }
+
+        [Test]
+        public void Given_unit_was_selected_should_deselect_it_if_found_none()
+        {
+            var testCase = new TestCase();
+            testCase.FoundUnit();
+
+            var unitSelection = new UnitSelection(testCase.GetRaycastHandler());
+
+            Assert.IsTrue(unitSelection.Select(Vector3.zero).IsPresent);
+
+            testCase.NotFoundUnit();
+
+            unitSelection.Select(Vector3.one);
+
+            Assert.IsFalse(testCase.GetSelectableUnit().State);
+            Assert.IsFalse(unitSelection.Select(Vector3.zero).IsPresent);
+        }
+
     }
 }
