@@ -11,10 +11,11 @@ namespace GameAssets
 
         public void Awake()
         {
-            transformNav = new TransformNavegationAgent(new TransformDecorator(transform)) {
-                Speed = 10f,
-                StoppingDistance = 0.1f
-            };
+            transformNav = new TransformNavegationAgent(
+                new TransformDecorator(transform)) {
+                    Speed = 10f,
+                    StoppingDistance = 0.1f
+                };
 
             worldCursor = WorldCursor.Instance;
 

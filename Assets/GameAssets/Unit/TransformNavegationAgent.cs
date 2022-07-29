@@ -9,7 +9,6 @@ namespace GameAssets
     {
         private readonly ITransform transform;
         private Optional<Vector3> target;
-        private float updateTime;
         private float rotateSpeed;
 
         public event Action OnReachDestination;
@@ -20,16 +19,15 @@ namespace GameAssets
 
             target = Optional<Vector3>.None();
             Speed = 1f;
-            updateTime = 1f;
+            PositionInterpolation = 1f;
             rotateSpeed = 10f;
         }
 
         public Vector3 CurrentPosition => transform.Position;
 
+        public float PositionInterpolation { get; private set; }
         public float Speed { get; set; }
-
         public float StoppingDistance { get; set; }
-
         public float RemainingDistance => DistanceMagnitude();
 
         public void Disabled()
@@ -53,7 +51,7 @@ namespace GameAssets
             if(!target.IsPresentAndGet(out Vector3 destination)) return;
 
             var moveDirection = (destination - CurrentPosition);
-            transform.Position += Speed * updateTime * moveDirection.normalized;
+            transform.Position += Speed * PositionInterpolation * moveDirection.normalized;
 
             transform.Foward = Vector3.Lerp(
                 transform.Foward, moveDirection, Time.deltaTime * rotateSpeed
@@ -67,9 +65,14 @@ namespace GameAssets
             }
         }
 
+        /// <summary>
+        /// Update the transform navegation using a custom updateTime. 
+        /// Can be used with Time.deltaTime to smothly update every frame.
+        /// </summary>
+        /// <param name="updateTime">1f means full speed every update</param>
         public void UpdateWithTime(float updateTime = 1f)
         {
-            this.updateTime = updateTime;
+            PositionInterpolation = updateTime;
             Update();
         }
 
