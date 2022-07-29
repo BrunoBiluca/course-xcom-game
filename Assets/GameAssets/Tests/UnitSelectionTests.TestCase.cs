@@ -47,6 +47,11 @@ namespace GameAssets.Tests
             {
                 return raycastHandler.Object;
             }
+
+            public void DestroyUnit()
+            {
+                UnityEngine.Object.DestroyImmediate(unit);
+            }
         }
 
     }

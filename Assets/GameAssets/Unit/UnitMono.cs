@@ -1,21 +1,22 @@
+using System;
 using UnityEngine;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class UnitMono : MonoBehaviour, ISelectable
+    public class UnitMono : BilucaMonoBehaviour, ISelectable
     {
         private TransformNavegationAgent transformNav;
         private IWorldCursor worldCursor;
         private AnimatorController animController;
 
-        public void Awake()
+        protected override void OnAwake()
         {
             transformNav = new TransformNavegationAgent(
                 new TransformDecorator(transform)) {
-                    Speed = 10f,
-                    StoppingDistance = 0.1f
-                };
+                Speed = 10f,
+                StoppingDistance = 0.1f
+            };
 
             worldCursor = WorldCursor.Instance;
 
@@ -24,26 +25,13 @@ namespace GameAssets
             );
 
             transformNav.OnReachDestination += FinishNavegation;
+
+            OnDestroyAction += OnDestroyHandler;
         }
 
         public void Update()
         {
             transformNav.UpdateWithTime(Time.deltaTime);
-        }
-
-        private void UpdateNavegationDestination()
-        {
-            worldCursor
-                .WorldPosition
-                .Some(pos => {
-                    transformNav.SetDestination(pos);
-                    animController.Play(new WalkingAnimation(true));
-                });
-        }
-
-        private void FinishNavegation()
-        {
-            animController.Play(new WalkingAnimation(false));
         }
 
         public Collider GetCollider()
@@ -59,6 +47,26 @@ namespace GameAssets
                 worldCursor.OnSecondaryClick -= UpdateNavegationDestination;
 
             transform.Find("selection_mark").gameObject.SetActive(isSelected);
+        }
+
+        private void OnDestroyHandler()
+        {
+            worldCursor.OnSecondaryClick -= UpdateNavegationDestination;
+        }
+
+        private void UpdateNavegationDestination()
+        {
+            worldCursor
+                .WorldPosition
+                .Some(pos => {
+                    transformNav.SetDestination(pos);
+                    animController.Play(new WalkingAnimation(true));
+                });
+        }
+
+        private void FinishNavegation()
+        {
+            animController.Play(new WalkingAnimation(false));
         }
     }
 }

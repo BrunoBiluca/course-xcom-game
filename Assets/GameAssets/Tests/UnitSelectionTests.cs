@@ -48,5 +48,20 @@ namespace GameAssets.Tests
             Assert.IsFalse(unitSelection.Select(Vector3.zero).IsPresent);
         }
 
+        [Test]
+        public void Given_unit_was_selected_should_return_none_if_unit_is_destroyed()
+        {
+            var testCase = new TestCase();
+            testCase.FoundUnit();
+
+            var unitSelection = new UnitSelection(testCase.GetRaycastHandler());
+
+            Assert.IsTrue(unitSelection.Select(Vector3.zero).IsPresent);
+
+            testCase.DestroyUnit();
+
+            Assert.IsFalse(unitSelection.CurrentUnit);
+        }
+
     }
 }
