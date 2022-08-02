@@ -6,7 +6,7 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class WorldCursor : Singleton<WorldCursor>, IWorldCursor
+    public class FreeWorldCursor : Singleton<FreeWorldCursor>, IWorldCursor
     {
         private RaycastHandler raycastHandler;
 

@@ -1,10 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityFoundation.Code;
 
 namespace GameAssets
 {
-    public class WorldCursorDebug : Singleton<WorldCursorDebug>
+    public class FreeWorldCursorDebug : Singleton<FreeWorldCursorDebug>
     {
         private IWorldCursor worldCursor;
         private GameObject debugVisual;
