@@ -51,7 +51,14 @@ namespace GameAssets
                 return;
             }
 
-            WorldPosition = Optional<Vector3>.Some(grid.GetCellCenterPosition(pos));
+            try
+            {
+                WorldPosition = Optional<Vector3>.Some(grid.Grid.GetCellCenterPosition(pos));
+            }
+            catch(ArgumentOutOfRangeException)
+            {
+                WorldPosition = Optional<Vector3>.None();
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
+using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
@@ -9,6 +10,7 @@ namespace GameAssets
         [field: SerializeField] public bool DebugMode { get; private set; }
 
         [SerializeField] private GridXZMono gridMono;
+        private IWorldGridXZ<GridDebugValue> grid;
 
         private IWorldCursor worldCursor;
         [SerializeField] private GameObject worldCursorRef;
@@ -20,6 +22,7 @@ namespace GameAssets
 
         public void Start()
         {
+            grid = gridMono.Grid;
             Display();
         }
 
@@ -31,7 +34,7 @@ namespace GameAssets
                 return;
 
             worldCursor.WorldPosition.Some(pos => {
-                var gridValue = gridMono.Grid.GetValue((int)pos.x, (int)pos.z);
+                var gridValue = grid.GetValue((int)pos.x, (int)pos.z);
 
                 if(gridValue.Text == null)
                     return;
@@ -44,14 +47,15 @@ namespace GameAssets
         {
             TransformUtils.RemoveChildObjects(transform);
 
-            for(int x = 0; x < gridMono.Grid.GridMatrix.GetLength(0); x++)
+            for(int x = 0; x < grid.GridMatrix.GetLength(0); x++)
             {
-                for(int z = 0; z < gridMono.Grid.GridMatrix.GetLength(1); z++)
+                for(int z = 0; z < grid.GridMatrix.GetLength(1); z++)
                 {
+                    var gridPos = grid.GridMatrix[x, z].GridPosition;
                     var text = DebugDraw.DrawWordTextCell(
-                        gridMono.Grid.GridMatrix[x, z].ToString(),
-                        gridMono.GetCellPosition(x, z),
-                        new Vector3(gridMono.Grid.CellSize, 0.5f, gridMono.Grid.CellSize),
+                        grid.GridMatrix[x, z].ToString(),
+                        grid.GetCellWorldPosition(gridPos),
+                        new Vector3(grid.CellSize, 0.5f, grid.CellSize),
                         fontSize: 1f,
                         transform
                     );
@@ -59,28 +63,29 @@ namespace GameAssets
                     gridMono.Grid.TrySetValue(x, z, new GridDebugValue(text));
 
                     Debug.DrawLine(
-                        gridMono.GetCellPosition(x, z),
-                        gridMono.GetCellPosition(x, z + 1),
+                        grid.GetCellWorldPosition(gridPos),
+                        grid.GetCellWorldPosition(gridPos.TranslateZ(grid.CellSize)),
                         Color.white,
                         100f
                     );
                     Debug.DrawLine(
-                        gridMono.GetCellPosition(x, z),
-                        gridMono.GetCellPosition(x + 1, z),
+                        grid.GetCellWorldPosition(gridPos),
+                        grid.GetCellWorldPosition(gridPos.TranslateZ(grid.CellSize)),
                         Color.white,
                         100f
                     );
                 }
             }
             Debug.DrawLine(
-                gridMono.GetCellPosition(0, gridMono.Grid.Depth),
-                gridMono.GetCellPosition(gridMono.Grid.Width, gridMono.Grid.Depth),
+                grid.DepthPosition,
+                grid.WidthAndDepthPosition,
                 Color.white,
                 100f
             );
+
             Debug.DrawLine(
-                gridMono.GetCellPosition(gridMono.Grid.Width, 0),
-                gridMono.GetCellPosition(gridMono.Grid.Width, gridMono.Grid.Depth),
+                grid.WidthPosition,
+                grid.WidthAndDepthPosition,
                 Color.white,
                 100f
             );
