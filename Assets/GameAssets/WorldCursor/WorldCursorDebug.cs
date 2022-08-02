@@ -6,14 +6,15 @@ namespace GameAssets
 {
     public class WorldCursorDebug : Singleton<WorldCursorDebug>
     {
-        private WorldCursor worldCursor;
+        private IWorldCursor worldCursor;
         private GameObject debugVisual;
 
+        [SerializeField] private GameObject worldCursorObj;
         [field: SerializeField] private bool DebugMode { get; set; }
 
         public void Start()
         {
-            worldCursor = WorldCursor.Instance;
+            worldCursor = worldCursorObj.GetComponent<IWorldCursor>();
 
             debugVisual = transform.Find("debug_visual").gameObject;
             debugVisual.SetActive(DebugMode);

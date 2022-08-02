@@ -5,13 +5,17 @@ namespace GameAssets
 {
     public class UnitSelectionMono : MonoBehaviour
     {
-        private WorldCursor worldCursor;
+        private IWorldCursor worldCursor;
+
         private UnitSelection unitSelection;
+
+        public void Setup(IWorldCursor worldCursor)
+        {
+            this.worldCursor = worldCursor;
+        }
 
         public void Start()
         {
-            worldCursor = WorldCursor.Instance;
-
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
             unitSelection = new UnitSelection(raycastHandler)
                 .SetLayers(LayerMask.GetMask("Unit"));

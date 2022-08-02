@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9084109615034568941}
-  - component: {fileID: 9084109615034568940}
   - component: {fileID: 9084109615034568943}
   m_Layer: 0
   m_Name: debug_world_cursor
@@ -34,19 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9084109615034568940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9084109615034568914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b63d20d9266a88a4e9b349e5974c0ef8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <DestroyOnLoad>k__BackingField: 1
 --- !u!114 &9084109615034568943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DestroyOnLoad>k__BackingField: 1
+  worldCursorObj: {fileID: 9084109615034568914}
   <DebugMode>k__BackingField: 1
 --- !u!1 &9084109616055054540
 GameObject:

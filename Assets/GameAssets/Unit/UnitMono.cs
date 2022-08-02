@@ -7,7 +7,10 @@ namespace GameAssets
     public class UnitMono : BilucaMonoBehaviour, ISelectable
     {
         private TransformNavegationAgent transformNav;
+
         private IWorldCursor worldCursor;
+        [SerializeField] private GameObject worldCursorRef;
+
         private AnimatorController animController;
 
         protected override void OnAwake()
@@ -18,7 +21,7 @@ namespace GameAssets
                 StoppingDistance = 0.1f
             };
 
-            worldCursor = WorldCursor.Instance;
+            worldCursor = worldCursorRef.GetComponent<IWorldCursor>();
 
             animController = new AnimatorController(
                 new AnimatorDecorator(GetComponentInChildren<Animator>())
@@ -27,6 +30,11 @@ namespace GameAssets
             transformNav.OnReachDestination += FinishNavegation;
 
             OnDestroyAction += OnDestroyHandler;
+        }
+
+        public void Setup(IWorldCursor worldCursor)
+        {
+            this.worldCursor = worldCursor;
         }
 
         public void Update()
