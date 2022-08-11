@@ -6,8 +6,9 @@ namespace GameAssets
     public class GameInstaller : Singleton<GameInstaller>
     {
         [SerializeField] private GameObject worldCursorRef;
-
         private IWorldCursor worldCursor;
+
+        [SerializeField] private GridXZMono grid;
 
         protected override void OnAwake()
         {
@@ -15,7 +16,7 @@ namespace GameAssets
 
             foreach(var unit in FindObjectsOfType<UnitMono>())
             {
-                unit.Setup(worldCursor);
+                unit.Setup(worldCursor, grid);
             }
 
             foreach(var unitSelection in FindObjectsOfType<UnitSelectionMono>())

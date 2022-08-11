@@ -34,7 +34,7 @@ namespace GameAssets
                 return;
 
             worldCursor.WorldPosition.Some(pos => {
-                var gridValue = grid.GetValue((int)pos.x, (int)pos.z);
+                var gridValue = grid.GetValue(pos);
 
                 if(gridValue.Text == null)
                     return;
@@ -47,30 +47,32 @@ namespace GameAssets
         {
             TransformUtils.RemoveChildObjects(transform);
 
-            for(int x = 0; x < grid.GridMatrix.GetLength(0); x++)
+            // TODO: isso daqui é abrir o Cells é uma gambs violenta, aqui deveria ser possível iterar por todas a células do grid e as próprias célular terem a informação de posição no mundo.
+            for(int x = 0; x < grid.Cells.GetLength(0); x++)
             {
-                for(int z = 0; z < grid.GridMatrix.GetLength(1); z++)
+                for(int z = 0; z < grid.Cells.GetLength(1); z++)
                 {
-                    var gridPos = grid.GridMatrix[x, z].GridPosition;
+                    var gridCellWorldPos = new Vector3(x * grid.CellSize, 0f, z * grid.CellSize);
+                    var cellWorldPos = grid.GetCellWorldPosition(gridCellWorldPos);
                     var text = DebugDraw.DrawWordTextCell(
-                        grid.GridMatrix[x, z].ToString(),
-                        grid.GetCellWorldPosition(gridPos),
+                        grid.Cells[x, z].ToString(),
+                        cellWorldPos,
                         new Vector3(grid.CellSize, 0.5f, grid.CellSize),
-                        fontSize: 1f,
+                        fontSize: 2f,
                         transform
                     );
 
-                    gridMono.Grid.TrySetValue(x, z, new GridDebugValue(text));
+                    gridMono.Grid.TrySetValue(text.transform.position, new GridDebugValue(text));
 
                     Debug.DrawLine(
-                        grid.GetCellWorldPosition(gridPos),
-                        grid.GetCellWorldPosition(gridPos.TranslateZ(grid.CellSize)),
+                        cellWorldPos,
+                        cellWorldPos + Vector3.forward * grid.CellSize,
                         Color.white,
                         100f
                     );
                     Debug.DrawLine(
-                        grid.GetCellWorldPosition(gridPos),
-                        grid.GetCellWorldPosition(gridPos.TranslateZ(grid.CellSize)),
+                        cellWorldPos,
+                        cellWorldPos + Vector3.forward * grid.CellSize,
                         Color.white,
                         100f
                     );

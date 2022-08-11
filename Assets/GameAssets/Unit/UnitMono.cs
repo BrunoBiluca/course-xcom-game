@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityFoundation.Code.UnityAdapter;
 
@@ -6,15 +5,19 @@ namespace GameAssets
 {
     public class UnitMono : BilucaMonoBehaviour, ISelectable
     {
+        public ITransform Transform { get; private set; }
         private TransformNavegationAgent transformNav;
 
         private IWorldCursor worldCursor;
         [SerializeField] private GameObject worldCursorRef;
 
+        private GridXZMono grid;
+
         private AnimatorController animController;
 
         protected override void OnAwake()
         {
+            Transform = new TransformDecorator(transform);
             transformNav = new TransformNavegationAgent(
                 new TransformDecorator(transform)) {
                 Speed = 10f,
@@ -32,14 +35,17 @@ namespace GameAssets
             OnDestroyAction += OnDestroyHandler;
         }
 
-        public void Setup(IWorldCursor worldCursor)
+        public void Setup(IWorldCursor worldCursor, GridXZMono grid)
         {
             this.worldCursor = worldCursor;
+            this.grid = grid;
         }
 
         public void Update()
         {
             transformNav.UpdateWithTime(Time.deltaTime);
+
+            grid.TransformToGridPosition(Transform);
         }
 
         public Collider GetCollider()
