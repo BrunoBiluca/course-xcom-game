@@ -1,14 +1,21 @@
 using UnityEngine;
 using UnityFoundation.Code;
+using UnityFoundation.Editor.Hierarchy;
 
 namespace GameAssets
 {
-    public class GameInstaller : Singleton<GameInstaller>
+    public class GameInstaller : Singleton<GameInstaller>, IPrettyable
     {
         [SerializeField] private GameObject worldCursorRef;
         private IWorldCursor worldCursor;
 
         [SerializeField] private GridXZMono grid;
+
+        public PrettyObject BePretty()
+        {
+            var installerColor = new Color(.38f, .35f, .06f);
+            return new PrettyObject(false, installerColor, Color.white, gameObject);
+        }
 
         protected override void OnAwake()
         {
