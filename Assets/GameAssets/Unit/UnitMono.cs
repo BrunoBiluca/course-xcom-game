@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
@@ -11,7 +12,9 @@ namespace GameAssets
         private IWorldCursor worldCursor;
         [SerializeField] private GameObject worldCursorRef;
 
-        private GridXZMono grid;
+        // TODO: esse gerenciamente de grid pode ser extraido para uma classe de grid unit, já que qualquer unidade, seja inimiga ou amiga, npc ou objetos deverão fazer esse processamento
+        private IWorldGridXZ<GridUnitValue> grid;
+        private Vector3 currentGridCellPos;
 
         private AnimatorController animController;
 
@@ -38,14 +41,27 @@ namespace GameAssets
         public void Setup(IWorldCursor worldCursor, GridXZMono grid)
         {
             this.worldCursor = worldCursor;
-            this.grid = grid;
+            this.grid = grid.Grid;
         }
 
         public void Update()
         {
             transformNav.UpdateWithTime(Time.deltaTime);
 
-            grid.TransformToGridPosition(Transform);
+            UpdateGridPosition();
+        }
+
+        private void UpdateGridPosition()
+        {
+            if(grid == null) return;
+
+            var newGridPos = grid.GetCellWorldPosition(Transform.Position);
+            if(currentGridCellPos != newGridPos)
+            {
+                grid.TryUpdateValue(currentGridCellPos, (val) => val.Remove(Transform));
+                grid.TryUpdateValue(newGridPos, (val) => val.Add(Transform));
+                currentGridCellPos = newGridPos;
+            }
         }
 
         public Collider GetCollider()
@@ -55,6 +71,8 @@ namespace GameAssets
 
         public void SetSelected(bool isSelected)
         {
+            // TODO: a ação do cursor será configurada de acordo com o estado da unidade
+            // a unidade pode movimentar, atacar, fazer outras ações
             if(isSelected)
                 worldCursor.OnSecondaryClick += UpdateNavegationDestination;
             else

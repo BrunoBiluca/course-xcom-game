@@ -20,6 +20,7 @@ namespace GameAssets
         protected override void OnAwake()
         {
             worldCursor = worldCursorRef.GetComponent<IWorldCursor>();
+            grid.Setup();
 
             foreach(var unit in FindObjectsOfType<UnitMono>())
             {

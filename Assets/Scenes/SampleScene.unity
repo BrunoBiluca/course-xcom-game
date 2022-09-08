@@ -152,9 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b96d7ee6f06b7d40beba31acd37d565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DebugMode>k__BackingField: 1
-  gridMono: {fileID: 280898495}
   worldCursorRef: {fileID: 621982786}
+  cellPrefab: {fileID: 4400019876997861706, guid: 90acae80b4f300a4e8eacd6cce9469a5,
+    type: 3}
+  gridMono: {fileID: 280898495}
+  <DebugMode>k__BackingField: 1
 --- !u!4 &49351470
 Transform:
   m_ObjectHideFlags: 0
@@ -927,7 +929,6 @@ GameObject:
   - component: {fileID: 1441996512}
   - component: {fileID: 1441996511}
   - component: {fileID: 1441996510}
-  - component: {fileID: 1441996514}
   m_Layer: 6
   m_Name: floor
   m_TagString: Untagged
@@ -1014,18 +1015,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1441996514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1441996509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d6adcb638f6cce4aab971a9e5985f88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1704378045
 GameObject:
   m_ObjectHideFlags: 0
