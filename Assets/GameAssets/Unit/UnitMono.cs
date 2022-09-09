@@ -6,11 +6,13 @@ namespace GameAssets
 {
     public class UnitMono : BilucaMonoBehaviour, ISelectable
     {
-        public ITransform Transform { get; private set; }
-        private TransformNavegationAgent transformNav;
-
-        private IWorldCursor worldCursor;
         [SerializeField] private GameObject worldCursorRef;
+
+        private int moveDistance = 5;
+
+        public ITransform Transform { get; private set; }
+        private IWorldCursor worldCursor;
+        private TransformNavegationAgent transformNav;
 
         // TODO: esse gerenciamente de grid pode ser extraido para uma classe de grid unit, já que qualquer unidade, seja inimiga ou amiga, npc ou objetos deverão fazer esse processamento
         private IWorldGridXZ<GridUnitValue> grid;
@@ -53,6 +55,7 @@ namespace GameAssets
 
         private void UpdateGridPosition()
         {
+            // TODO: Atualizar o grid position não deveria ser da unidade e sim de uma estrutura paralela ao grid
             if(grid == null) return;
 
             var newGridPos = grid.GetCellWorldPosition(Transform.Position);

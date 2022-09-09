@@ -2,14 +2,14 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityFoundation.Code;
+using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class GridWorldCursor : MonoBehaviour, IWorldCursor
+    public class GridWorldCursor : BilucaMonoBehaviour, IWorldCursor
     {
-        [SerializeField] private GridXZMono grid;
-
+        private IWorldGridXZ<GridUnitValue> worldGrid;
         private IRaycastHandler raycastHandler;
 
         public Optional<Vector3> WorldPosition { get; private set; }
@@ -19,12 +19,15 @@ namespace GameAssets
         public event Action OnClick;
         public event Action OnSecondaryClick;
 
-        public void Awake()
+        public void Setup(
+            IRaycastHandler raycastHandler,
+            IWorldGridXZ<GridUnitValue> worldGrid
+        )
         {
             ScreenPosition = Optional<Vector2>.None();
             WorldPosition = Optional<Vector3>.None();
-
-            raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
+            this.raycastHandler = raycastHandler;
+            this.worldGrid = worldGrid;
         }
 
         public void Update()
@@ -53,7 +56,7 @@ namespace GameAssets
 
             try
             {
-                WorldPosition = Optional<Vector3>.Some(grid.Grid.GetCellCenterPosition(pos));
+                WorldPosition = Optional<Vector3>.Some(worldGrid.GetCellCenterPosition(pos));
             }
             catch(ArgumentOutOfRangeException)
             {

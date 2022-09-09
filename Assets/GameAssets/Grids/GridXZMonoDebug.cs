@@ -12,17 +12,19 @@ namespace GameAssets
         [SerializeField] private GridXZMono gridMono;
         [field: SerializeField] public bool DebugMode { get; private set; }
 
-        private IWorldGridXZ<GridUnitValue> grid;
-        private IWorldCursor worldCursor;
-
-        public void Awake()
-        {
-            worldCursor = worldCursorRef.GetComponent<IWorldCursor>();
-        }
+        private IWorldGridXZ<GridUnitValue> gridRef;
+        private IWorldGridXZ<GridDebugValue> grid;
 
         public void Start()
         {
-            grid = gridMono.Grid;
+            gridRef = gridMono.Grid;
+            grid = new WorldGridXZ<GridDebugValue>(
+                gridRef.InitialPosition,
+                gridRef.Width,
+                gridRef.Depth,
+                gridRef.CellSize
+            );
+
             Display();
         }
 
@@ -62,7 +64,10 @@ namespace GameAssets
                 transform
             );
 
-            gridMono.Grid.TrySetValue(text.transform.position, new GridUnitValue(text));
+            grid.TrySetValue(
+                text.transform.position,
+                new GridDebugValue(text, cellRef)
+            );
 
             Debug.DrawLine(
                 cellWorldPos,

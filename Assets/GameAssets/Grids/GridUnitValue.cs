@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEngine;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
     public class GridUnitValue
     {
-        public TextMeshPro Text { get; }
         public List<ITransform> Transforms { get; }
 
-        public GridUnitValue(TextMeshPro text)
+        public GridUnitValue()
         {
-            Text = text;
             Transforms = new List<ITransform>();
         }
 
@@ -21,13 +20,11 @@ namespace GameAssets
             if(Transforms.Contains(transform))
                 return;
             Transforms.Add(transform);
-            Text.text = ToString();
         }
 
         public void Remove(ITransform transform)
         {
             Transforms.Remove(transform);
-            Text.text = ToString();
         }
 
         public override string ToString()

@@ -1,14 +1,13 @@
 using UnityEngine;
 using UnityFoundation.Code;
+using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.Editor.Hierarchy;
 
 namespace GameAssets
 {
     public class GameInstaller : Singleton<GameInstaller>, IPrettyable
     {
-        [SerializeField] private GameObject worldCursorRef;
-        private IWorldCursor worldCursor;
-
+        [SerializeField] private GridWorldCursor worldCursor;
         [SerializeField] private GridXZMono grid;
 
         public PrettyObject BePretty()
@@ -19,8 +18,10 @@ namespace GameAssets
 
         protected override void OnAwake()
         {
-            worldCursor = worldCursorRef.GetComponent<IWorldCursor>();
             grid.Setup();
+
+            var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
+            worldCursor.Setup(raycastHandler, grid.Grid);
 
             foreach(var unit in FindObjectsOfType<UnitMono>())
             {
