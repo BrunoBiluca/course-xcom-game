@@ -9,6 +9,7 @@ namespace GameAssets
     {
         [SerializeField] private GridWorldCursor worldCursor;
         [SerializeField] private GridXZMono grid;
+        [SerializeField] private GridXZMonoDebug gridDebug;
 
         public PrettyObject BePretty()
         {
@@ -23,9 +24,13 @@ namespace GameAssets
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
             worldCursor.Setup(raycastHandler, grid.Grid);
 
+            var gridManager = new WorldGridXZManager<GridUnitValue>(grid.Grid);
+
+            gridDebug.Setup(gridManager);
+
             foreach(var unit in FindObjectsOfType<UnitMono>())
             {
-                unit.Setup(worldCursor, grid);
+                unit.Setup(worldCursor, gridManager);
             }
 
             foreach(var unitSelection in FindObjectsOfType<UnitSelectionMono>())

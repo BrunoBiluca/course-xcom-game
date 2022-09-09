@@ -23,7 +23,8 @@ namespace GameAssets
                 transform.position,
                 Width,
                 Depth,
-                CellSize
+                CellSize,
+                () => new GridUnitValue()
             );
         }
     }

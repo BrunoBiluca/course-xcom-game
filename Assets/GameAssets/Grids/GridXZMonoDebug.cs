@@ -5,32 +5,42 @@ using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
+    // TODO: esse cara já é um forte candidato para virar genérico e não ser monobehaviour
     public class GridXZMonoDebug : MonoBehaviour
     {
-        [SerializeField] private GameObject worldCursorRef;
         [SerializeField] private GameObject cellPrefab;
-        [SerializeField] private GridXZMono gridMono;
+
         [field: SerializeField] public bool DebugMode { get; private set; }
 
-        private IWorldGridXZ<GridUnitValue> gridRef;
         private IWorldGridXZ<GridDebugValue> grid;
+        private WorldGridXZManager<GridUnitValue> gridManager;
 
-        public void Start()
+        public void Setup(WorldGridXZManager<GridUnitValue> gridManager)
         {
-            gridRef = gridMono.Grid;
             grid = new WorldGridXZ<GridDebugValue>(
-                gridRef.InitialPosition,
-                gridRef.Width,
-                gridRef.Depth,
-                gridRef.CellSize
+                gridManager.Grid.InitialPosition,
+                gridManager.Grid.Width,
+                gridManager.Grid.Depth,
+                gridManager.Grid.CellSize
             );
-
+            this.gridManager = gridManager;
             Display();
         }
 
         public void Update()
         {
             gameObject.SetActive(DebugMode);
+
+            foreach(var c in grid.Cells)
+            {
+                c.Value.SetText(gridManager.Grid.Cells[c.X, c.Z].ToString());
+                c.Value.DisableCellRef();
+            }
+
+            foreach(var c in gridManager.GetAllValidCells())
+            {
+                grid.Cells[c.X, c.Z].Value.EnableCellRef();
+            }
         }
 
         public void Display()

@@ -8,10 +8,11 @@ namespace GameAssets
     {
         [SerializeField] private GameObject worldCursorRef;
 
-        private int moveDistance = 5;
+        private int moveDistance = 3;
 
         public ITransform Transform { get; private set; }
         private IWorldCursor worldCursor;
+        private WorldGridXZManager<GridUnitValue> gridManager;
         private TransformNavegationAgent transformNav;
 
         // TODO: esse gerenciamente de grid pode ser extraido para uma classe de grid unit, já que qualquer unidade, seja inimiga ou amiga, npc ou objetos deverão fazer esse processamento
@@ -40,10 +41,14 @@ namespace GameAssets
             OnDestroyAction += OnDestroyHandler;
         }
 
-        public void Setup(IWorldCursor worldCursor, GridXZMono grid)
+        public void Setup(
+            IWorldCursor worldCursor,
+            WorldGridXZManager<GridUnitValue> gridManager
+        )
         {
             this.worldCursor = worldCursor;
-            this.grid = grid.Grid;
+            this.gridManager = gridManager;
+            grid = gridManager.Grid;
         }
 
         public void Update()
@@ -76,16 +81,25 @@ namespace GameAssets
         {
             // TODO: a ação do cursor será configurada de acordo com o estado da unidade
             // a unidade pode movimentar, atacar, fazer outras ações
+
+            // TODO: transformar essa classe em Character com estados
             if(isSelected)
+            {
                 worldCursor.OnSecondaryClick += UpdateNavegationDestination;
+                gridManager.UpdateCurrentGridCell(Transform.Position);
+            }
             else
+            {
+                gridManager.ResetCurrentGridCell();
                 worldCursor.OnSecondaryClick -= UpdateNavegationDestination;
+            }
 
             transform.Find("selection_mark").gameObject.SetActive(isSelected);
         }
 
         private void OnDestroyHandler()
         {
+            gridManager.ResetCurrentGridCell();
             worldCursor.OnSecondaryClick -= UpdateNavegationDestination;
         }
 
@@ -101,6 +115,7 @@ namespace GameAssets
 
         private void FinishNavegation()
         {
+            gridManager.UpdateCurrentGridCell(Transform.Position);
             animController.Play(new WalkingAnimation(false));
         }
     }

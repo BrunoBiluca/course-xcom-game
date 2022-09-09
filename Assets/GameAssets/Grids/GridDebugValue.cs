@@ -17,6 +17,11 @@ namespace GameAssets
             this.cellRef = cellRef;
         }
 
+        public void SetText(string text)
+        {
+            this.text.text = text;
+        }
+
         public void EnableCellRef()
         {
             cellRef.SetActive(true);

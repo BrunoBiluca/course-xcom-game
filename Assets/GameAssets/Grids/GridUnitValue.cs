@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TMPro;
-using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class GridUnitValue
+    public class GridUnitValue : IEmptyable
     {
         public List<ITransform> Transforms { get; }
 
@@ -25,6 +24,11 @@ namespace GameAssets
         public void Remove(ITransform transform)
         {
             Transforms.Remove(transform);
+        }
+
+        public bool IsEmpty()
+        {
+            return Transforms.Count == 0;
         }
 
         public override string ToString()
