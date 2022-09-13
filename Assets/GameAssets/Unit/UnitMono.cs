@@ -4,22 +4,22 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class UnitMono : BilucaMonoBehaviour, ISelectable
+    public class UnitMono : BilucaMonoBehaviour, ISelectable, IAnimationEventHandler
     {
-        [SerializeField] private GameObject worldCursorRef;
-
-        private int moveDistance = 3;
-
         public ITransform Transform { get; private set; }
+
         private IWorldCursor worldCursor;
         private WorldGridXZManager<GridUnitValue> gridManager;
         private TransformNavegationAgent transformNav;
 
         // TODO: esse gerenciamente de grid pode ser extraido para uma classe de grid unit, já que qualquer unidade, seja inimiga ou amiga, npc ou objetos deverão fazer esse processamento
         private IWorldGridXZ<GridUnitValue> grid;
-        private Vector3 currentGridCellPos;
 
+
+        public int MoveDistance { get; private set; } = 3;
+        private Vector3 currentGridCellPos;
         private AnimatorController animController;
+        private MoveUnitAction moveAction;
 
         protected override void OnAwake()
         {
@@ -30,13 +30,13 @@ namespace GameAssets
                 StoppingDistance = 0.1f
             };
 
-            worldCursor = worldCursorRef.GetComponent<IWorldCursor>();
-
             animController = new AnimatorController(
                 new AnimatorDecorator(GetComponentInChildren<Animator>())
             );
 
             transformNav.OnReachDestination += FinishNavegation;
+
+            moveAction = new MoveUnitAction(this, transformNav, worldCursor, gridManager);
 
             OnDestroyAction += OnDestroyHandler;
         }
@@ -85,13 +85,13 @@ namespace GameAssets
             // TODO: transformar essa classe em Character com estados
             if(isSelected)
             {
-                worldCursor.OnSecondaryClick += UpdateNavegationDestination;
-                gridManager.SetRangeValidation(Transform.Position, moveDistance);
+                moveAction.ApplyValidation();
+                worldCursor.OnSecondaryClick += ApplyAction;
             }
             else
             {
                 gridManager.ResetRangeValidation();
-                worldCursor.OnSecondaryClick -= UpdateNavegationDestination;
+                worldCursor.OnSecondaryClick -= ApplyAction;
             }
 
             transform.Find("selection_mark").gameObject.SetActive(isSelected);
@@ -100,25 +100,28 @@ namespace GameAssets
         private void OnDestroyHandler()
         {
             gridManager.ResetRangeValidation();
-            worldCursor.OnSecondaryClick -= UpdateNavegationDestination;
+            worldCursor.OnSecondaryClick -= ApplyAction;
         }
 
-        private void UpdateNavegationDestination()
+        private void ApplyAction()
         {
-            if(!worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos))
+            if(!moveAction.IsDoable())
                 return;
 
-            if(!gridManager.IsCellAvailable(grid.GetCell(pos)))
-                return;
-
-            transformNav.SetDestination(pos);
+            moveAction.Do();
+            // TODO: implementar uma factory de animações
             animController.Play(new WalkingAnimation(true));
         }
 
         private void FinishNavegation()
         {
-            gridManager.SetRangeValidation(Transform.Position, moveDistance);
+            gridManager.ResetRangeValidation();
             animController.Play(new WalkingAnimation(false));
+        }
+
+        public void AnimationEventHandler(string eventName)
+        {
+            Debug.Log("Animation: " + eventName);
         }
     }
 }

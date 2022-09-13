@@ -896,6 +896,25 @@ MonoBehaviour:
   enableZoom: 1
   zoomAmount: 2
   zoomSpeed: 5
+--- !u!1 &919918994 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1773226204256876302, guid: 243636264dacba948a499d52bb5fc52b,
+    type: 3}
+  m_PrefabInstance: {fileID: 4091461878555216676}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &919918997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919918994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6185d4ec714cb0d408b321a357e71b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goRef: {fileID: 0}
 --- !u!1 &1332763841
 GameObject:
   m_ObjectHideFlags: 3

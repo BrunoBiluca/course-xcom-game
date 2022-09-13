@@ -51,5 +51,11 @@ namespace GameAssets
                 && cell.IsEmpty()
                 && cell.IsInRange(currCell, rangeDistance);
         }
+
+        public bool IsCellAvailable(Vector3 position)
+        {
+            var cell = Grid.GetCell(position);
+            return IsCellAvailable(cell);
+        }
     }
 }
