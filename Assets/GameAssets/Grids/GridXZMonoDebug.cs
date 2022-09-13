@@ -37,7 +37,7 @@ namespace GameAssets
                 c.Value.DisableCellRef();
             }
 
-            foreach(var c in gridManager.GetAllValidCells())
+            foreach(var c in gridManager.GetAllAvailableCells())
             {
                 grid.Cells[c.X, c.Z].Value.EnableCellRef();
             }

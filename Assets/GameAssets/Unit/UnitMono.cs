@@ -86,11 +86,11 @@ namespace GameAssets
             if(isSelected)
             {
                 worldCursor.OnSecondaryClick += UpdateNavegationDestination;
-                gridManager.UpdateCurrentGridCell(Transform.Position);
+                gridManager.SetRangeValidation(Transform.Position, moveDistance);
             }
             else
             {
-                gridManager.ResetCurrentGridCell();
+                gridManager.ResetRangeValidation();
                 worldCursor.OnSecondaryClick -= UpdateNavegationDestination;
             }
 
@@ -99,23 +99,25 @@ namespace GameAssets
 
         private void OnDestroyHandler()
         {
-            gridManager.ResetCurrentGridCell();
+            gridManager.ResetRangeValidation();
             worldCursor.OnSecondaryClick -= UpdateNavegationDestination;
         }
 
         private void UpdateNavegationDestination()
         {
-            worldCursor
-                .WorldPosition
-                .Some(pos => {
-                    transformNav.SetDestination(pos);
-                    animController.Play(new WalkingAnimation(true));
-                });
+            if(!worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos))
+                return;
+
+            if(!gridManager.IsCellAvailable(grid.GetCell(pos)))
+                return;
+
+            transformNav.SetDestination(pos);
+            animController.Play(new WalkingAnimation(true));
         }
 
         private void FinishNavegation()
         {
-            gridManager.UpdateCurrentGridCell(Transform.Position);
+            gridManager.SetRangeValidation(Transform.Position, moveDistance);
             animController.Play(new WalkingAnimation(false));
         }
     }

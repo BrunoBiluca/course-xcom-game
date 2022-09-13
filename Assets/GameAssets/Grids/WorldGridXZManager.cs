@@ -5,38 +5,51 @@ using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
-
     public class WorldGridXZManager<T>
     {
         public IWorldGridXZ<T> Grid { get; private set; }
-        private GridCellXZ<T> currCell;
 
-        public WorldGridXZManager(IWorldGridXZ<T> worldGrid)
+        private GridCellXZ<T> currCell;
+        private int rangeDistance;
+
+        public WorldGridXZManager(
+            IWorldGridXZ<T> worldGrid
+        )
         {
             Grid = worldGrid;
         }
 
-        public void UpdateCurrentGridCell(Vector3 position)
+        public void SetRangeValidation(Vector3 position, int distance)
         {
             currCell = Grid.GetCell(position);
-        }
-        public void ResetCurrentGridCell()
-        {
-            currCell = null;
+            rangeDistance = distance;
         }
 
-        public IEnumerable<GridCellXZ<T>> GetAllValidCells()
+        public void ResetRangeValidation()
+        {
+            currCell = null;
+            rangeDistance = 0;
+        }
+
+        public IEnumerable<GridCellXZ<T>> GetAllAvailableCells()
         {
             foreach(var c in Grid.Cells)
             {
                 if(!c.IsEmpty())
                     continue;
 
-                if(currCell != null && !c.IsInRange(currCell, 5))
+                if(currCell != null && !c.IsInRange(currCell, rangeDistance))
                     continue;
 
                 yield return c;
             }
+        }
+
+        public bool IsCellAvailable(GridCellXZ<T> cell)
+        {
+            return currCell != null
+                && cell.IsEmpty()
+                && cell.IsInRange(currCell, rangeDistance);
         }
     }
 }

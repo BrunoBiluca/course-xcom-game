@@ -6,7 +6,7 @@ using UnityFoundation.Code.Grid;
 
 namespace GameAssets.Tests
 {
-    public class GridXZManagerTests
+    public class WorldGridXZManagerTests
     {
         class TestGridValue : IEmptyable
         {
@@ -24,7 +24,7 @@ namespace GameAssets.Tests
             var grid = new WorldGridXZ<string>(Vector3.zero, 2, 2, 1);
             var gridManager = new WorldGridXZManager<string>(grid);
 
-            var cells = gridManager.GetAllValidCells().Count();
+            var cells = gridManager.GetAllAvailableCells().Count();
 
             Assert.That(cells, Is.EqualTo(4));
         }
@@ -36,7 +36,7 @@ namespace GameAssets.Tests
             grid.Fill("filled");
 
             var gridManager = new WorldGridXZManager<string>(grid);
-            var cells = gridManager.GetAllValidCells().Count();
+            var cells = gridManager.GetAllAvailableCells().Count();
 
             Assert.That(cells, Is.EqualTo(0));
         }
@@ -50,7 +50,7 @@ namespace GameAssets.Tests
             grid.TrySetValue(Vector3.zero, new TestGridValue() { text = "zero" });
             grid.TrySetValue(Vector3.one, new TestGridValue() { text = "one" });
 
-            var cells = gridManager.GetAllValidCells().Count();
+            var cells = gridManager.GetAllAvailableCells().Count();
 
             Assert.That(cells, Is.EqualTo(2));
         }
@@ -64,12 +64,27 @@ namespace GameAssets.Tests
             grid.TrySetValue(Vector3.zero, new TestGridValue());
             grid.TrySetValue(Vector3.one, new TestGridValue());
 
-            Assert.That(gridManager.GetAllValidCells().Count(), Is.EqualTo(4));
+            Assert.That(gridManager.GetAllAvailableCells().Count(), Is.EqualTo(4));
 
             grid.TryUpdateValue(Vector3.zero, (value) => value.text = "zero");
             grid.TryUpdateValue(Vector3.one, (value) => value.text = "one");
 
-            Assert.That(gridManager.GetAllValidCells().Count(), Is.EqualTo(2));
+            Assert.That(gridManager.GetAllAvailableCells().Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void Should_return_cell_available_when_cell_is_empty_and_in_range()
+        {
+            var grid = new WorldGridXZ<string>(Vector3.zero, 2, 2, 1);
+            var gridManager = new WorldGridXZManager<string>(grid);
+
+            gridManager.SetRangeValidation(Vector3.zero, 1);
+
+            Assert.That(gridManager.IsCellAvailable(grid.Cells[0, 0]), Is.True);
+            Assert.That(gridManager.IsCellAvailable(grid.Cells[0, 1]), Is.True);
+            Assert.That(gridManager.IsCellAvailable(grid.Cells[1, 0]), Is.True);
+            Assert.That(gridManager.IsCellAvailable(grid.Cells[1, 1]), Is.False);
+
         }
     }
 }
