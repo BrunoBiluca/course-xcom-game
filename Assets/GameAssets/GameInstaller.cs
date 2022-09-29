@@ -10,6 +10,8 @@ namespace GameAssets
         [SerializeField] private GridWorldCursor worldCursor;
         [SerializeField] private GridXZMono grid;
         [SerializeField] private GridXZMonoDebug gridDebug;
+        [SerializeField] private UnitSelectionMono unitSelection;
+        [SerializeField] private UnitActionSelectionView unitActionSelectionView;
 
         public PrettyObject BePretty()
         {
@@ -27,6 +29,10 @@ namespace GameAssets
             var gridManager = new WorldGridXZManager<GridUnitValue>(grid.Grid);
 
             gridDebug.Setup(gridManager);
+
+            var unitActionsFactory = new UnitActionsFactory(unitSelection);
+
+            unitActionSelectionView.Setup(unitSelection, unitActionsFactory);
 
             foreach(var unit in FindObjectsOfType<UnitMono>())
             {

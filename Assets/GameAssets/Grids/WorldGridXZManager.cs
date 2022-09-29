@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code.Grid;
+using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
@@ -31,6 +31,8 @@ namespace GameAssets
             rangeDistance = 0;
         }
 
+        // TODO: transformar esse available cells em um grid separado
+        // Assim sempre o que o grid é atualizado esse available grid também é, e isso é responsabilidade de um manager (unit of work)
         public IEnumerable<GridCellXZ<T>> GetAllAvailableCells()
         {
             foreach(var c in Grid.Cells)
@@ -57,5 +59,6 @@ namespace GameAssets
             var cell = Grid.GetCell(position);
             return IsCellAvailable(cell);
         }
+
     }
 }

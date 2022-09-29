@@ -15,7 +15,6 @@ namespace GameAssets
         // TODO: esse gerenciamente de grid pode ser extraido para uma classe de grid unit, já que qualquer unidade, seja inimiga ou amiga, npc ou objetos deverão fazer esse processamento
         private IWorldGridXZ<GridUnitValue> grid;
 
-
         public int MoveDistance { get; private set; } = 3;
         private Vector3 currentGridCellPos;
         private AnimatorController animController;
@@ -105,17 +104,19 @@ namespace GameAssets
 
         private void ApplyAction()
         {
-            if(!moveAction.IsDoable())
-                return;
+            try
+            {
+                moveAction.Execute();
+            }
+            catch(CantExecuteActionException) { }
 
-            moveAction.Do();
             // TODO: implementar uma factory de animações
             animController.Play(new WalkingAnimation(true));
         }
 
         private void FinishNavegation()
         {
-            gridManager.ResetRangeValidation();
+            SetSelected(false);
             animController.Play(new WalkingAnimation(false));
         }
 

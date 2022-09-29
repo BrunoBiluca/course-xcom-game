@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityFoundation.Code.UnityAdapter;
 
@@ -9,6 +10,11 @@ namespace GameAssets
 
         private UnitSelection unitSelection;
 
+        public UnitMono CurrentUnit { get; private set; }
+
+        public event Action OnUnitSelected;
+        public event Action OnUnitDeselected;
+
         public void Setup(IWorldCursor worldCursor)
         {
             this.worldCursor = worldCursor;
@@ -16,9 +22,12 @@ namespace GameAssets
 
         public void Start()
         {
+            // TODO: fazer essa configuração vir pelo Setup
+            // TODO: fazer um mono que seja apenas do tipo ISelectable, para usar em futuros projetos de forma simples
+            int unitLayer = LayerMask.GetMask("Unit");
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
             unitSelection = new UnitSelection(raycastHandler)
-                .SetLayers(LayerMask.GetMask("Unit"));
+                .SetLayers(unitLayer);
 
             worldCursor.OnClick += TrySelectUnit;
         }
@@ -28,7 +37,18 @@ namespace GameAssets
             if(!worldCursor.ScreenPosition.IsPresentAndGet(out Vector2 pos))
                 return;
 
-            unitSelection.Select(pos);
+
+            unitSelection.SelectByType<UnitMono>(pos)
+                .Some(u => {
+                    UnityDebug.I.Log("Unit", u.name, "was selected");
+                    CurrentUnit = u;
+                    OnUnitSelected?.Invoke();
+                })
+                .OrElse(() => {
+                    UnityDebug.I.Log("Unit", CurrentUnit.name, "was deselected");
+                    CurrentUnit = null;
+                    OnUnitDeselected?.Invoke();
+                });
         }
     }
 }

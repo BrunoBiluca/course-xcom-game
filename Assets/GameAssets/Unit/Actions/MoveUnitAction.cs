@@ -1,11 +1,9 @@
-using System;
 using UnityEngine;
-using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class MoveUnitAction
+    public class MoveUnitAction : IUnitAction
     {
         private readonly UnitMono unit;
         private readonly INavegationAgent navegationAgent;
@@ -25,21 +23,18 @@ namespace GameAssets
             this.gridManager = gridManager;
         }
 
-        public bool IsDoable()
+        private void CanExecuteAction()
         {
             if(!worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos))
-                return false;
+                throw new CantExecuteActionException();
 
             if(!gridManager.IsCellAvailable(pos))
-                return false;
-
-            return true;
+                throw new CantExecuteActionException();
         }
 
-        public void Do()
+        public void Execute()
         {
-            if(!IsDoable())
-                return;
+            CanExecuteAction();
 
             worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos);
             navegationAgent.SetDestination(pos);

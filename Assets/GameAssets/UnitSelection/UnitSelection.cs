@@ -54,6 +54,16 @@ namespace GameAssets
             return result;
         }
 
+        public Optional<T> SelectByType<T>(Vector3 screenPosition) where T : ISelectable
+        {
+            var unit = Select(screenPosition);
+            if(!unit.IsPresentAndGet(out ISelectable selected))
+            {
+                return Optional<T>.None();
+            }
+            return Optional<T>.Some((T)selected);
+        }
+
         public static bool IsNullOrDestroyed(object obj)
         {
             if(obj is null) return true;
