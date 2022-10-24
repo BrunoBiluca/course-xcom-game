@@ -1,41 +1,42 @@
+using System;
 using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class UnitMono : BilucaMonoBehaviour, ISelectable, IAnimationEventHandler
+    public class UnitMono : BilucaMonoBehaviour, ISelectable, IAnimationEventHandler, IUnitActor
     {
+        [field: SerializeField] public UnitConfigTemplate UnitConfigTemplate { get; private set; }
         public ITransform Transform { get; private set; }
+        public AnimatorController AnimatorController { get; private set; }
+        public INavegationAgent TransformNav { get; private set; }
 
         private IWorldCursor worldCursor;
         private WorldGridXZManager<GridUnitValue> gridManager;
-        private TransformNavegationAgent transformNav;
 
         // TODO: esse gerenciamente de grid pode ser extraido para uma classe de grid unit, já que qualquer unidade, seja inimiga ou amiga, npc ou objetos deverão fazer esse processamento
         private IWorldGridXZ<GridUnitValue> grid;
 
-        public int MoveDistance { get; private set; } = 3;
         private Vector3 currentGridCellPos;
-        private AnimatorController animController;
-        private MoveUnitAction moveAction;
+        private Action<float> updateCallback;
+        private Optional<IUnitAction> currentAction;
 
         protected override void OnAwake()
         {
+            currentAction = Optional<IUnitAction>.None();
+
             Transform = new TransformDecorator(transform);
-            transformNav = new TransformNavegationAgent(
+            TransformNav = new TransformNavegationAgent(
                 new TransformDecorator(transform)) {
                 Speed = 10f,
                 StoppingDistance = 0.1f
             };
 
-            animController = new AnimatorController(
+            AnimatorController = new AnimatorController(
                 new AnimatorDecorator(GetComponentInChildren<Animator>())
             );
-
-            transformNav.OnReachDestination += FinishNavegation;
-
-            moveAction = new MoveUnitAction(this, transformNav, worldCursor, gridManager);
 
             OnDestroyAction += OnDestroyHandler;
         }
@@ -52,7 +53,7 @@ namespace GameAssets
 
         public void Update()
         {
-            transformNav.UpdateWithTime(Time.deltaTime);
+            updateCallback?.Invoke(Time.deltaTime);
 
             UpdateGridPosition();
         }
@@ -83,15 +84,9 @@ namespace GameAssets
 
             // TODO: transformar essa classe em Character com estados
             if(isSelected)
-            {
-                moveAction.ApplyValidation();
-                worldCursor.OnSecondaryClick += ApplyAction;
-            }
+                worldCursor.OnSecondaryClick += ExecuteAction;
             else
-            {
-                gridManager.ResetRangeValidation();
-                worldCursor.OnSecondaryClick -= ApplyAction;
-            }
+                worldCursor.OnSecondaryClick -= ExecuteAction;
 
             transform.Find("selection_mark").gameObject.SetActive(isSelected);
         }
@@ -99,30 +94,43 @@ namespace GameAssets
         private void OnDestroyHandler()
         {
             gridManager.ResetRangeValidation();
-            worldCursor.OnSecondaryClick -= ApplyAction;
+            worldCursor.OnSecondaryClick -= ExecuteAction;
         }
 
-        private void ApplyAction()
+        private void ExecuteAction()
         {
             try
             {
-                moveAction.Execute();
+                currentAction.Some(a => a.Execute());
             }
             catch(CantExecuteActionException) { }
-
-            // TODO: implementar uma factory de animações
-            animController.Play(new WalkingAnimation(true));
-        }
-
-        private void FinishNavegation()
-        {
-            SetSelected(false);
-            animController.Play(new WalkingAnimation(false));
         }
 
         public void AnimationEventHandler(string eventName)
         {
             Debug.Log("Animation: " + eventName);
+        }
+
+        public void SetAction(Optional<IUnitAction> action)
+        {
+            if(!action.IsPresentAndGet(out IUnitAction currentAction))
+                return;
+
+            this.currentAction = action;
+            currentAction.ApplyValidation();
+
+            if(currentAction.ExecuteImmediatly)
+                ExecuteAction();
+        }
+
+        public void SetUpdateCallback(Action<float> callback)
+        {
+            updateCallback = callback;
+        }
+
+        public void ResetUpdateCallback()
+        {
+            updateCallback = null;
         }
     }
 }

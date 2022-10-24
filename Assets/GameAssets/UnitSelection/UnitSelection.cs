@@ -40,9 +40,9 @@ namespace GameAssets
 
         public Optional<ISelectable> Select(Vector3 screenPosition)
         {
-            var target = raycast.GetObjectOf<ISelectable>(screenPosition, layerMask);
-
             CurrentUnit.Some(u => u.SetSelected(false));
+
+            var target = raycast.GetObjectOf<ISelectable>(screenPosition, layerMask);
 
             var result = Optional<ISelectable>.Some(target);
             if(result.IsPresent)

@@ -4,13 +4,15 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class UnitSelectionMono : MonoBehaviour
+    public sealed class UnitSelectionMono : MonoBehaviour, IUnitActorSelector
     {
         private IWorldCursor worldCursor;
 
         private UnitSelection unitSelection;
 
         public UnitMono CurrentUnit { get; private set; }
+
+        public IUnitActor CurrentUnitActor => CurrentUnit;
 
         public event Action OnUnitSelected;
         public event Action OnUnitDeselected;
@@ -45,8 +47,11 @@ namespace GameAssets
                     OnUnitSelected?.Invoke();
                 })
                 .OrElse(() => {
-                    UnityDebug.I.Log("Unit", CurrentUnit.name, "was deselected");
-                    CurrentUnit = null;
+                    if(CurrentUnit != null)
+                    {
+                        UnityDebug.I.Log("Unit", CurrentUnit.name, "was deselected");
+                        CurrentUnit = null;
+                    }
                     OnUnitDeselected?.Invoke();
                 });
         }

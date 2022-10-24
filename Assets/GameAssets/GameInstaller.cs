@@ -30,18 +30,25 @@ namespace GameAssets
 
             gridDebug.Setup(gridManager);
 
-            var unitActionsFactory = new UnitActionsFactory(unitSelection);
+            var unitSelection = FindObjectOfType<UnitSelectionMono>();
+            unitSelection.Setup(worldCursor);
 
-            unitActionSelectionView.Setup(unitSelection, unitActionsFactory);
+            unitSelection.OnUnitDeselected += () => gridManager.ResetRangeValidation();
+
+            var unitActionsFactory = new UnitActionsFactory(
+                unitSelection,
+                worldCursor,
+                gridManager
+            );
+
+            var unitActionHandler = new UnitActionHandler(unitSelection);
+
+            unitActionSelectionView.Setup(unitSelection, unitActionHandler, unitActionsFactory);
+
 
             foreach(var unit in FindObjectsOfType<UnitMono>())
             {
                 unit.Setup(worldCursor, gridManager);
-            }
-
-            foreach(var unitSelection in FindObjectsOfType<UnitSelectionMono>())
-            {
-                unitSelection.Setup(worldCursor);
             }
         }
     }

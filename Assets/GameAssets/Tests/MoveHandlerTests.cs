@@ -62,13 +62,13 @@ namespace GameAssets.Tests
             var destination = new Vector3(2f, 0, 0);
             moveHandler.SetDestination(destination);
 
-            moveHandler.UpdateWithTime(0.5f);
-            moveHandler.UpdateWithTime(0.5f);
+            moveHandler.Update(0.5f);
+            moveHandler.Update(0.5f);
 
             Assert.AreEqual(1f, moveHandler.RemainingDistance);
 
-            moveHandler.UpdateWithTime(0.5f);
-            moveHandler.UpdateWithTime(0.5f);
+            moveHandler.Update(0.5f);
+            moveHandler.Update(0.5f);
 
             Assert.AreEqual(0f, moveHandler.RemainingDistance);
             AssertHelper.AreEqual(moveHandler.CurrentPosition, destination);

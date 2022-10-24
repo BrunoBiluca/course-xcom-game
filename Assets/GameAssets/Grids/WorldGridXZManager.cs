@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code.Grid;
-using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {

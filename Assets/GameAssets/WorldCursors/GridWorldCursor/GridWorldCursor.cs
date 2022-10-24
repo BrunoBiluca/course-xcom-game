@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
@@ -32,7 +34,14 @@ namespace GameAssets
 
         public void Update()
         {
+            UpdateCursor();
+        }
+
+        private void UpdateCursor()
+        {
             ScreenPosition = Optional<Vector2>.Some(Mouse.current.position.ReadValue());
+
+            if(IgnoreClick()) return;
 
             EvaluateWorldPosition();
 
@@ -62,6 +71,12 @@ namespace GameAssets
             {
                 WorldPosition = Optional<Vector3>.None();
             }
+        }
+
+        private bool IgnoreClick()
+        {
+            Optional<Vector3>.None();
+            return EventSystem.current.IsPointerOverGameObject();
         }
     }
 }

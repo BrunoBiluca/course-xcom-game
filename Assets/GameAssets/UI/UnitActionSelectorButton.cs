@@ -6,14 +6,14 @@ namespace GameAssets
 {
     public class UnitActionSelectorButton : MonoBehaviour
     {
-        [SerializeField] private UnitActionsFactory.Actions action;
+        [field: SerializeField] public UnitActionsFactory.Actions Action { get; private set; }
 
         private UnitActionSelectionView selector;
 
         public void Awake()
         {
             var text = transform.FindComponent<TextMeshProUGUI>("text");
-            text.text = action.ToString();
+            text.text = Action.ToString();
         }
 
         public void Setup(UnitActionSelectionView selector)
@@ -23,7 +23,7 @@ namespace GameAssets
 
         public void Select()
         {
-            selector.Select(action);
+            selector.Select(Action);
         }
     }
 }
