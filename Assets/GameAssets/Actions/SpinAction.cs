@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityFoundation.Code;
+using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets

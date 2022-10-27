@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: sprinter_unit
   m_EditorClassIdentifier: 
   <MovementRange>k__BackingField: 5
+  <ActionPoints>k__BackingField: 1

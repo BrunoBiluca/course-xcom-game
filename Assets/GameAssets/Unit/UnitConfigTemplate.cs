@@ -6,5 +6,6 @@ namespace GameAssets
     public class UnitConfigTemplate : ScriptableObject
     {
         [field: SerializeField] public int MovementRange { get; private set; }
+        [field: SerializeField] public int ActionPoints { get; private set; }
     }
 }

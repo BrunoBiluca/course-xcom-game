@@ -1414,9 +1414,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraSpeed: 20
-  moveLimitsX: {x: -20, y: 20}
-  moveLimitsY: {x: -2, y: 2}
-  moveLimitsZ: {x: -20, y: 20}
+  moveLimitsX:
+    start: 0
+    end: 30
+  moveLimitsY:
+    start: 0
+    end: 0
+  moveLimitsZ:
+    start: 0
+    end: 30
   enableEdgeMovement: 0
   edgeOffset: 10
   enableZoom: 1

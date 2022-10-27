@@ -1,5 +1,6 @@
 using System;
 using UnityFoundation.Code;
+using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {

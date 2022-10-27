@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityFoundation.Code;
+using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {

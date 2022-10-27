@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: tank_unit
   m_EditorClassIdentifier: 
   <MovementRange>k__BackingField: 2
+  <ActionPoints>k__BackingField: 2
