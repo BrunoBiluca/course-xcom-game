@@ -42,19 +42,28 @@ namespace GameAssets
 
 
             unitSelection.SelectByType<UnitMono>(pos)
-                .Some(u => {
-                    UnityDebug.I.Log("Unit", u.name, "was selected");
-                    CurrentUnit = u;
-                    OnUnitSelected?.Invoke();
-                })
-                .OrElse(() => {
-                    if(CurrentUnit != null)
-                    {
-                        UnityDebug.I.Log("Unit", CurrentUnit.name, "was deselected");
-                        CurrentUnit = null;
-                    }
-                    OnUnitDeselected?.Invoke();
-                });
+                .Some(SelectUnit)
+                .OrElse(DeselectUnit);
+        }
+
+        private void SelectUnit(UnitMono unit)
+        {
+            UnityDebug.I.Log("Unit", unit.name, "was selected");
+
+            DeselectUnit();
+
+            CurrentUnit = unit;
+            OnUnitSelected?.Invoke();
+        }
+
+        private void DeselectUnit()
+        {
+            if(CurrentUnit != null)
+            {
+                UnityDebug.I.Log("Unit", CurrentUnit.name, "was deselected");
+                CurrentUnit = null;
+            }
+            OnUnitDeselected?.Invoke();
         }
     }
 }

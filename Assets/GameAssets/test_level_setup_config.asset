@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4120fee09903df54aa415166f0ac3160, type: 3}
+  m_Name: test_level_setup_config
+  m_EditorClassIdentifier: 
+  <GridConfig>k__BackingField:
+    Width: 10
+    Depth: 10
+    CellSize: 2
+  <Units>k__BackingField:
+  - <UnitTemplate>k__BackingField: {fileID: 11400000, guid: 735f8967deaa7b942bc940083a056c17,
+      type: 2}
+    <PositionX>k__BackingField: 2
+    <PositionZ>k__BackingField: 2
+  - <UnitTemplate>k__BackingField: {fileID: 11400000, guid: ed8a2bc1fd3b06c4c80a13571023b2f8,
+      type: 2}
+    <PositionX>k__BackingField: 3
+    <PositionZ>k__BackingField: 6

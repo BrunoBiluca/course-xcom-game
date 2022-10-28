@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityFoundation.Code;
+using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.Editor.Hierarchy;
 
@@ -12,6 +13,9 @@ namespace GameAssets
         [SerializeField] private GridXZMonoDebug gridDebug;
         [SerializeField] private UnitSelectionMono unitSelection;
         [SerializeField] private UnitActionSelectionView unitActionSelectionView;
+        [SerializeField] private UnitsManager unitsManager;
+        [SerializeField] private LevelSetupConfig levelSetupConfig;
+        [SerializeField] private GameObject unitPrefab;
 
         public PrettyObject BePretty()
         {
@@ -21,7 +25,7 @@ namespace GameAssets
 
         protected override void OnAwake()
         {
-            grid.Setup();
+            grid.Setup(levelSetupConfig.GridConfig);
 
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
             worldCursor.Setup(raycastHandler, grid.Grid);
@@ -46,9 +50,15 @@ namespace GameAssets
             unitActionSelectionView.Setup(unitSelection, unitActionHandler, unitActionsFactory);
 
 
-            foreach(var unit in FindObjectsOfType<UnitMono>())
+            foreach(var unitSetup in levelSetupConfig.Units)
             {
-                unit.Setup(worldCursor, gridManager);
+                var unit = Instantiate(unitPrefab).GetComponent<UnitMono>();
+                unit.Setup(unitSetup.UnitTemplate, worldCursor, gridManager);
+
+                unit.Transform.Position = gridManager.Grid
+                    .GetCellCenterPosition(
+                        new GridCellPositionXZ(unitSetup.PositionX, unitSetup.PositionZ)
+                    );
             }
         }
     }

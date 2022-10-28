@@ -7,8 +7,8 @@ namespace GameAssets
     {
         public static bool IsInRange<T>(this GridCellXZ<T> a, GridCellXZ<T> b, int range)
         {
-            var x = Mathf.Abs(a.X - b.X);
-            var z = Mathf.Abs(a.Z - b.Z);
+            var x = Mathf.Abs(a.Position.X - b.Position.X);
+            var z = Mathf.Abs(a.Position.Z - b.Position.Z);
 
             return x + z <= range;
         }

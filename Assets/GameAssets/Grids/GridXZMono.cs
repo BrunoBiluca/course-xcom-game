@@ -14,16 +14,20 @@ namespace GameAssets
         public void Awake()
         {
             if(Grid == null)
-                Setup();
+                Setup(new GridXZConfig() {
+                    Width = Width,
+                    Depth = Depth,
+                    CellSize = CellSize
+                });
         }
 
-        public void Setup()
+        public void Setup(GridXZConfig config)
         {
             Grid = new WorldGridXZ<GridUnitValue>(
                 transform.position,
-                Width,
-                Depth,
-                CellSize,
+                config.Width,
+                config.Depth,
+                config.CellSize,
                 () => new GridUnitValue()
             );
         }

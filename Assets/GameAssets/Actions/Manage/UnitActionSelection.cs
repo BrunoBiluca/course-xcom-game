@@ -4,7 +4,6 @@ using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {
-
     public sealed class UnitActionHandler : IUnitActionSelector, IBilucaLoggable
     {
         public IBilucaLogger Logger { get; set; }
@@ -31,19 +30,29 @@ namespace GameAssets
 
             CurrentAction = Optional<IUnitAction>.Some(action);
             OnActionSelected?.Invoke(action);
+
+            unitActorSelector.CurrentUnitActor.OnCantExecuteAction -= CantExecuteActionHandle;
+            unitActorSelector.CurrentUnitActor.OnCantExecuteAction += CantExecuteActionHandle;
+
+            action.OnFinishAction -= DeselectAction;
             action.OnFinishAction += DeselectAction;
 
             unitActorSelector.CurrentUnitActor.SetAction(CurrentAction);
 
-
             Logger?.Log("Action", CurrentAction.Get().GetType().ToString(), "was selected");
+        }
+
+        public void CantExecuteActionHandle()
+        {
+            DebugPopup.Create("Can't execute action");
+            Logger?.Log("Can't execute", CurrentAction.Get().GetType().ToString());
+
+            DeselectAction();
         }
 
         public void DeselectAction()
         {
             if(!CurrentAction.IsPresentAndGet(out IUnitAction action)) return;
-
-            action.OnFinishAction -= DeselectAction;
 
             Logger?.Log("Action", CurrentAction.Get().GetType().ToString(), "was deselected");
             CurrentAction = Optional<IUnitAction>.None();

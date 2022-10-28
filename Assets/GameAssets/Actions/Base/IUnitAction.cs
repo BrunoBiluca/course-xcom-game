@@ -4,6 +4,7 @@ namespace GameAssets
 {
     public interface IUnitAction
     {
+        event Action OnCantExecuteAction;
         event Action OnFinishAction;
         bool ExecuteImmediatly { get; }
 

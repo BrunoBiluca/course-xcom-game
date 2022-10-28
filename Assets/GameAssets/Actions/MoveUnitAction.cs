@@ -10,6 +10,7 @@ namespace GameAssets
         private readonly WorldGridXZManager<GridUnitValue> gridManager;
 
         public event Action OnFinishAction;
+        public event Action OnCantExecuteAction;
 
         public bool ExecuteImmediatly => false;
 
@@ -26,7 +27,11 @@ namespace GameAssets
 
         public void Execute()
         {
-            CanExecuteAction();
+            if(!CanExecute())
+            {
+                OnCantExecuteAction?.Invoke();
+                return;
+            }
 
             // TODO: implementar uma factory de animações
             unit.AnimatorController.Play(new WalkingAnimation(true));
@@ -47,18 +52,20 @@ namespace GameAssets
         public void ApplyValidation()
         {
             gridManager.SetRangeValidation(
-                unit.Transform.Position, 
+                unit.Transform.Position,
                 unit.UnitConfigTemplate.MovementRange
             );
         }
 
-        private void CanExecuteAction()
+        public bool CanExecute()
         {
             if(!worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos))
-                throw new CantExecuteActionException();
+                return false;
 
             if(!gridManager.IsCellAvailable(pos))
-                throw new CantExecuteActionException();
+                return false;
+
+            return true;
         }
 
         private void FinishNavegation()

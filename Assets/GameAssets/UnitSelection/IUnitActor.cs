@@ -5,6 +5,8 @@ namespace GameAssets
 {
     public interface IUnitActor
     {
+        event Action OnCantExecuteAction;
+
         void SetAction(Optional<IUnitAction> action);
 
         /// <summary>

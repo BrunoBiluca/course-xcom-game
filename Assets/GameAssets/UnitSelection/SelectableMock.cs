@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace GameAssets
 {
     public class SelectableMock : MonoBehaviour, ISelectable
     {
         public bool State { get; private set; }
+
+        public bool IsSelected => State;
+
+        public event Action OnSelectedStateChange;
 
         public Collider GetCollider()
         {

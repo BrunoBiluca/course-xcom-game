@@ -4,18 +4,22 @@ using UnityFoundation.Code;
 using UnityFoundation.Code.Extensions;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
+using UnityFoundation.ResourceManagement;
 
 namespace GameAssets
 {
     public class UnitMono : BilucaMonoBehaviour, ISelectable, IAnimationEventHandler, IUnitActor
     {
-        [field: SerializeField] public UnitConfigTemplate UnitConfigTemplate { get; private set; }
+        public UnitConfigTemplate UnitConfigTemplate { get; private set; }
         public ITransform Transform { get; private set; }
         public AnimatorController AnimatorController { get; private set; }
         public INavegationAgent TransformNav { get; private set; }
 
         private IWorldCursor worldCursor;
         private WorldGridXZManager<GridUnitValue> gridManager;
+        public FiniteResourceManager ActionPoints { get; private set; }
+
+        public bool IsSelected { get; private set; }
 
         // TODO: esse gerenciamente de grid pode ser extraido para uma classe de grid unit, já que qualquer unidade, seja inimiga ou amiga, npc ou objetos deverão fazer esse processamento
         private IWorldGridXZ<GridUnitValue> grid;
@@ -23,6 +27,9 @@ namespace GameAssets
         private Vector3 currentGridCellPos;
         private Action<float> updateCallback;
         private Optional<IUnitAction> currentAction;
+
+        public event Action OnCantExecuteAction;
+        public event Action OnSelectedStateChange;
 
         protected override void OnAwake()
         {
@@ -43,6 +50,7 @@ namespace GameAssets
         }
 
         public void Setup(
+            UnitConfigTemplate unitConfigTemplate,
             IWorldCursor worldCursor,
             WorldGridXZManager<GridUnitValue> gridManager
         )
@@ -50,6 +58,13 @@ namespace GameAssets
             this.worldCursor = worldCursor;
             this.gridManager = gridManager;
             grid = gridManager.Grid;
+
+            UnitConfigTemplate = unitConfigTemplate;
+
+            ActionPoints = new FiniteResourceManager(
+                UnitConfigTemplate.MaxActionPoints,
+                startFull: true
+            );
         }
 
         public void Update()
@@ -80,31 +95,42 @@ namespace GameAssets
 
         public void SetSelected(bool isSelected)
         {
-            // TODO: a ação do cursor será configurada de acordo com o estado da unidade
-            // a unidade pode movimentar, atacar, fazer outras ações
-
-            // TODO: transformar essa classe em Character com estados
-            if(isSelected)
-                worldCursor.OnSecondaryClick += ExecuteAction;
-            else
+            IsSelected = isSelected;
+            OnSelectedStateChange?.Invoke();
+            if(IsSelected)
+            {
                 worldCursor.OnSecondaryClick -= ExecuteAction;
-
-            transform.Find("selection_mark").gameObject.SetActive(isSelected);
+                worldCursor.OnSecondaryClick += ExecuteAction;
+            }
         }
 
         private void OnDestroyHandler()
         {
             gridManager.ResetRangeValidation();
-            worldCursor.OnSecondaryClick -= ExecuteAction;
         }
 
         private void ExecuteAction()
         {
-            try
+            if(!currentAction.IsPresentAndGet(out IUnitAction action))
+                return;
+
+            const uint actionPointCost = 1u;
+            if(!ActionPoints.TrySubtract(actionPointCost))
             {
-                currentAction.Some(a => a.Execute());
+                InvokeCantExecuteAction();
+                return;
             }
-            catch(CantExecuteActionException) { }
+
+            action.OnCantExecuteAction -= InvokeCantExecuteAction;
+            action.OnCantExecuteAction += InvokeCantExecuteAction;
+
+            action.Execute();
+        }
+
+        private void InvokeCantExecuteAction()
+        {
+            gridManager.ResetRangeValidation();
+            OnCantExecuteAction?.Invoke();
         }
 
         public void AnimationEventHandler(string eventName)

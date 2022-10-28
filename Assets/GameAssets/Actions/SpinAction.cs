@@ -15,6 +15,7 @@ namespace GameAssets
         private LerpAngle unitRotation;
 
         public event Action OnFinishAction;
+        public event Action OnCantExecuteAction;
 
         public SpinUnitAction(
             IUnitActor actor,

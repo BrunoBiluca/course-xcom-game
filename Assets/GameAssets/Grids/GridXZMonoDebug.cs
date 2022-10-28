@@ -33,13 +33,13 @@ namespace GameAssets
 
             foreach(var c in grid.Cells)
             {
-                c.Value.SetText(gridManager.Grid.Cells[c.X, c.Z].ToString());
+                c.Value.SetText(gridManager.Grid.Cells[c.Position.X, c.Position.Z].ToString());
                 c.Value.DisableCellRef();
             }
 
             foreach(var c in gridManager.GetAllAvailableCells())
             {
-                grid.Cells[c.X, c.Z].Value.EnableCellRef();
+                grid.Cells[c.Position.X, c.Position.Z].Value.EnableCellRef();
             }
         }
 
