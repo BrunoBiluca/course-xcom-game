@@ -15,6 +15,7 @@ namespace GameAssets
         [Header("UI")]
         [SerializeField] private UnitActionSelectionView unitActionSelectionView;
         [SerializeField] private ActionPointsView actionPointsView;
+        [SerializeField] private TurnSystemView turnSystemView;
 
         [Header("Grid")]
         [SerializeField] private GridWorldCursor worldCursor;
@@ -71,6 +72,16 @@ namespace GameAssets
             actorSelectorVisibilityHandler.Hide();
 
             unitsManager.Setup(levelSetupConfig, worldCursor, gridManager);
+
+            var turnSystem = new TurnSystem();
+            turnSystem.OnTurnEnded += () => {
+                foreach(var u in unitsManager.GetAllUnits())
+                {
+                    u.ActionPoints.FullReffil();
+                }
+            };
+
+            turnSystemView.Setup(turnSystem);
         }
     }
 }

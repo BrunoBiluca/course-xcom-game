@@ -9,9 +9,48 @@ namespace GameAssets
     {
         [SerializeField] private GameObject actionButtonPrefab;
 
-        public void Start()
+        private RectTransform debuggerView;
+        private Button openButton;
+        private Button closeButton;
+
+        [field: SerializeField] public bool StartOpened { get; private set; }
+
+        protected override void OnStart()
         {
-            var holder = transform.Find("holder");
+            SetupComponents();
+
+            SetupDebuggerActions();
+
+            if(StartOpened) OpenDebugger();
+            else CloseDebugger();
+        }
+
+        private void SetupComponents()
+        {
+            debuggerView = transform.FindComponent<RectTransform>("panel");
+
+            openButton = transform.FindComponent<Button>("open_button");
+            openButton.onClick.AddListener(OpenDebugger);
+
+            closeButton = transform.FindComponent<Button>("panel.close_button");
+            closeButton.onClick.AddListener(CloseDebugger);
+        }
+
+        private void OpenDebugger()
+        {
+            debuggerView.gameObject.SetActive(true);
+            openButton.gameObject.SetActive(false);
+        }
+
+        private void CloseDebugger()
+        {
+            debuggerView.gameObject.SetActive(false);
+            openButton.gameObject.SetActive(true);
+        }
+
+        private void SetupDebuggerActions()
+        {
+            var holder = transform.FindTransform("panel.holder");
 
             var actions = GetComponents<IDebuggerAction>();
             foreach(var action in actions)
