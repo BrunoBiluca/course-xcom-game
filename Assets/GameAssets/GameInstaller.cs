@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityFoundation.Code;
+using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.Editor.Hierarchy;
@@ -8,14 +9,24 @@ namespace GameAssets
 {
     public class GameInstaller : Singleton<GameInstaller>, IPrettyable
     {
+        [Header("Config")]
+        [SerializeField] private LevelSetupConfig levelSetupConfig;
+
+        [Header("UI")]
+        [SerializeField] private UnitActionSelectionView unitActionSelectionView;
+        [SerializeField] private ActionPointsView actionPointsView;
+
+        [Header("Grid")]
         [SerializeField] private GridWorldCursor worldCursor;
         [SerializeField] private GridXZMono grid;
         [SerializeField] private GridXZMonoDebug gridDebug;
+
+        [Header("Managers")]
         [SerializeField] private UnitSelectionMono unitSelection;
-        [SerializeField] private UnitActionSelectionView unitActionSelectionView;
         [SerializeField] private UnitsManager unitsManager;
-        [SerializeField] private LevelSetupConfig levelSetupConfig;
-        [SerializeField] private GameObject unitPrefab;
+
+        [Header("Debug")]
+        [SerializeField] private UnityDebug unityDebug;
 
         public PrettyObject BePretty()
         {
@@ -23,7 +34,7 @@ namespace GameAssets
             return new PrettyObject(false, installerColor, Color.white, gameObject);
         }
 
-        protected override void OnAwake()
+        protected override void OnStart()
         {
             grid.Setup(levelSetupConfig.GridConfig);
 
@@ -47,19 +58,19 @@ namespace GameAssets
 
             var unitActionHandler = new UnitActionHandler(unitSelection);
 
-            unitActionSelectionView.Setup(unitSelection, unitActionHandler, unitActionsFactory);
+            unitActionSelectionView.Setup(unitActionHandler, unitActionsFactory);
 
+            actionPointsView.Setup(unitSelection);
 
-            foreach(var unitSetup in levelSetupConfig.Units)
-            {
-                var unit = Instantiate(unitPrefab).GetComponent<UnitMono>();
-                unit.Setup(unitSetup.UnitTemplate, worldCursor, gridManager);
+            var actorSelectorVisibilityHandler = new ActorSelectorVisibilityHandler(
+                unitSelection,
+                new GameObjectDecorator(actionPointsView.gameObject),
+                new GameObjectDecorator(unitActionSelectionView.gameObject)
+            );
+            actorSelectorVisibilityHandler.Logger = unityDebug;
+            actorSelectorVisibilityHandler.Hide();
 
-                unit.Transform.Position = gridManager.Grid
-                    .GetCellCenterPosition(
-                        new GridCellPositionXZ(unitSetup.PositionX, unitSetup.PositionZ)
-                    );
-            }
+            unitsManager.Setup(levelSetupConfig, worldCursor, gridManager);
         }
     }
 }

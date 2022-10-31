@@ -102,6 +102,10 @@ namespace GameAssets
                 worldCursor.OnSecondaryClick -= ExecuteAction;
                 worldCursor.OnSecondaryClick += ExecuteAction;
             }
+            else
+            {
+                worldCursor.OnSecondaryClick -= ExecuteAction;
+            }
         }
 
         private void OnDestroyHandler()

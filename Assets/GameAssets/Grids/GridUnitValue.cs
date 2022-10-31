@@ -18,7 +18,9 @@ namespace GameAssets
         {
             if(Transforms.Contains(transform))
                 return;
+
             Transforms.Add(transform);
+            transform.OnInvalidState += () => Remove(transform);
         }
 
         public void Remove(ITransform transform)

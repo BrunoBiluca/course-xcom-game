@@ -16,8 +16,6 @@ namespace GameAssets
 
         public void Awake()
         {
-            Hide();
-
             buttons = transform.FindComponentsInChildren<UnitActionSelectorButton>();
             foreach(var button in buttons)
             {
@@ -26,7 +24,6 @@ namespace GameAssets
         }
 
         public void Setup(
-            UnitSelectionMono unitSelection,
             IUnitActionSelector actionSelector,
             UnitActionsFactory factory
         )
@@ -35,22 +32,6 @@ namespace GameAssets
             this.actionSelector = actionSelector;
 
             actionSelector.OnActionDeselected += CleanActions;
-
-            unitSelection.OnUnitSelected += Show;
-            unitSelection.OnUnitDeselected += Hide;
-        }
-
-        private void Show()
-        {
-            gameObject.SetActive(true);
-            CleanActions();
-            UnityDebug.I.LogHighlight(nameof(UnitActionSelectionView), "was shown");
-        }
-
-        private void Hide()
-        {
-            gameObject.SetActive(false);
-            UnityDebug.I.LogHighlight(nameof(UnitActionSelectionView), "was hidden");
         }
 
         public void Select(UnitActionsFactory.Actions actionType)
