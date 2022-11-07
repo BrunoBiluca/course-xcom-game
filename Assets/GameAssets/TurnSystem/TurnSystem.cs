@@ -9,17 +9,28 @@ namespace GameAssets
     {
         public int CurrentTurn { get; private set; }
 
-        public event Action OnTurnEnded;
+        public event Action OnPlayerTurnStarted;
+        public event Action OnPlayerTurnEnded;
+
+        public event Action OnEnemyTurnStarted;
+        public event Action OnEnemyTurnEnded;
 
         public TurnSystem()
         {
             CurrentTurn = 1;
         }
 
-        public void EndTurn()
+        public void EndPlayerTurn()
         {
             CurrentTurn++;
-            OnTurnEnded?.Invoke();
+            OnPlayerTurnEnded?.Invoke();
+            OnEnemyTurnStarted?.Invoke();
+        }
+
+        public void EndEnemyTurn()
+        {
+            OnEnemyTurnEnded?.Invoke();
+            OnPlayerTurnStarted?.Invoke();
         }
     }
 }

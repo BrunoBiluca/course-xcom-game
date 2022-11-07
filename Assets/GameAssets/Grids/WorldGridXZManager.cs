@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code.Grid;
+using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
@@ -58,6 +59,5 @@ namespace GameAssets
             var cell = Grid.GetCell(position);
             return IsCellAvailable(cell);
         }
-
     }
 }

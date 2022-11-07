@@ -5,34 +5,45 @@ namespace GameAssets
 {
     public class UnitsManager : MonoBehaviour
     {
-        [SerializeField] private GameObject unitPrefab;
         private LevelSetupConfig levelSetupConfig;
         private IWorldCursor worldCursor;
-        private WorldGridXZManager<GridUnitValue> gridManager;
+        private UnitWorldGridXZManager gridManager;
 
         public void Setup(
             LevelSetupConfig levelSetupConfig,
             IWorldCursor worldCursor,
-            WorldGridXZManager<GridUnitValue> gridManager
-        )
+            UnitWorldGridXZManager gridManager,
+            ITurnSystem turnSystem)
         {
             this.levelSetupConfig = levelSetupConfig;
             this.worldCursor = worldCursor;
             this.gridManager = gridManager;
+
+            turnSystem.OnPlayerTurnEnded += RefillUnitActions;
             SetupUnits();
+        }
+
+        private void RefillUnitActions()
+        {
+            foreach(var u in GetAllUnits())
+            {
+                u.ActionPoints.FullReffil();
+            }
         }
 
         public void SetupUnits()
         {
             foreach(var unitSetup in levelSetupConfig.Units)
             {
-                var unit = Instantiate(unitPrefab).GetComponent<UnitMono>();
+                var unit = Instantiate(unitSetup.prefab).GetComponent<UnitMono>();
                 unit.Setup(unitSetup.UnitTemplate, worldCursor, gridManager);
 
                 unit.Transform.Position = gridManager.Grid
                     .GetCellCenterPosition(
-                        new GridCellPositionXZ(unitSetup.PositionX, unitSetup.PositionZ)
+                        new GridCellPositionXZ(unitSetup.Position.X, unitSetup.Position.Z)
                     );
+
+                gridManager.Add(unit.Transform);
             }
         }
 

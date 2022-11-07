@@ -25,6 +25,8 @@ namespace GameAssets
         [Header("Managers")]
         [SerializeField] private UnitSelectionMono unitSelection;
         [SerializeField] private UnitsManager unitsManager;
+        [SerializeField] private EnemiesManager enemiesManager;
+        private UnitWorldGridXZManager gridManager;
 
         [Header("Debug")]
         [SerializeField] private UnityDebug unityDebug;
@@ -42,7 +44,7 @@ namespace GameAssets
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
             worldCursor.Setup(raycastHandler, grid.Grid);
 
-            var gridManager = new WorldGridXZManager<GridUnitValue>(grid.Grid);
+            gridManager = new UnitWorldGridXZManager(grid.Grid);
 
             gridDebug.Setup(gridManager);
 
@@ -71,17 +73,19 @@ namespace GameAssets
             actorSelectorVisibilityHandler.Logger = unityDebug;
             actorSelectorVisibilityHandler.Hide();
 
-            unitsManager.Setup(levelSetupConfig, worldCursor, gridManager);
-
             var turnSystem = new TurnSystem();
-            turnSystem.OnTurnEnded += () => {
-                foreach(var u in unitsManager.GetAllUnits())
-                {
-                    u.ActionPoints.FullReffil();
-                }
-            };
+
+            unitsManager.Setup(levelSetupConfig, worldCursor, gridManager, turnSystem);
+
+            enemiesManager.Logger = unityDebug;
+            enemiesManager.Setup(levelSetupConfig, gridManager, turnSystem);
 
             turnSystemView.Setup(turnSystem);
+        }
+
+        public void Update()
+        {
+            gridManager.Update();
         }
     }
 }

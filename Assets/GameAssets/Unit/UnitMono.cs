@@ -24,7 +24,6 @@ namespace GameAssets
         // TODO: esse gerenciamente de grid pode ser extraido para uma classe de grid unit, já que qualquer unidade, seja inimiga ou amiga, npc ou objetos deverão fazer esse processamento
         private IWorldGridXZ<GridUnitValue> grid;
 
-        private Vector3 currentGridCellPos;
         private Action<float> updateCallback;
         private Optional<IUnitAction> currentAction;
 
@@ -70,22 +69,6 @@ namespace GameAssets
         public void Update()
         {
             updateCallback?.Invoke(Time.deltaTime);
-
-            UpdateGridPosition();
-        }
-
-        private void UpdateGridPosition()
-        {
-            // TODO: Atualizar o grid position não deveria ser da unidade e sim de uma estrutura paralela ao grid
-            if(grid == null) return;
-
-            var newGridPos = grid.GetCellWorldPosition(Transform.Position);
-            if(currentGridCellPos != newGridPos)
-            {
-                grid.TryUpdateValue(currentGridCellPos, (val) => val.Remove(Transform));
-                grid.TryUpdateValue(newGridPos, (val) => val.Add(Transform));
-                currentGridCellPos = newGridPos;
-            }
         }
 
         public Collider GetCollider()

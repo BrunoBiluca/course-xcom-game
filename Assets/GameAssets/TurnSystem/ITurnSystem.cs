@@ -6,8 +6,13 @@ namespace GameAssets
     {
         int CurrentTurn { get; }
 
-        event Action OnTurnEnded;
+        event Action OnPlayerTurnStarted;
+        event Action OnPlayerTurnEnded;
 
-        void EndTurn();
+        event Action OnEnemyTurnStarted;
+        event Action OnEnemyTurnEnded;
+
+        void EndEnemyTurn();
+        void EndPlayerTurn();
     }
 }

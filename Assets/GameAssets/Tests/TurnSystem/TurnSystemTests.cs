@@ -13,7 +13,7 @@ namespace GameAssets.Tests
         {
             var turnSystem = new TurnSystem();
 
-            turnSystem.EndTurn();
+            turnSystem.EndPlayerTurn();
 
             Assert.That(turnSystem.CurrentTurn, Is.EqualTo(2));
         }
@@ -24,9 +24,9 @@ namespace GameAssets.Tests
             var turnSystem = new TurnSystem();
 
             var wasExecuted = false;
-            turnSystem.OnTurnEnded += () => wasExecuted = true;
+            turnSystem.OnPlayerTurnEnded += () => wasExecuted = true;
 
-            turnSystem.EndTurn();
+            turnSystem.EndPlayerTurn();
 
             Assert.That(wasExecuted, Is.True);
         }

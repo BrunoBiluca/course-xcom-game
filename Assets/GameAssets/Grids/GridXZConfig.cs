@@ -8,5 +8,13 @@ namespace GameAssets
         public int Width;
         public int Depth;
         public int CellSize;
+
+                [Serializable]
+        public class Position
+        {
+            public int X;
+            public int Z;
+        }
+
     }
 }

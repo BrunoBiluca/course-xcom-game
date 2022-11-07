@@ -12,6 +12,11 @@ namespace GameAssets.Tests
         {
             public string text;
 
+            public void Clear()
+            {
+                text = null;
+            }
+
             public bool IsEmpty()
             {
                 return text == null;

@@ -9,25 +9,47 @@ namespace GameAssets
     {
         private ITurnSystem turnSystem;
         private TextMeshProUGUI text;
+        private Button endTurnButton;
+        private GameObjectVisibilityMono enemyTurnDisplay;
 
         public void Awake()
         {
             text = transform.FindComponent<TextMeshProUGUI>("turn_text");
 
-            transform.FindComponent<Button>("end_turn_button").onClick.AddListener(EndTurn);
+            endTurnButton = transform
+                .FindComponent<Button>("end_turn_button");
+            endTurnButton.gameObject.AddComponent<GameObjectVisibilityMono>().Show();
+
+            endTurnButton.onClick.AddListener(EndPlayerTurn);
+
+            enemyTurnDisplay = transform
+                .FindComponent<GameObjectVisibilityMono>("enemy_turn_display");
         }
 
         public void Setup(ITurnSystem turnSystem)
         {
             this.turnSystem = turnSystem;
 
-            turnSystem.OnTurnEnded += UpdateTurnView;
+            turnSystem.OnPlayerTurnEnded += UpdateTurnView;
             UpdateTurnView();
+
+            turnSystem.OnEnemyTurnEnded += EndEnemyTurn;
         }
 
-        private void EndTurn()
+        private void EndPlayerTurn()
         {
-            turnSystem.EndTurn();
+            turnSystem.EndPlayerTurn();
+
+            endTurnButton.GetComponent<GameObjectVisibilityMono>().Hide();
+            enemyTurnDisplay.Show();
+        }
+
+        private void EndEnemyTurn()
+        {
+            turnSystem.EndPlayerTurn();
+
+            endTurnButton.GetComponent<GameObjectVisibilityMono>().Show();
+            enemyTurnDisplay.Hide();
         }
 
         private void UpdateTurnView()

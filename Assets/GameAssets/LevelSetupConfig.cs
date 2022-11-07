@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityFoundation.Code;
 
 namespace GameAssets
 {
@@ -11,14 +8,26 @@ namespace GameAssets
     {
         [field: SerializeField] public GridXZConfig GridConfig { get; private set; }
 
-        [field: SerializeField] public UnitSetupConfig[] Units { get; private set; }
+        [NonReorderable]
+        public UnitSetupConfig[] Units;
+
+        [NonReorderable]
+        public EnemySetupConfig[] Enemies;
+
+
+        [Serializable]
+        public class EnemySetupConfig
+        {
+            public GameObject EnemyPrefab;
+            public GridXZConfig.Position Position;
+        }
 
         [Serializable]
         public class UnitSetupConfig
         {
-            [field: SerializeField] public UnitConfigTemplate UnitTemplate { get; private set; }
-            [field: SerializeField] public int PositionX { get; private set; }
-            [field: SerializeField] public int PositionZ { get; private set; }
+            public GameObject prefab;
+            public UnitConfigTemplate UnitTemplate;
+            public GridXZConfig.Position Position;
         }
     }
 }

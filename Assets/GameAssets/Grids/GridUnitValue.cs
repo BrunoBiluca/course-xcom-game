@@ -40,5 +40,10 @@ namespace GameAssets
 
             return string.Join(",\n", Transforms.Select(t => t.Name).ToArray());
         }
+
+        public void Clear()
+        {
+            Transforms.Clear();
+        }
     }
 }
