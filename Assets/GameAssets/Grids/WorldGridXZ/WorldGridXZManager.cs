@@ -38,6 +38,14 @@ namespace GameAssets
             return IsCellAvailable(cell);
         }
 
+        public T GetValueIfCellIsAvailable(Vector3 position)
+        {
+            if(IsCellAvailable(position))
+                return Grid.GetCell(position).Value;
+
+            return default;
+        }
+
         public WorldGridXZManager<T> ApplyValidator(params IGridValidation<T>[] gridValidations)
         {
             this.gridValidations = gridValidations.ToList();

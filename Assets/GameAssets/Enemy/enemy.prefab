@@ -1851,7 +1851,8 @@ MonoBehaviour:
   baseHealth: 0
   destroyHealthBarOnDied: 0
   currentHealth: 0
-  layer: {fileID: 11400000, guid: 26064a55faaffcb4f8547757acdf1dc7, type: 2}
+  layer: {fileID: 11400000, guid: 711f584a4b6cd544d97ea307e7967a83, type: 2}
+  <DestroyOnDied>k__BackingField: 0
 --- !u!1001 &6348185075905519426
 PrefabInstance:
   m_ObjectHideFlags: 0

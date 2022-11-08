@@ -39,7 +39,7 @@ namespace GameAssets
 
         private IUnitAction InstantiateShoot()
         {
-            return new ShootAction(unitSelection.CurrentUnit, gridManager);
+            return new ShootAction(unitSelection.CurrentUnit, worldCursor, gridManager);
         }
 
         private IUnitAction InstantiateMove()
