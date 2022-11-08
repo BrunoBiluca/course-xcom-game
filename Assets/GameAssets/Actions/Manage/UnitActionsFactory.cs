@@ -7,23 +7,24 @@ namespace GameAssets
     {
         private readonly UnitSelectionMono unitSelection;
         private readonly IWorldCursor worldCursor;
-        private readonly WorldGridXZManager<GridUnitValue> worldGrid;
+        private readonly UnitWorldGridXZManager gridManager;
 
         public enum Actions
         {
             MOVE,
-            SPIN
+            SPIN,
+            SHOOT
         }
 
         public UnitActionsFactory(
             UnitSelectionMono unitSelection,
             IWorldCursor worldCursor,
-            WorldGridXZManager<GridUnitValue> worldGrid
+            UnitWorldGridXZManager worldGrid
         )
         {
             this.unitSelection = unitSelection;
             this.worldCursor = worldCursor;
-            this.worldGrid = worldGrid;
+            this.gridManager = worldGrid;
         }
 
         public IUnitAction Get(Actions action)
@@ -31,13 +32,19 @@ namespace GameAssets
             return action switch {
                 Actions.SPIN => InstantiateSpin(),
                 Actions.MOVE => InstantiateMove(),
+                Actions.SHOOT => InstantiateShoot(),
                 _ => throw new NotImplementedException(),
             };
         }
 
+        private IUnitAction InstantiateShoot()
+        {
+            return new ShootAction(unitSelection.CurrentUnit, gridManager);
+        }
+
         private IUnitAction InstantiateMove()
         {
-            return new MoveUnitAction(unitSelection.CurrentUnit, worldCursor, worldGrid);
+            return new MoveUnitAction(unitSelection.CurrentUnit, worldCursor, gridManager);
         }
 
         private IUnitAction InstantiateSpin()

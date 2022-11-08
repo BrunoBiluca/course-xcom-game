@@ -1,3 +1,4 @@
+using Assets.UnityFoundation.Systems.HealthSystem;
 using System;
 using UnityEngine;
 using UnityFoundation.Code;
@@ -8,7 +9,12 @@ using UnityFoundation.ResourceManagement;
 
 namespace GameAssets
 {
-    public class UnitMono : BilucaMonoBehaviour, ISelectable, IAnimationEventHandler, IUnitActor
+    public class TrooperUnit :
+        BilucaMono,
+        ISelectable,
+        IAnimationEventHandler,
+        IUnitActor,
+        IUnit
     {
         public UnitConfigTemplate UnitConfigTemplate { get; private set; }
         public ITransform Transform { get; private set; }
@@ -16,13 +22,14 @@ namespace GameAssets
         public INavegationAgent TransformNav { get; private set; }
 
         private IWorldCursor worldCursor;
-        private WorldGridXZManager<GridUnitValue> gridManager;
+        private WorldGridXZManager<UnitValue> gridManager;
         public FiniteResourceManager ActionPoints { get; private set; }
 
         public bool IsSelected { get; private set; }
 
-        // TODO: esse gerenciamente de grid pode ser extraido para uma classe de grid unit, já que qualquer unidade, seja inimiga ou amiga, npc ou objetos deverão fazer esse processamento
-        private IWorldGridXZ<GridUnitValue> grid;
+        public string Name => UnitConfigTemplate.Name;
+
+        public IDamageable Damageable { get; private set; }
 
         private Action<float> updateCallback;
         private Optional<IUnitAction> currentAction;
@@ -45,18 +52,20 @@ namespace GameAssets
                 new AnimatorDecorator(GetComponentInChildren<Animator>())
             );
 
+            Damageable = gameObject.GetComponent<HealthSystem>();
+            Damageable.Setup(10);
+
             OnDestroyAction += OnDestroyHandler;
         }
 
         public void Setup(
             UnitConfigTemplate unitConfigTemplate,
             IWorldCursor worldCursor,
-            WorldGridXZManager<GridUnitValue> gridManager
+            WorldGridXZManager<UnitValue> gridManager
         )
         {
             this.worldCursor = worldCursor;
             this.gridManager = gridManager;
-            grid = gridManager.Grid;
 
             UnitConfigTemplate = unitConfigTemplate;
 

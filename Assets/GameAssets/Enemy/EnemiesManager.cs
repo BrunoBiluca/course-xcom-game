@@ -48,7 +48,7 @@ namespace GameAssets
         {
             foreach(var enemy in levelSetupConfig.Enemies)
             {
-                var newEnemy = Instantiate(enemy.EnemyPrefab).GetComponent<EnemyMono>();
+                var newEnemy = Instantiate(enemy.EnemyPrefab).GetComponent<EnemyUnit>();
                 newEnemy.Awake();
 
                 newEnemy.Transform.Position = gridManager.Grid
@@ -56,7 +56,7 @@ namespace GameAssets
                         new GridCellPositionXZ(enemy.Position.X, enemy.Position.Z)
                 );
 
-                gridManager.Add(newEnemy.Transform);
+                gridManager.Add(newEnemy);
             }
         }
     }

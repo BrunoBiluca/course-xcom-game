@@ -11,7 +11,7 @@ namespace GameAssets
 
         private UnitSelection unitSelection;
 
-        public UnitMono CurrentUnit { get; private set; }
+        public TrooperUnit CurrentUnit { get; private set; }
 
         public IUnitActor CurrentUnitActor => CurrentUnit;
 
@@ -41,12 +41,12 @@ namespace GameAssets
                 return;
 
 
-            unitSelection.SelectByType<UnitMono>(pos)
+            unitSelection.SelectByType<TrooperUnit>(pos)
                 .Some(SelectUnit)
                 .OrElse(DeselectUnit);
         }
 
-        private void SelectUnit(UnitMono unit)
+        private void SelectUnit(TrooperUnit unit)
         {
             UnityDebug.I.Log("Unit", unit.name, "was selected");
 

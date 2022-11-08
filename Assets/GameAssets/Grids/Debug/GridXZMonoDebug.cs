@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
@@ -37,7 +38,8 @@ namespace GameAssets
                 c.Value.DisableCellRef();
             }
 
-            foreach(var c in gridManager.GetAllAvailableCells())
+            var cells = gridManager.GetAllAvailableCells().ToList();
+            foreach(var c in cells)
             {
                 grid.Cells[c.Position.X, c.Position.Z].Value.EnableCellRef();
             }

@@ -35,7 +35,7 @@ namespace GameAssets
         {
             foreach(var unitSetup in levelSetupConfig.Units)
             {
-                var unit = Instantiate(unitSetup.prefab).GetComponent<UnitMono>();
+                var unit = Instantiate(unitSetup.prefab).GetComponent<TrooperUnit>();
                 unit.Setup(unitSetup.UnitTemplate, worldCursor, gridManager);
 
                 unit.Transform.Position = gridManager.Grid
@@ -43,13 +43,13 @@ namespace GameAssets
                         new GridCellPositionXZ(unitSetup.Position.X, unitSetup.Position.Z)
                     );
 
-                gridManager.Add(unit.Transform);
+                gridManager.Add(unit);
             }
         }
 
-        public UnitMono[] GetAllUnits()
+        public TrooperUnit[] GetAllUnits()
         {
-            return FindObjectsOfType<UnitMono>();
+            return FindObjectsOfType<TrooperUnit>();
         }
 
         public void DestroyAllUnits()

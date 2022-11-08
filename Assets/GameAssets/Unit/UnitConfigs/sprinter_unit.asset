@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07be7f9d5f5dc240ae1ba426dfc53c8, type: 3}
   m_Name: sprinter_unit
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Sprinter
   <MovementRange>k__BackingField: 5
   <MaxActionPoints>k__BackingField: 1
+  <ShootRange>k__BackingField: 4

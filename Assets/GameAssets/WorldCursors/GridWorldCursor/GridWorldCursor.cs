@@ -9,9 +9,9 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class GridWorldCursor : BilucaMonoBehaviour, IWorldCursor
+    public class GridWorldCursor : BilucaMono, IWorldCursor
     {
-        private IWorldGridXZ<GridUnitValue> worldGrid;
+        private IWorldGridXZ<UnitValue> worldGrid;
         private IRaycastHandler raycastHandler;
 
         public Optional<Vector3> WorldPosition { get; private set; }
@@ -23,7 +23,7 @@ namespace GameAssets
 
         public void Setup(
             IRaycastHandler raycastHandler,
-            IWorldGridXZ<GridUnitValue> worldGrid
+            IWorldGridXZ<UnitValue> worldGrid
         )
         {
             ScreenPosition = Optional<Vector2>.None();

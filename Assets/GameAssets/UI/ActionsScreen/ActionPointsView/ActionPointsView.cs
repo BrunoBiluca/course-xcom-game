@@ -26,7 +26,7 @@ namespace GameAssets
         {
             if(actorSelector.CurrentUnitActor == null) return;
 
-            var actor = (UnitMono)actorSelector.CurrentUnitActor;
+            var actor = (TrooperUnit)actorSelector.CurrentUnitActor;
             text.text = $"Action Points: {actor.ActionPoints.CurrentAmount}";
         }
     }

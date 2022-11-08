@@ -5,9 +5,9 @@ namespace GameAssets
 {
     public class MoveUnitAction : IUnitAction
     {
-        private readonly UnitMono unit;
+        private readonly TrooperUnit unit;
         private readonly IWorldCursor worldCursor;
-        private readonly WorldGridXZManager<GridUnitValue> gridManager;
+        private readonly UnitWorldGridXZManager gridManager;
 
         public event Action OnFinishAction;
         public event Action OnCantExecuteAction;
@@ -15,9 +15,9 @@ namespace GameAssets
         public bool ExecuteImmediatly => false;
 
         public MoveUnitAction(
-            UnitMono unit,
+            TrooperUnit unit,
             IWorldCursor worldCursor,
-            WorldGridXZManager<GridUnitValue> gridManager
+            UnitWorldGridXZManager gridManager
         )
         {
             this.unit = unit;
@@ -51,10 +51,10 @@ namespace GameAssets
 
         public void ApplyValidation()
         {
-            gridManager.SetRangeValidation(
-                unit.Transform.Position,
-                unit.UnitConfigTemplate.MovementRange
-            );
+            gridManager.Validator()
+                .WhereIsEmpty()
+                .WithRange(unit.transform.position, unit.UnitConfigTemplate.MovementRange)
+                .Apply();
         }
 
         public bool CanExecute()

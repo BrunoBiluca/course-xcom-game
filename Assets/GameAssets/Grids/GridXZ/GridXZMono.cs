@@ -5,7 +5,7 @@ namespace GameAssets
 {
     public class GridXZMono : MonoBehaviour
     {
-        public IWorldGridXZ<GridUnitValue> Grid { get; private set; }
+        public IWorldGridXZ<UnitValue> Grid { get; private set; }
 
         [field: SerializeField] public int Width { get; private set; }
         [field: SerializeField] public int Depth { get; private set; }
@@ -23,12 +23,12 @@ namespace GameAssets
 
         public void Setup(GridXZConfig config)
         {
-            Grid = new WorldGridXZ<GridUnitValue>(
+            Grid = new WorldGridXZ<UnitValue>(
                 transform.position,
                 config.Width,
                 config.Depth,
                 config.CellSize,
-                () => new GridUnitValue()
+                () => new UnitValue()
             );
         }
     }

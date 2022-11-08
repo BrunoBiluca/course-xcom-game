@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
@@ -35,12 +36,14 @@ namespace GameAssets.Tests
         }
 
         [Test]
-        public void Should_return_nothing_when_grid_was_all_filled()
+        public void Should_return_no_available_cell_when_grid_was_all_filled()
         {
             var grid = new WorldGridXZ<string>(Vector3.zero, 2, 2, 1);
             grid.Fill("filled");
 
-            var gridManager = new WorldGridXZManager<string>(grid);
+            var gridManager = new WorldGridXZManager<string>(grid)
+                .ApplyValidator(new EmptyCellGridValidation<string>());
+
             var cells = gridManager.GetAllAvailableCells().Count();
 
             Assert.That(cells, Is.EqualTo(0));
@@ -50,7 +53,8 @@ namespace GameAssets.Tests
         public void Should_return_some_cells_when_values_are_set()
         {
             var grid = new WorldGridXZ<TestGridValue>(Vector3.zero, 2, 2, 1);
-            var gridManager = new WorldGridXZManager<TestGridValue>(grid);
+            var gridManager = new WorldGridXZManager<TestGridValue>(grid)
+                .ApplyValidator(new EmptyCellGridValidation<TestGridValue>());
 
             grid.TrySetValue(Vector3.zero, new TestGridValue() { text = "zero" });
             grid.TrySetValue(Vector3.one, new TestGridValue() { text = "one" });
@@ -64,7 +68,8 @@ namespace GameAssets.Tests
         public void Should_return_some_cells_when_values_are_updated()
         {
             var grid = new WorldGridXZ<TestGridValue>(Vector3.zero, 2, 2, 1);
-            var gridManager = new WorldGridXZManager<TestGridValue>(grid);
+            var gridManager = new WorldGridXZManager<TestGridValue>(grid)
+                .ApplyValidator(new EmptyCellGridValidation<TestGridValue>());
 
             grid.TrySetValue(Vector3.zero, new TestGridValue());
             grid.TrySetValue(Vector3.one, new TestGridValue());
@@ -83,7 +88,10 @@ namespace GameAssets.Tests
             var grid = new WorldGridXZ<string>(Vector3.zero, 2, 2, 1);
             var gridManager = new WorldGridXZManager<string>(grid);
 
-            gridManager.SetRangeValidation(Vector3.zero, 1);
+            gridManager.ApplyValidator(
+                new EmptyCellGridValidation<string>(),
+                new RangeGridValidation<string>(grid.Cells[0, 0], 1)
+            );
 
             Assert.That(gridManager.IsCellAvailable(grid.Cells[0, 0]), Is.True);
             Assert.That(gridManager.IsCellAvailable(grid.Cells[0, 1]), Is.True);
