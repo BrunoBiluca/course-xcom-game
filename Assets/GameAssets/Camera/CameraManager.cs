@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityFoundation.Code;
+using UnityFoundation.Tools.TimeUtils;
 
 namespace GameAssets
 {
@@ -14,9 +15,10 @@ namespace GameAssets
             actionCamera.Show();
         }
 
-        public void HideActionCamera()
+        public void HideActionCamera(float delay)
         {
-            actionCamera.Hide();
+            var timer = new Timer(delay, () => actionCamera.Hide()).RunOnce();
+            timer.Start();
         }
     }
 }

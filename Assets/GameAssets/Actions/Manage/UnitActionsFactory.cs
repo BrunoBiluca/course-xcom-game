@@ -1,4 +1,5 @@
 using System;
+using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
@@ -58,7 +59,7 @@ namespace GameAssets
         private IUnitAction InstantiateSpin()
         {
             return new SpinUnitAction(
-                unitSelection.CurrentUnit,
+                AsyncProcessor.I,
                 unitSelection.CurrentUnit.Transform
             ) {
                 Logger = UnityDebug.I

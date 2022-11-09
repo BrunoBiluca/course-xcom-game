@@ -10,7 +10,7 @@ namespace GameAssets
     {
         public IBilucaLogger Logger { get; set; }
 
-        private readonly IUnitActor actor;
+        private readonly IAsyncProcessor asyncProcessor;
         private readonly ITransform transform;
         private LerpAngle unitRotation;
 
@@ -18,11 +18,11 @@ namespace GameAssets
         public event Action OnCantExecuteAction;
 
         public SpinUnitAction(
-            IUnitActor actor,
+            IAsyncProcessor asyncProcessor,
             ITransform transform
         )
         {
-            this.actor = actor;
+            this.asyncProcessor = asyncProcessor;
             this.transform = transform;
         }
 
@@ -43,7 +43,7 @@ namespace GameAssets
                 .SetInterpolationSpeed(300)
                 .SetEndValue(initialAngle + 360f);
 
-            actor.SetUpdateCallback(RotateUnit);
+            asyncProcessor.ExecuteEveryFrame(RotateUnit);
         }
 
         private void RotateUnit(float updateTime)
@@ -52,7 +52,7 @@ namespace GameAssets
 
             if(newAngle >= unitRotation.EndValue)
             {
-                actor.ResetUpdateCallback();
+                asyncProcessor.ResetCallbackEveryFrame();
                 OnFinishAction?.Invoke();
                 Logger?.LogHighlight(nameof(SpinUnitAction), "finish");
                 return;

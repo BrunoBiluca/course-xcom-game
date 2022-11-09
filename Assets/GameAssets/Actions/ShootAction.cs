@@ -79,6 +79,7 @@ namespace GameAssets
 
             proj.OnReachTarget += () => {
                 shootedUnit.Damageable.Damage(2, trooper.Damageable.Layer);
+                CameraManager.I.HideActionCamera(1f);
             };
         }
     }

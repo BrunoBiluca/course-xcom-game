@@ -46,8 +46,6 @@ namespace GameAssets
 
         private void EndEnemyTurn()
         {
-            turnSystem.EndPlayerTurn();
-
             endTurnButton.GetComponent<VisibilityHandlerMono>().Show();
             enemyTurnDisplay.Hide();
         }

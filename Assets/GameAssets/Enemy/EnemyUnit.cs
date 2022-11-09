@@ -1,5 +1,7 @@
 using Assets.UnityFoundation.Systems.HealthSystem;
+using System;
 using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
@@ -11,6 +13,8 @@ namespace GameAssets
         public string Name => "Enemy";
 
         public IDamageable Damageable { get; private set; }
+
+        public event Action OnActionFinished;
 
         [SerializeField] private GameObject ragdoll;
 
@@ -32,6 +36,13 @@ namespace GameAssets
                 .GetComponent<RagdollHandler>();
 
             ragdollHandler.Setup(new TransformDecorator(root));
+        }
+
+        public void TakeAction()
+        {
+            var action = new SpinUnitAction(AsyncProcessor.I, Transform);
+            action.OnFinishAction += () => OnActionFinished?.Invoke();
+            action.Execute();
         }
     }
 }
