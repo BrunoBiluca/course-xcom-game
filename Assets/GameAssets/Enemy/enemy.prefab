@@ -1834,6 +1834,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895dc22577abd6a4585c70767b16dcfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ragdoll: {fileID: 1126838144681418907, guid: f025a39a0e7a07841b7c77956f16c271, type: 3}
+  root: {fileID: 1770108060971817242}
 --- !u!114 &2878405518619923266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1852,7 +1854,7 @@ MonoBehaviour:
   destroyHealthBarOnDied: 0
   currentHealth: 0
   layer: {fileID: 11400000, guid: 711f584a4b6cd544d97ea307e7967a83, type: 2}
-  <DestroyOnDied>k__BackingField: 0
+  <DestroyOnDied>k__BackingField: 1
 --- !u!1001 &6348185075905519426
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -49,7 +49,6 @@ namespace GameAssets
             foreach(var enemy in levelSetupConfig.Enemies)
             {
                 var newEnemy = Instantiate(enemy.EnemyPrefab).GetComponent<EnemyUnit>();
-                newEnemy.Awake();
 
                 newEnemy.Transform.Position = gridManager.Grid
                     .GetCellCenterPosition(
