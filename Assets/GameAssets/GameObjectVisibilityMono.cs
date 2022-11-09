@@ -11,7 +11,9 @@ namespace GameAssets
 
         public void Awake()
         {
-            visibility = new GameObjectVisibility(new GameObjectDecorator(gameObject)) {
+            visibility = new GameObjectVisibility(
+                new GameObjectDecorator(gameObject)
+            ) {
                 StartVisible = StartVisible
             };
         }

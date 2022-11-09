@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 69300418}
   - component: {fileID: 69300419}
   - component: {fileID: 69300417}
+  - component: {fileID: 69300420}
   m_Layer: 0
   m_Name: managers
   m_TagString: Untagged
@@ -271,7 +272,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DestroyOnLoad>k__BackingField: 1
-  config: {fileID: 11400000, guid: 640bfcc472b95c44395fceb39d28cdaf, type: 2}
+  config: {fileID: 11400000, guid: b6d32ed6eefced547b786987a7ca6aa2, type: 2}
+--- !u!114 &69300420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 69300413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be4db0b9ec5474249b3bc02fc90970c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectilePrefab: {fileID: 5358504725475216788, guid: dfd5f8391c2e5144ab096789aae750ee,
+    type: 3}
 --- !u!1 &103762349
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,6 +342,7 @@ MonoBehaviour:
   unitSelection: {fileID: 69300418}
   unitsManager: {fileID: 69300414}
   enemiesManager: {fileID: 69300416}
+  projectileFactory: {fileID: 69300420}
   unityDebug: {fileID: 2002442231}
 --- !u!1 &256438991
 GameObject:

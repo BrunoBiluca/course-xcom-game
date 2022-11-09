@@ -5,9 +5,10 @@ namespace GameAssets
 {
     public class ShootAction : IUnitAction
     {
-        private readonly TrooperUnit tropper;
+        private readonly TrooperUnit trooper;
         private readonly IWorldCursor worldCursor;
         private readonly UnitWorldGridXZManager gridManager;
+        private readonly ProjectileFactory projectileFactory;
 
         public bool ExecuteImmediatly => false;
 
@@ -15,14 +16,16 @@ namespace GameAssets
         public event Action OnFinishAction;
 
         public ShootAction(
-            TrooperUnit tropper,
+            TrooperUnit trooper,
             IWorldCursor worldCursor,
-            UnitWorldGridXZManager gridManager
+            UnitWorldGridXZManager gridManager,
+            ProjectileFactory projectileFactory
         )
         {
-            this.tropper = tropper;
+            this.trooper = trooper;
             this.worldCursor = worldCursor;
             this.gridManager = gridManager;
+            this.projectileFactory = projectileFactory;
         }
 
         public void ApplyValidation()
@@ -30,12 +33,12 @@ namespace GameAssets
             gridManager
                 .Validator()
                 .WithRange(
-                    tropper.Transform.Position,
-                    tropper.UnitConfigTemplate.ShootRange
+                    trooper.Transform.Position,
+                    trooper.UnitConfigTemplate.ShootRange
                 )
                 .WhereUnit((unit) =>
                     DamageableLayerManager.I
-                        .LayerCanDamage(tropper.Damageable.Layer, unit.Damageable.Layer)
+                        .LayerCanDamage(trooper.Damageable.Layer, unit.Damageable.Layer)
                 )
                 .Apply();
         }
@@ -52,9 +55,26 @@ namespace GameAssets
 
             IUnit shootedUnit = cellValue.Units[0];
 
-            tropper.Transform.LookAt(shootedUnit.Transform.Position);
+            trooper.Transform.LookAt(shootedUnit.Transform.Position);
 
-            shootedUnit.Damageable.Damage(2, tropper.Damageable.Layer);
+            // TODO: existe uma ordem nessas execuções
+            // primeiro fazemos a animação
+            // segundo instanciamos o projectile (depois que a animação envia o evento de trigger)
+            // terceiro efetuamos o cálculo do dano (depois que o projectile chega no destino)
+
+            trooper.AnimatorController.Play(new ShootAnimation());
+
+            // TOOD: esse projectile deveria ser invocado quando um evento de
+            // animação da animação de shoot é ativado, para ai então criar o projectile
+            // shootAnimation.OnTrigger += Instantiate
+            var proj = projectileFactory.Create(
+                trooper.ProjectileStart.Position,
+                shootedUnit.Transform.Position
+            );
+
+            proj.OnReachTarget += () => {
+                shootedUnit.Damageable.Damage(2, trooper.Damageable.Layer);
+            };
         }
     }
 }

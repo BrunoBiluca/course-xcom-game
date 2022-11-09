@@ -26,6 +26,7 @@ namespace GameAssets
         [SerializeField] private UnitSelectionMono unitSelection;
         [SerializeField] private UnitsManager unitsManager;
         [SerializeField] private EnemiesManager enemiesManager;
+        [SerializeField] private ProjectileFactory projectileFactory;
         private UnitWorldGridXZManager gridManager;
 
         [Header("Debug")]
@@ -56,7 +57,8 @@ namespace GameAssets
             var unitActionsFactory = new UnitActionsFactory(
                 unitSelection,
                 worldCursor,
-                gridManager
+                gridManager,
+                projectileFactory
             );
 
             var unitActionHandler = new UnitActionHandler(unitSelection);

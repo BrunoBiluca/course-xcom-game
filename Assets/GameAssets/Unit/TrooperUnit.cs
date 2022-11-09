@@ -18,6 +18,9 @@ namespace GameAssets
     {
         public UnitConfigTemplate UnitConfigTemplate { get; private set; }
         public ITransform Transform { get; private set; }
+
+        [SerializeField] private GameObject projectileStart;
+        public ITransform ProjectileStart { get; private set; }
         public AnimatorController AnimatorController { get; private set; }
         public INavegationAgent TransformNav { get; private set; }
 
@@ -54,6 +57,8 @@ namespace GameAssets
 
             Damageable = gameObject.GetComponent<HealthSystem>();
             Damageable.Setup(10);
+
+            ProjectileStart = new TransformDecorator(projectileStart.transform);
 
             OnDestroyAction += OnDestroyHandler;
         }
@@ -132,6 +137,8 @@ namespace GameAssets
         public void AnimationEventHandler(string eventName)
         {
             Debug.Log("Animation: " + eventName);
+
+            // TODO: o AnimationController deve ser chamado para executar esse evento
         }
 
         public void SetAction(Optional<IUnitAction> action)

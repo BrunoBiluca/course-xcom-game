@@ -8,6 +8,7 @@ namespace GameAssets
         private readonly UnitSelectionMono unitSelection;
         private readonly IWorldCursor worldCursor;
         private readonly UnitWorldGridXZManager gridManager;
+        private readonly ProjectileFactory projectileFactory;
 
         public enum Actions
         {
@@ -19,12 +20,14 @@ namespace GameAssets
         public UnitActionsFactory(
             UnitSelectionMono unitSelection,
             IWorldCursor worldCursor,
-            UnitWorldGridXZManager worldGrid
+            UnitWorldGridXZManager worldGrid,
+            ProjectileFactory projectileFactory
         )
         {
             this.unitSelection = unitSelection;
             this.worldCursor = worldCursor;
             this.gridManager = worldGrid;
+            this.projectileFactory = projectileFactory;
         }
 
         public IUnitAction Get(Actions action)
@@ -39,7 +42,12 @@ namespace GameAssets
 
         private IUnitAction InstantiateShoot()
         {
-            return new ShootAction(unitSelection.CurrentUnit, worldCursor, gridManager);
+            return new ShootAction(
+                unitSelection.CurrentUnit,
+                worldCursor,
+                gridManager,
+                projectileFactory
+            );
         }
 
         private IUnitAction InstantiateMove()
