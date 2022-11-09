@@ -2,13 +2,13 @@ using UnityFoundation.Code;
 
 namespace GameAssets
 {
-    public class GameObjectVisibility : IVisible
+    public class VisibilityHandler : IVisible
     {
         public IGameObject gameObject;
 
         public bool StartVisible { get; set; }
 
-        public GameObjectVisibility(IGameObject gameObject)
+        public VisibilityHandler(IGameObject gameObject)
         {
             this.gameObject = gameObject;
 

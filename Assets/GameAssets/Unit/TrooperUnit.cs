@@ -21,6 +21,11 @@ namespace GameAssets
 
         [SerializeField] private GameObject projectileStart;
         public ITransform ProjectileStart { get; private set; }
+
+        [SerializeField] public GameObject rightShoulderRef;
+
+        public ITransform RightShoulder { get; private set; }
+
         public AnimatorController AnimatorController { get; private set; }
         public INavegationAgent TransformNav { get; private set; }
 
@@ -59,6 +64,8 @@ namespace GameAssets
             Damageable.Setup(10);
 
             ProjectileStart = new TransformDecorator(projectileStart.transform);
+
+            RightShoulder = new TransformDecorator(rightShoulderRef.transform);
 
             OnDestroyAction += OnDestroyHandler;
         }

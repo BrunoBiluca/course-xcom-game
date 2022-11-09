@@ -1,5 +1,6 @@
 using Assets.UnityFoundation.Systems.HealthSystem;
 using System;
+using UnityEngine;
 
 namespace GameAssets
 {
@@ -56,6 +57,10 @@ namespace GameAssets
             IUnit shootedUnit = cellValue.Units[0];
 
             trooper.Transform.LookAt(shootedUnit.Transform.Position);
+
+            CameraManager.I.ShowActionCamera(
+                trooper.RightShoulder.Position, shootedUnit.Transform.Position
+            );
 
             // TODO: existe uma ordem nessas execuções
             // primeiro fazemos a animação

@@ -10,7 +10,7 @@ namespace GameAssets
         private ITurnSystem turnSystem;
         private TextMeshProUGUI text;
         private Button endTurnButton;
-        private GameObjectVisibilityMono enemyTurnDisplay;
+        private VisibilityHandlerMono enemyTurnDisplay;
 
         public void Awake()
         {
@@ -18,12 +18,12 @@ namespace GameAssets
 
             endTurnButton = transform
                 .FindComponent<Button>("end_turn_button");
-            endTurnButton.gameObject.AddComponent<GameObjectVisibilityMono>().Show();
+            endTurnButton.gameObject.AddComponent<VisibilityHandlerMono>().Show();
 
             endTurnButton.onClick.AddListener(EndPlayerTurn);
 
             enemyTurnDisplay = transform
-                .FindComponent<GameObjectVisibilityMono>("enemy_turn_display");
+                .FindComponent<VisibilityHandlerMono>("enemy_turn_display");
         }
 
         public void Setup(ITurnSystem turnSystem)
@@ -40,7 +40,7 @@ namespace GameAssets
         {
             turnSystem.EndPlayerTurn();
 
-            endTurnButton.GetComponent<GameObjectVisibilityMono>().Hide();
+            endTurnButton.GetComponent<VisibilityHandlerMono>().Hide();
             enemyTurnDisplay.Show();
         }
 
@@ -48,7 +48,7 @@ namespace GameAssets
         {
             turnSystem.EndPlayerTurn();
 
-            endTurnButton.GetComponent<GameObjectVisibilityMono>().Show();
+            endTurnButton.GetComponent<VisibilityHandlerMono>().Show();
             enemyTurnDisplay.Hide();
         }
 

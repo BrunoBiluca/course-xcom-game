@@ -3,15 +3,15 @@ using UnityFoundation.Code;
 
 namespace GameAssets
 {
-    public class GameObjectVisibilityMono : MonoBehaviour, IVisible
+    public class VisibilityHandlerMono : MonoBehaviour, IVisible
     {
-        private GameObjectVisibility visibility;
+        private VisibilityHandler visibility;
 
         [field: SerializeField] public bool StartVisible { get; set; }
 
         public void Awake()
         {
-            visibility = new GameObjectVisibility(
+            visibility = new VisibilityHandler(
                 new GameObjectDecorator(gameObject)
             ) {
                 StartVisible = StartVisible
