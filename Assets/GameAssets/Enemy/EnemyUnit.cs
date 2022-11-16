@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
+using UnityFoundation.Physics3D;
 
 namespace GameAssets
 {

@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityFoundation.Code.Grid;
+using UnityFoundation.TurnSystem;
+using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
@@ -13,7 +15,8 @@ namespace GameAssets
             LevelSetupConfig levelSetupConfig,
             IWorldCursor worldCursor,
             UnitWorldGridXZManager gridManager,
-            ITurnSystem turnSystem)
+            ITurnSystem turnSystem
+        )
         {
             this.levelSetupConfig = levelSetupConfig;
             this.worldCursor = worldCursor;

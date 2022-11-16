@@ -351,7 +351,7 @@ MonoBehaviour:
   unitActionSelectionView: {fileID: 2802200902807103984}
   actionPointsView: {fileID: 1765026147}
   turnSystemView: {fileID: 1798808450}
-  worldCursor: {fileID: 621982787}
+  worldCursor: {fileID: 0}
   grid: {fileID: 280898495}
   gridDebug: {fileID: 49351469}
   unitSelection: {fileID: 69300418}
@@ -438,12 +438,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 280898492}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ab4fdb0fc4d7ff4db2d90628ace7da4, type: 3}
+  m_Script: {fileID: 11500000, guid: f85b3961f215a734d8cffb15d082836d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Width>k__BackingField: 10
-  <Depth>k__BackingField: 10
-  <CellSize>k__BackingField: 2
+  config:
+    Width: 0
+    Depth: 0
+    CellSize: 0
 --- !u!1 &306463277
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,7 +894,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 621982788}
-  - component: {fileID: 621982787}
+  - component: {fileID: 621982789}
   m_Layer: 0
   m_Name: grid_world_cursor
   m_TagString: Untagged
@@ -901,18 +902,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &621982787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 621982786}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0b8df6fc0519bf43b13b81a363a47c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &621982788
 Transform:
   m_ObjectHideFlags: 0
@@ -928,6 +917,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &621982789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621982786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ea27555acd37a343ba129a10be2944e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &635676032
 GameObject:
   m_ObjectHideFlags: 0
@@ -1973,6 +1977,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DestroyOnLoad>k__BackingField: 1
+  floorMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &1960674571
 Transform:
   m_ObjectHideFlags: 0
@@ -2551,6 +2558,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772539347811114935, guid: 62b0cdfd3661b3a4d891ffa817feb13b,
+        type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62b0cdfd3661b3a4d891ffa817feb13b, type: 3}

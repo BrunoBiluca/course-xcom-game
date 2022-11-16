@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityFoundation.Code;
-using UnityFoundation.Tools.TimeUtils;
+using UnityFoundation.Code.Timer;
+using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {

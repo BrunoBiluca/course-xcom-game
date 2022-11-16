@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.UnityAdapter;
+using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {

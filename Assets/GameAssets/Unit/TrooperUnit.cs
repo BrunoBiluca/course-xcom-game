@@ -6,6 +6,7 @@ using UnityFoundation.Code.Extensions;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.ResourceManagement;
+using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {

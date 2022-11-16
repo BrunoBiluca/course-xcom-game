@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityFoundation.Code;
-using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {

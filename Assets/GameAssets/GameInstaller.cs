@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
-using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
-using UnityFoundation.Editor.Hierarchy;
+using UnityFoundation.TurnSystem;
 
 namespace GameAssets
 {
@@ -18,8 +17,8 @@ namespace GameAssets
         [SerializeField] private TurnSystemView turnSystemView;
 
         [Header("Grid")]
-        [SerializeField] private GridWorldCursor worldCursor;
-        [SerializeField] private GridXZMono grid;
+        [SerializeField] private UnitGridWorldCursor worldCursor;
+        [SerializeField] private UnitWorldGridXZ grid;
         [SerializeField] private GridXZMonoDebug gridDebug;
 
         [Header("Managers")]

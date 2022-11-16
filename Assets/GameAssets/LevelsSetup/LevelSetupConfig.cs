@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
