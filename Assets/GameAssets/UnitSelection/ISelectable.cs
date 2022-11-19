@@ -5,11 +5,11 @@ namespace GameAssets
 {
     public interface ISelectable
     {
+        event Action OnSelected;
+        event Action OnUnselected;
         event Action OnSelectedStateChange;
 
         bool IsSelected { get; }
-
-        Collider GetCollider();
         void SetSelected(bool state);
     }
 }

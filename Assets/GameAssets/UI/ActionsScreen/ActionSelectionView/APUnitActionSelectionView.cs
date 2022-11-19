@@ -1,17 +1,13 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityFoundation.Code;
-using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {
-    public class UnitActionSelectionView : MonoBehaviour
+    public class APUnitActionSelectionView : MonoBehaviour
     {
-        public event Action<IUnitAction> OnActionSelected;
-
-        private UnitActionsFactory factory;
-        private IUnitActionSelector actionSelector;
+        private IUnitActionSelector<IAPUnitAction> actionSelector;
+        private IUnitActionsFactory<IAPUnitAction> factory;
         private UnitActionSelectorButton[] buttons;
 
         public void Awake()
@@ -24,23 +20,23 @@ namespace GameAssets
         }
 
         public void Setup(
-            IUnitActionSelector actionSelector,
-            UnitActionsFactory factory
+            IUnitActionSelector<IAPUnitAction> actionSelector,
+            IUnitActionsFactory<IAPUnitAction> factory
         )
         {
             this.factory = factory;
             this.actionSelector = actionSelector;
 
-            actionSelector.OnActionDeselected += CleanActions;
+            actionSelector.OnActionUnselected += CleanActions;
         }
 
-        public void Select(UnitActionsFactory.Actions actionType)
+        public void Select(UnitActionsEnum actionType)
         {
             SelectAction(actionType);
             actionSelector.SetAction(factory.Get(actionType));
         }
 
-        private void SelectAction(UnitActionsFactory.Actions action)
+        private void SelectAction(UnitActionsEnum action)
         {
             foreach(var b in buttons)
             {

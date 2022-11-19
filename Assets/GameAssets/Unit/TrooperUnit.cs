@@ -1,10 +1,10 @@
-using Assets.UnityFoundation.Systems.HealthSystem;
 using System;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Extensions;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
+using UnityFoundation.HealthSystem;
 using UnityFoundation.ResourceManagement;
 using UnityFoundation.WorldCursors;
 
@@ -12,10 +12,9 @@ namespace GameAssets
 {
     public class TrooperUnit :
         BilucaMono,
-        ISelectable,
         IAnimationEventHandler,
-        IUnitActor,
-        IUnit
+        IUnit,
+        ISelectable
     {
         public UnitConfigTemplate UnitConfigTemplate { get; private set; }
         public ITransform Transform { get; private set; }
@@ -32,19 +31,25 @@ namespace GameAssets
 
         private IWorldCursor worldCursor;
         private WorldGridXZManager<UnitValue> gridManager;
-        public FiniteResourceManager ActionPoints { get; private set; }
+        public IResourceManager ActionPoints => unitActionsManager.ActionPoints;
 
         public bool IsSelected { get; private set; }
 
         public string Name => UnitConfigTemplate.Name;
 
-        public IDamageable Damageable { get; private set; }
+        public IHealthSystem HealthSystem { get; private set; }
+        public IDamageable Damageable => HealthSystem;
+
+        public IAPUnitActor Actor => unitActionsManager;
+
+        public APUnitActor unitActionsManager;
 
         private Action<float> updateCallback;
         private Optional<IUnitAction> currentAction;
 
-        public event Action OnCantExecuteAction;
         public event Action OnSelectedStateChange;
+        public event Action OnSelected;
+        public event Action OnUnselected;
 
         protected override void OnAwake()
         {
@@ -61,14 +66,15 @@ namespace GameAssets
                 new AnimatorDecorator(GetComponentInChildren<Animator>())
             );
 
-            Damageable = gameObject.GetComponent<HealthSystem>();
-            Damageable.Setup(10);
+            HealthSystem = gameObject.GetComponent<HealthSystemMono>();
+            HealthSystem.Setup(10);
 
             ProjectileStart = new TransformDecorator(projectileStart.transform);
 
             RightShoulder = new TransformDecorator(rightShoulderRef.transform);
 
-            OnDestroyAction += OnDestroyHandler;
+
+            OnObjectDestroyed += OnDestroyHandler;
         }
 
         public void Setup(
@@ -81,10 +87,8 @@ namespace GameAssets
             this.gridManager = gridManager;
 
             UnitConfigTemplate = unitConfigTemplate;
-
-            ActionPoints = new FiniteResourceManager(
-                UnitConfigTemplate.MaxActionPoints,
-                startFull: true
+            unitActionsManager = new APUnitActor(
+                new FiniteResourceManager(UnitConfigTemplate.MaxActionPoints, true)
             );
         }
 
@@ -120,26 +124,15 @@ namespace GameAssets
 
         private void ExecuteAction()
         {
-            if(!currentAction.IsPresentAndGet(out IUnitAction action))
-                return;
+            Actor.OnCantExecuteAction -= InvokeCantExecuteAction;
+            Actor.OnCantExecuteAction += InvokeCantExecuteAction;
 
-            const uint actionPointCost = 1u;
-            if(!ActionPoints.TrySubtract(actionPointCost))
-            {
-                InvokeCantExecuteAction();
-                return;
-            }
-
-            action.OnCantExecuteAction -= InvokeCantExecuteAction;
-            action.OnCantExecuteAction += InvokeCantExecuteAction;
-
-            action.Execute();
+            Actor.Execute();
         }
 
         private void InvokeCantExecuteAction()
         {
             gridManager.ResetRangeValidation();
-            OnCantExecuteAction?.Invoke();
         }
 
         public void AnimationEventHandler(string eventName)
@@ -147,28 +140,6 @@ namespace GameAssets
             Debug.Log("Animation: " + eventName);
 
             // TODO: o AnimationController deve ser chamado para executar esse evento
-        }
-
-        public void SetAction(Optional<IUnitAction> action)
-        {
-            if(!action.IsPresentAndGet(out IUnitAction currentAction))
-                return;
-
-            this.currentAction = action;
-            currentAction.ApplyValidation();
-
-            if(currentAction.ExecuteImmediatly)
-                ExecuteAction();
-        }
-
-        public void SetUpdateCallback(Action<float> callback)
-        {
-            updateCallback = callback;
-        }
-
-        public void ResetUpdateCallback()
-        {
-            updateCallback = null;
         }
     }
 }

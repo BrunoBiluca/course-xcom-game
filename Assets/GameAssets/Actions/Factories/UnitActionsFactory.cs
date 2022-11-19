@@ -5,19 +5,12 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public sealed class UnitActionsFactory
+    public sealed class UnitActionsFactory : IUnitActionsFactory<IUnitAction>
     {
         private readonly UnitSelectionMono unitSelection;
         private readonly IWorldCursor worldCursor;
         private readonly UnitWorldGridXZManager gridManager;
         private readonly ProjectileFactory projectileFactory;
-
-        public enum Actions
-        {
-            MOVE,
-            SPIN,
-            SHOOT
-        }
 
         public UnitActionsFactory(
             UnitSelectionMono unitSelection,
@@ -32,12 +25,12 @@ namespace GameAssets
             this.projectileFactory = projectileFactory;
         }
 
-        public IUnitAction Get(Actions action)
+        public IUnitAction Get(UnitActionsEnum action)
         {
             return action switch {
-                Actions.SPIN => InstantiateSpin(),
-                Actions.MOVE => InstantiateMove(),
-                Actions.SHOOT => InstantiateShoot(),
+                UnitActionsEnum.SPIN => InstantiateSpin(),
+                UnitActionsEnum.MOVE => InstantiateMove(),
+                UnitActionsEnum.SHOOT => InstantiateShoot(),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -54,7 +47,9 @@ namespace GameAssets
 
         private IUnitAction InstantiateMove()
         {
-            return new MoveUnitAction(unitSelection.CurrentUnit, worldCursor, gridManager);
+            return new MoveUnitAction(
+                unitSelection.CurrentUnit, AsyncProcessor.I, worldCursor, gridManager
+            );
         }
 
         private IUnitAction InstantiateSpin()

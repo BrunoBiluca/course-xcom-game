@@ -2,9 +2,9 @@
 
 namespace GameAssets
 {
-    public interface IUnitActorSelector
+    public interface IUnitActorSelector<TActor>
     {
-        public IUnitActor CurrentUnitActor { get; }
+        public TActor CurrentUnitActor { get; }
 
         event Action OnUnitSelected;
         event Action OnUnitDeselected;

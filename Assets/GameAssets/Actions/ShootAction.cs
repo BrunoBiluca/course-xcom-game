@@ -1,6 +1,6 @@
-using Assets.UnityFoundation.Systems.HealthSystem;
 using System;
 using UnityFoundation.Code;
+using UnityFoundation.HealthSystem;
 using UnityFoundation.WorldCursors;
 
 namespace GameAssets

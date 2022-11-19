@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "GameAssets",
         "UnityFoundation.Code",
-        "UnityFoundation.TestUtility"
+        "UnityFoundation.TestUtility",
+        "UnityFoundation.ResourceManagement"
     ],
     "includePlatforms": [
         "Editor"

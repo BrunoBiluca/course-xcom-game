@@ -6,6 +6,7 @@ namespace GameAssets
     {
         event Action OnCantExecuteAction;
         event Action OnFinishAction;
+
         bool ExecuteImmediatly { get; }
 
         // TODO: como nem toda ação tem validação de range,

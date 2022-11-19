@@ -4,24 +4,24 @@ using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {
-    public class ActorSelectorVisibilityHandler : IBilucaLoggable
+    public class SelectableVisibilityHandler : IBilucaLoggable
     {
         public IBilucaLogger Logger { get; set; }
 
-        private readonly IUnitActorSelector actorSelector;
         private readonly IGameObject[] gameObjects;
 
-
-        public ActorSelectorVisibilityHandler(
-            IUnitActorSelector actorSelector,
-            params IGameObject[] gameObjects
-        )
+        public SelectableVisibilityHandler(params IGameObject[] gameObjects)
         {
-            this.actorSelector = actorSelector;
             this.gameObjects = gameObjects;
+        }
 
-            actorSelector.OnUnitSelected += Show;
-            actorSelector.OnUnitDeselected += Hide;
+        public SelectableVisibilityHandler(
+            ISelectable selectable,
+            params IGameObject[] gameObjects
+        ) : this(gameObjects)
+        {
+            selectable.OnSelected += Show;
+            selectable.OnUnselected += Hide;
         }
 
         public void Show()

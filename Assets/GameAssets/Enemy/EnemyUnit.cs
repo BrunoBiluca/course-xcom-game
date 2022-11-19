@@ -1,8 +1,8 @@
-using Assets.UnityFoundation.Systems.HealthSystem;
 using System;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
+using UnityFoundation.HealthSystem;
 using UnityFoundation.Physics3D;
 
 namespace GameAssets
@@ -13,7 +13,11 @@ namespace GameAssets
 
         public string Name => "Enemy";
 
-        public IDamageable Damageable { get; private set; }
+        public IHealthSystem HealthSystem { get; private set; }
+
+        public IDamageable Damageable => HealthSystem;
+
+        public IAPUnitActor Actor => throw new NotImplementedException();
 
         public event Action OnActionFinished;
 
@@ -25,13 +29,13 @@ namespace GameAssets
         {
             Transform = new TransformDecorator(transform);
 
-            Damageable = GetComponent<HealthSystem>();
-            Damageable.Setup(6);
+            HealthSystem = GetComponent<HealthSystemMono>();
+            HealthSystem.Setup(6);
 
-            Damageable.OnDied += DieHandler;
+            HealthSystem.OnDied += DieHandler;
         }
 
-        private void DieHandler(object sender, System.EventArgs e)
+        private void DieHandler()
         {
             var ragdollHandler = Instantiate(ragdoll, transform.position, transform.rotation)
                 .GetComponent<RagdollHandler>();

@@ -10,17 +10,17 @@ namespace GameAssets.Tests
             isUnitSelected = true;
             return this;
         }
-        public UnitActionHandler Build()
+        public APUnitActionSelection Build()
         {
-            var unitActorSelector = new Mock<IUnitActorSelector>();
+            var unitActorSelector = new Mock<IUnitActorSelector<IAPUnitActor>>();
 
             if(isUnitSelected)
             {
                 unitActorSelector
-                    .Setup(s => s.CurrentUnitActor).Returns(new Mock<IUnitActor>().Object);
+                    .Setup(s => s.CurrentUnitActor).Returns(new Mock<IAPUnitActor>().Object);
             }
 
-            return new UnitActionHandler(unitActorSelector.Object);
+            return new APUnitActionSelection(unitActorSelector.Object);
         }
     }
 

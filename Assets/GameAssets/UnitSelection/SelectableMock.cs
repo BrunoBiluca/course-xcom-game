@@ -10,6 +10,8 @@ namespace GameAssets
         public bool IsSelected => State;
 
         public event Action OnSelectedStateChange;
+        public event Action OnSelected;
+        public event Action OnUnselected;
 
         public Collider GetCollider()
         {

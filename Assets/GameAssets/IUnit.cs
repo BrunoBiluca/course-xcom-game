@@ -1,5 +1,5 @@
-using Assets.UnityFoundation.Systems.HealthSystem;
 using UnityFoundation.Code.UnityAdapter;
+using UnityFoundation.HealthSystem;
 
 namespace GameAssets
 {
@@ -12,5 +12,7 @@ namespace GameAssets
         ITransform Transform { get; }
 
         IDamageable Damageable { get; }
+
+        IAPUnitActor Actor { get; }
     }
 }

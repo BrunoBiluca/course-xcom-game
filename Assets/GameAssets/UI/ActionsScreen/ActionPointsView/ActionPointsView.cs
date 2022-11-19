@@ -9,7 +9,7 @@ namespace GameAssets
 {
     public class ActionPointsView : MonoBehaviour
     {
-        private IUnitActorSelector actorSelector;
+        private IUnitActorSelector<IAPUnitActor> actorSelector;
         private TextMeshProUGUI text;
 
         public void Awake()
@@ -17,7 +17,7 @@ namespace GameAssets
             text = transform.FindComponent<TextMeshProUGUI>("text");
         }
 
-        public void Setup(IUnitActorSelector actorSelector)
+        public void Setup(IUnitActorSelector<IAPUnitActor> actorSelector)
         {
             this.actorSelector = actorSelector;
         }
@@ -26,7 +26,7 @@ namespace GameAssets
         {
             if(actorSelector.CurrentUnitActor == null) return;
 
-            var actor = (TrooperUnit)actorSelector.CurrentUnitActor;
+            var actor = actorSelector.CurrentUnitActor;
             text.text = $"Action Points: {actor.ActionPoints.CurrentAmount}";
         }
     }

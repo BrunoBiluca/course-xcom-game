@@ -12,7 +12,7 @@ namespace GameAssets
         [SerializeField] private LevelSetupConfig levelSetupConfig;
 
         [Header("UI")]
-        [SerializeField] private UnitActionSelectionView unitActionSelectionView;
+        [SerializeField] private APUnitActionSelectionView unitActionSelectionView;
         [SerializeField] private ActionPointsView actionPointsView;
         [SerializeField] private TurnSystemView turnSystemView;
 
@@ -60,19 +60,24 @@ namespace GameAssets
                 projectileFactory
             );
 
-            var unitActionHandler = new UnitActionHandler(unitSelection);
+            var apUnitActionsFactory = new APUnitActionsFactory(unitActionsFactory);
 
-            unitActionSelectionView.Setup(unitActionHandler, unitActionsFactory);
+            var unitActionHandler = new APUnitActionSelection(unitSelection);
+
+            unitActionSelectionView.Setup(unitActionHandler, apUnitActionsFactory);
 
             actionPointsView.Setup(unitSelection);
 
-            var actorSelectorVisibilityHandler = new ActorSelectorVisibilityHandler(
-                unitSelection,
+            var selectableVisibility = new SelectableVisibilityHandler(
                 new GameObjectDecorator(actionPointsView.gameObject),
                 new GameObjectDecorator(unitActionSelectionView.gameObject)
-            );
-            actorSelectorVisibilityHandler.Logger = unityDebug;
-            actorSelectorVisibilityHandler.Hide();
+            ) {
+                Logger = unityDebug
+            };
+            selectableVisibility.Hide();
+
+            unitSelection.OnUnitSelected += () => selectableVisibility.Show();
+            unitSelection.OnUnitDeselected += () => selectableVisibility.Hide();
 
             var turnSystem = new TurnSystem();
 

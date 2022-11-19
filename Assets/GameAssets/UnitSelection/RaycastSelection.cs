@@ -4,7 +4,7 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class UnitSelection
+    public class RaycastSelection
     {
         private readonly IRaycastHandler raycast;
         private LayerMask layerMask;
@@ -25,14 +25,14 @@ namespace GameAssets
             private set { currentUnit = value; }
         }
 
-        public UnitSelection(IRaycastHandler raycast)
+        public RaycastSelection(IRaycastHandler raycast)
         {
             this.raycast = raycast;
             layerMask = 0;
             CurrentUnit = Optional<ISelectable>.None();
         }
 
-        public UnitSelection SetLayers(LayerMask layerMask)
+        public RaycastSelection SetLayers(LayerMask layerMask)
         {
             this.layerMask = layerMask;
             return this;

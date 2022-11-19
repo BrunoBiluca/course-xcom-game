@@ -1,6 +1,7 @@
 using Moq;
 using NUnit.Framework;
 using System;
+using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests
 {
@@ -22,7 +23,7 @@ namespace GameAssets.Tests
             var actionHandler = new UnitActionHandlerBuilder().Build();
 
             Assert.Throws<ActorIsNotSelected>(
-                () => actionHandler.SetAction(new Mock<IUnitAction>().Object)
+                () => actionHandler.SetAction(new Mock<IAPUnitAction>().Object)
             );
         }
 
@@ -31,15 +32,15 @@ namespace GameAssets.Tests
         {
             var actionHandler = new UnitActionHandlerBuilder().WithCurrentUnitSelected().Build();
 
-            var onActionSelectedWasCalled = false;
-            actionHandler.OnActionSelected += (_) => onActionSelectedWasCalled = true;
+            var actionSelected = EventTest<IAPUnitAction>
+                .Create(actionHandler, nameof(actionHandler.OnActionSelected));
 
-            actionHandler.SetAction(new Mock<IUnitAction>().Object);
+            actionHandler.SetAction(new Mock<IAPUnitAction>().Object);
 
             var action = actionHandler.CurrentAction;
             Assert.That(action.IsPresent, Is.True, "should have action");
             Assert.That(
-                onActionSelectedWasCalled, Is.True, "should execute on action selected once"
+                actionSelected.WasTriggered, Is.True, "should execute on action selected once"
             );
         }
 
@@ -48,17 +49,17 @@ namespace GameAssets.Tests
         {
             var actionHandler = new UnitActionHandlerBuilder().WithCurrentUnitSelected().Build();
 
-            actionHandler.SetAction(new Mock<IUnitAction>().Object);
+            actionHandler.SetAction(new Mock<IAPUnitAction>().Object);
 
-            var eventWasCalled = false;
-            actionHandler.OnActionDeselected += () => eventWasCalled = true;
+            var actionUnselected = EventTest
+                .Create(actionHandler, nameof(actionHandler.OnActionUnselected));
 
-            actionHandler.DeselectAction();
+            actionHandler.UnselectAction();
 
             var action = actionHandler.CurrentAction;
             Assert.That(action.IsPresent, Is.False, "should not have action");
             Assert.That(
-                eventWasCalled, Is.True, "should execute on action deselected once"
+                actionUnselected.WasTriggered, Is.True, "should execute on action deselected once"
             );
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.WorldCursors;
 
 namespace GameAssets
@@ -7,6 +8,7 @@ namespace GameAssets
     public class MoveUnitAction : IUnitAction
     {
         private readonly TrooperUnit unit;
+        private readonly IAsyncProcessor asyncProcessor;
         private readonly IWorldCursor worldCursor;
         private readonly UnitWorldGridXZManager gridManager;
 
@@ -17,11 +19,13 @@ namespace GameAssets
 
         public MoveUnitAction(
             TrooperUnit unit,
+            IAsyncProcessor asyncProcessor,
             IWorldCursor worldCursor,
             UnitWorldGridXZManager gridManager
         )
         {
             this.unit = unit;
+            this.asyncProcessor = asyncProcessor;
             this.worldCursor = worldCursor;
             this.gridManager = gridManager;
         }
@@ -42,7 +46,7 @@ namespace GameAssets
             unit.TransformNav.SetDestination(pos);
             unit.TransformNav.OnReachDestination += FinishNavegation;
 
-            unit.SetUpdateCallback(UpdateNavegation);
+            asyncProcessor.ExecuteEveryFrame(UpdateNavegation);
         }
 
         public void UpdateNavegation(float time)
@@ -71,6 +75,7 @@ namespace GameAssets
 
         private void FinishNavegation()
         {
+            asyncProcessor.ResetCallbackEveryFrame();
             unit.TransformNav.OnReachDestination -= FinishNavegation;
             unit.AnimatorController.Play(new WalkingAnimation(false));
 

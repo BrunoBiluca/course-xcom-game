@@ -351,7 +351,7 @@ MonoBehaviour:
   unitActionSelectionView: {fileID: 2802200902807103984}
   actionPointsView: {fileID: 1765026147}
   turnSystemView: {fileID: 1798808450}
-  worldCursor: {fileID: 0}
+  worldCursor: {fileID: 621982789}
   grid: {fileID: 280898495}
   gridDebug: {fileID: 49351469}
   unitSelection: {fileID: 69300418}

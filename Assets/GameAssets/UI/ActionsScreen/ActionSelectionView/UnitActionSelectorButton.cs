@@ -6,9 +6,9 @@ namespace GameAssets
 {
     public class UnitActionSelectorButton : MonoBehaviour
     {
-        [field: SerializeField] public UnitActionsFactory.Actions Action { get; private set; }
+        [field: SerializeField] public UnitActionsEnum Action { get; private set; }
 
-        private UnitActionSelectionView selector;
+        private APUnitActionSelectionView selector;
 
         public void Awake()
         {
@@ -16,7 +16,7 @@ namespace GameAssets
             text.text = Action.ToString();
         }
 
-        public void Setup(UnitActionSelectionView selector)
+        public void Setup(APUnitActionSelectionView selector)
         {
             this.selector = selector;
         }

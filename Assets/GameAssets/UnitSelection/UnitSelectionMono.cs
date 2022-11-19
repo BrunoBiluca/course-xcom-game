@@ -6,15 +6,15 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public sealed class UnitSelectionMono : MonoBehaviour, IUnitActorSelector
+    public sealed class UnitSelectionMono
+        : MonoBehaviour, IUnitActorSelector<IAPUnitActor>
     {
         private IWorldCursor worldCursor;
 
-        private UnitSelection unitSelection;
+        private RaycastSelection unitSelection;
 
         public TrooperUnit CurrentUnit { get; private set; }
-
-        public IUnitActor CurrentUnitActor => CurrentUnit;
+        public IAPUnitActor CurrentUnitActor { get; private set; }
 
         public event Action OnUnitSelected;
         public event Action OnUnitDeselected;
@@ -30,7 +30,7 @@ namespace GameAssets
             // TODO: fazer um mono que seja apenas do tipo ISelectable, para usar em futuros projetos de forma simples
             int unitLayer = LayerMask.GetMask("Unit");
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
-            unitSelection = new UnitSelection(raycastHandler)
+            unitSelection = new RaycastSelection(raycastHandler)
                 .SetLayers(unitLayer);
 
             worldCursor.OnClick += TrySelectUnit;
@@ -53,15 +53,17 @@ namespace GameAssets
 
             DeselectUnit();
 
+            CurrentUnitActor = unit.Actor;
             CurrentUnit = unit;
             OnUnitSelected?.Invoke();
         }
 
         private void DeselectUnit()
         {
-            if(CurrentUnit != null)
+            if(CurrentUnitActor != null)
             {
-                UnityDebug.I.Log("Unit", CurrentUnit.name, "was deselected");
+                UnityDebug.I.Log("Unit was deselected");
+                CurrentUnitActor = null;
                 CurrentUnit = null;
             }
             OnUnitDeselected?.Invoke();
