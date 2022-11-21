@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7221258761265351236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f6c1e93507421645a87108a970b5ed3, type: 3}
+  m_Name: Trooper_Enemy
+  m_EditorClassIdentifier: 
+  layer1: {fileID: 11400000, guid: 2947088e79be4af419c46ab7f99a847a, type: 2}
+  layer2: {fileID: 11400000, guid: 711f584a4b6cd544d97ea307e7967a83, type: 2}
+  hasRelation: 1
+--- !u!114 &-5836637947690466050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f6c1e93507421645a87108a970b5ed3, type: 3}
+  m_Name: Trooper_Trooper
+  m_EditorClassIdentifier: 
+  layer1: {fileID: 11400000, guid: 2947088e79be4af419c46ab7f99a847a, type: 2}
+  layer2: {fileID: 11400000, guid: 2947088e79be4af419c46ab7f99a847a, type: 2}
+  hasRelation: 0
+--- !u!114 &-252081259022454746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f6c1e93507421645a87108a970b5ed3, type: 3}
+  m_Name: Enemy_Enemy
+  m_EditorClassIdentifier: 
+  layer1: {fileID: 11400000, guid: 711f584a4b6cd544d97ea307e7967a83, type: 2}
+  layer2: {fileID: 11400000, guid: 711f584a4b6cd544d97ea307e7967a83, type: 2}
+  hasRelation: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea272dd27f12274582642f3ea5d0731, type: 3}
+  m_Name: damageble_layer_relationship
+  m_EditorClassIdentifier: 
+  layers:
+  - {fileID: 11400000, guid: 711f584a4b6cd544d97ea307e7967a83, type: 2}
+  - {fileID: 11400000, guid: 2947088e79be4af419c46ab7f99a847a, type: 2}
+  relationships:
+  - {fileID: -252081259022454746}
+  - {fileID: -7221258761265351236}
+  - {fileID: -5836637947690466050}

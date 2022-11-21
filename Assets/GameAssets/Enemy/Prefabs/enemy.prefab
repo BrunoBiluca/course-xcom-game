@@ -1849,10 +1849,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   setupOnStart: 0
-  healthBarComponent: {fileID: 0}
+  healthBarComponent: {fileID: 3936605796287659524}
   baseHealth: 0
-  destroyHealthBarOnDied: 0
   currentHealth: 0
+  <DestroyHealthBarOnDied>k__BackingField: 0
   layer: {fileID: 11400000, guid: 711f584a4b6cd544d97ea307e7967a83, type: 2}
   <DestroyOnDied>k__BackingField: 1
 --- !u!1001 &6348185075905519426
@@ -1934,6 +1934,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dce45a07e34c0ff4ca746b183d983d34, type: 3}
+--- !u!1 &3936605796287659524 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7978384764840239430, guid: dce45a07e34c0ff4ca746b183d983d34,
+    type: 3}
+  m_PrefabInstance: {fileID: 6348185075905519426}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3936605796287659525 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7978384764840239431, guid: dce45a07e34c0ff4ca746b183d983d34,
