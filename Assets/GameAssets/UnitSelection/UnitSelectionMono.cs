@@ -17,7 +17,7 @@ namespace GameAssets
         public IAPUnitActor CurrentUnitActor { get; private set; }
 
         public event Action OnUnitSelected;
-        public event Action OnUnitDeselected;
+        public event Action OnUnitUnselected;
 
         public void Setup(IWorldCursor worldCursor)
         {
@@ -44,29 +44,30 @@ namespace GameAssets
 
             unitSelection.SelectByType<TrooperUnit>(pos)
                 .Some(SelectUnit)
-                .OrElse(DeselectUnit);
+                .OrElse(UnselectUnit);
         }
 
         private void SelectUnit(TrooperUnit unit)
         {
             UnityDebug.I.Log("Unit", unit.name, "was selected");
 
-            DeselectUnit();
+            UnselectUnit();
 
             CurrentUnitActor = unit.Actor;
             CurrentUnit = unit;
             OnUnitSelected?.Invoke();
         }
 
-        private void DeselectUnit()
+        public void UnselectUnit()
         {
             if(CurrentUnitActor != null)
             {
                 UnityDebug.I.Log("Unit was deselected");
+                CurrentUnit.SetSelected(false);
                 CurrentUnitActor = null;
                 CurrentUnit = null;
             }
-            OnUnitDeselected?.Invoke();
+            OnUnitUnselected?.Invoke();
         }
     }
 }

@@ -79,9 +79,14 @@ namespace GameAssets
             unit.TransformNav.OnReachDestination -= FinishNavegation;
             unit.AnimatorController.Play(new WalkingAnimation(false));
 
-            gridManager.ResetRangeValidation();
+            gridManager.ResetValidation();
 
             OnFinishAction?.Invoke();
+        }
+
+        public void ResetValidation()
+        {
+            gridManager.ResetValidation();
         }
     }
 }

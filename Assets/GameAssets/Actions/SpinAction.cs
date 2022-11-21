@@ -60,5 +60,9 @@ namespace GameAssets
 
             transform.Rotation = Quaternion.Euler(0f, newAngle, 0f);
         }
+
+        public void ResetValidation()
+        {
+        }
     }
 }

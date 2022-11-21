@@ -23,6 +23,8 @@ namespace GameAssets
         {
             CurrentAction = Optional<IAPUnitAction>.None();
             this.unitActorSelector = unitActorSelector;
+
+            unitActorSelector.OnUnitUnselected += UnselectAction;
         }
 
         public void SetAction(IAPUnitAction action)
@@ -58,6 +60,8 @@ namespace GameAssets
 
             Logger?.Log("Action", CurrentAction.Get().GetType().ToString(), "was deselected");
             CurrentAction = Optional<IAPUnitAction>.None();
+
+            unitActorSelector.CurrentUnitActor?.UnsetAction();
             OnActionUnselected?.Invoke();
         }
     }

@@ -29,5 +29,10 @@ namespace GameAssets
         {
             action.Execute();
         }
+
+        public void ResetValidation()
+        {
+            action.ResetValidation();
+        }
     }
 }

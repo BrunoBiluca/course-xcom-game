@@ -33,6 +33,11 @@ namespace GameAssets
 
         public void Set(IAPUnitAction action)
         {
+            if(action == null)
+                throw new ArgumentNullException(
+                    "Set action should not be null, use UnsetAction instead."
+                );
+
             CurrentAction = Optional<IAPUnitAction>.Some(action);
             SubscribeActionEvents();
 
@@ -44,6 +49,7 @@ namespace GameAssets
         public void UnsetAction()
         {
             UnubscribeActionEvents();
+            CurrentAction.Get().ResetValidation();
             CurrentAction = Optional<IAPUnitAction>.None();
         }
 

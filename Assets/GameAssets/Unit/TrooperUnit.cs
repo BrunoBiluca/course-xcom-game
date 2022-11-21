@@ -119,7 +119,7 @@ namespace GameAssets
 
         private void OnDestroyHandler()
         {
-            gridManager.ResetRangeValidation();
+            gridManager.ResetValidation();
         }
 
         private void ExecuteAction()
@@ -132,7 +132,7 @@ namespace GameAssets
 
         private void InvokeCantExecuteAction()
         {
-            gridManager.ResetRangeValidation();
+            gridManager.ResetValidation();
         }
 
         public void AnimationEventHandler(string eventName)

@@ -51,7 +51,7 @@ namespace GameAssets
             var unitSelection = FindObjectOfType<UnitSelectionMono>();
             unitSelection.Setup(worldCursor);
 
-            unitSelection.OnUnitDeselected += () => gridManager.ResetRangeValidation();
+            unitSelection.OnUnitUnselected += () => gridManager.ResetValidation();
 
             var unitActionsFactory = new UnitActionsFactory(
                 unitSelection,
@@ -77,11 +77,13 @@ namespace GameAssets
             selectableVisibility.Hide();
 
             unitSelection.OnUnitSelected += () => selectableVisibility.Show();
-            unitSelection.OnUnitDeselected += () => selectableVisibility.Hide();
+            unitSelection.OnUnitUnselected += () => selectableVisibility.Hide();
 
             var turnSystem = new TurnSystem();
 
-            unitsManager.Setup(levelSetupConfig, worldCursor, gridManager, turnSystem);
+            unitsManager.Setup(
+                levelSetupConfig, worldCursor, gridManager, turnSystem, unitSelection
+            );
 
             enemiesManager.Logger = unityDebug;
             enemiesManager.Setup(levelSetupConfig, gridManager, turnSystem);

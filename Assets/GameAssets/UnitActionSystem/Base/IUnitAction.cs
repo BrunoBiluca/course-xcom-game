@@ -13,6 +13,8 @@ namespace GameAssets
         // talvez criar interfaces diferentes dada a ação selecionada
         void ApplyValidation();
 
+        void ResetValidation();
+
         // TODO: talvez o execute poderia voltar o resultado da ação
         // (dados como quando terminou e se foi com sucesso ou não)
         void Execute();

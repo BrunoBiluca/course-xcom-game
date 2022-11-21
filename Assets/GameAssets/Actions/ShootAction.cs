@@ -83,5 +83,10 @@ namespace GameAssets
                 CameraManager.I.HideActionCamera(1f);
             };
         }
+
+        public void ResetValidation()
+        {
+            gridManager.ResetValidation();
+        }
     }
 }

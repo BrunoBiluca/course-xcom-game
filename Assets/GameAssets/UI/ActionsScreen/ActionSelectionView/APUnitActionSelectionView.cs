@@ -6,6 +6,8 @@ namespace GameAssets
 {
     public class APUnitActionSelectionView : MonoBehaviour
     {
+        private UnitActionsEnum? currentAction;
+
         private IUnitActionSelector<IAPUnitAction> actionSelector;
         private IUnitActionsFactory<IAPUnitAction> factory;
         private UnitActionSelectorButton[] buttons;
@@ -32,20 +34,29 @@ namespace GameAssets
 
         public void Select(UnitActionsEnum actionType)
         {
+            if(currentAction == actionType)
+            {
+                CleanActions();
+                actionSelector.UnselectAction();
+                return;
+            }
+
             SelectAction(actionType);
             actionSelector.SetAction(factory.Get(actionType));
         }
 
-        private void SelectAction(UnitActionsEnum action)
+        private void SelectAction(UnitActionsEnum actionType)
         {
+            currentAction = actionType;
             foreach(var b in buttons)
             {
-                b.GetComponent<Image>().color = b.Action == action ? Color.red : Color.white;
+                b.GetComponent<Image>().color = b.Action == currentAction ? Color.red : Color.white;
             }
         }
 
         private void CleanActions()
         {
+            currentAction = null;
             foreach(var b in buttons)
             {
                 b.GetComponent<Image>().color = Color.white;

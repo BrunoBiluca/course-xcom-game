@@ -10,17 +10,21 @@ namespace GameAssets
         private LevelSetupConfig levelSetupConfig;
         private IWorldCursor worldCursor;
         private UnitWorldGridXZManager gridManager;
+        private IUnitActorSelector<IAPUnitActor> actorSelector;
 
         public void Setup(
             LevelSetupConfig levelSetupConfig,
             IWorldCursor worldCursor,
             UnitWorldGridXZManager gridManager,
-            ITurnSystem turnSystem
+            ITurnSystem turnSystem,
+            IUnitActorSelector<IAPUnitActor> actorSelector
         )
         {
             this.levelSetupConfig = levelSetupConfig;
             this.worldCursor = worldCursor;
             this.gridManager = gridManager;
+
+            this.actorSelector = actorSelector;
 
             turnSystem.OnPlayerTurnEnded += RefillUnitActions;
             SetupUnits();
@@ -28,6 +32,7 @@ namespace GameAssets
 
         private void RefillUnitActions()
         {
+            actorSelector.UnselectUnit();
             foreach(var u in GetAllUnits())
             {
                 u.ActionPoints.FullReffil();

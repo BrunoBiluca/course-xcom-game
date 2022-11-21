@@ -7,6 +7,8 @@ namespace GameAssets
         public TActor CurrentUnitActor { get; }
 
         event Action OnUnitSelected;
-        event Action OnUnitDeselected;
+        event Action OnUnitUnselected;
+
+        void UnselectUnit();
     }
 }
