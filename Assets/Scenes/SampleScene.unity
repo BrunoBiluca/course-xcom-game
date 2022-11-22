@@ -183,9 +183,8 @@ GameObject:
   - component: {fileID: 69300416}
   - component: {fileID: 69300418}
   - component: {fileID: 69300419}
-  - component: {fileID: 69300417}
   - component: {fileID: 69300420}
-  - component: {fileID: 69300421}
+  - component: {fileID: 69300417}
   m_Layer: 0
   m_Name: managers
   m_TagString: Untagged
@@ -288,20 +287,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProjectilePrefab: {fileID: 5358504725475216788, guid: dfd5f8391c2e5144ab096789aae750ee,
     type: 3}
---- !u!114 &69300421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69300413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beedc85fd790a6440bfdba936f6c4304, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <DestroyOnLoad>k__BackingField: 1
-  actionCamera: {fileID: 520785321}
 --- !u!1 &103762349
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,6 +530,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: main_camera
   m_TagString: MainCamera
@@ -685,6 +671,22 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6adcb638f6cce4aab971a9e5985f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <UseDefault>k__BackingField: 0
+  <BackgroundColor>k__BackingField: {r: 0.30319312, g: 0.49056602, b: 0.13143465,
+    a: 1}
+  <FontColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,6 +813,7 @@ GameObject:
   - component: {fileID: 520785320}
   - component: {fileID: 520785319}
   - component: {fileID: 520785321}
+  - component: {fileID: 520785322}
   m_Layer: 0
   m_Name: action_camera
   m_TagString: Untagged
@@ -885,6 +888,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <StartVisible>k__BackingField: 0
+--- !u!114 &520785322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520785318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6adcb638f6cce4aab971a9e5985f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <UseDefault>k__BackingField: 0
+  <BackgroundColor>k__BackingField: {r: 0.30319312, g: 0.49056602, b: 0.13143465,
+    a: 1}
+  <FontColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &621982786
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,6 +961,7 @@ GameObject:
   m_Component:
   - component: {fileID: 635676034}
   - component: {fileID: 635676033}
+  - component: {fileID: 635676035}
   m_Layer: 0
   m_Name: vcam
   m_TagString: Untagged
@@ -968,7 +988,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 848646103}
+  m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5
@@ -1003,6 +1023,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 37.3, y: 30, z: 0}
+--- !u!114 &635676035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635676032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6adcb638f6cce4aab971a9e5985f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <UseDefault>k__BackingField: 0
+  <BackgroundColor>k__BackingField: {r: 0.30319312, g: 0.49056602, b: 0.13143465,
+    a: 1}
+  <FontColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &743160124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,6 +1264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 848646103}
   - component: {fileID: 848646104}
+  - component: {fileID: 848646105}
   m_Layer: 0
   m_Name: camera_controller
   m_TagString: Untagged
@@ -1262,21 +1299,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9ff9dffdcc0ab24ebf91a4f6fdd2aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 20
-  moveLimitsX:
-    start: 0
-    end: 30
-  moveLimitsY:
-    start: 0
-    end: 0
-  moveLimitsZ:
-    start: 0
-    end: 30
-  enableEdgeMovement: 0
-  edgeOffset: 10
-  enableZoom: 1
-  zoomAmount: 2
-  zoomSpeed: 5
+  Settings: {fileID: 11400000, guid: 4b49d42a88f69934284b139dddfd7fa5, type: 2}
+  cameraTarget: {fileID: 635676034}
+--- !u!114 &848646105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848646102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beedc85fd790a6440bfdba936f6c4304, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DestroyOnLoad>k__BackingField: 1
+  actionCamera: {fileID: 520785321}
 --- !u!1 &929860611
 GameObject:
   m_ObjectHideFlags: 3
@@ -1331,7 +1369,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1332763842}
   - component: {fileID: 1332763845}
-  - component: {fileID: 1332763846}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -1366,28 +1403,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1332763846
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1332763841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 6, z: -6}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
-  m_AngularDampingMode: 0
-  m_PitchDamping: 0
-  m_YawDamping: 0
-  m_RollDamping: 0
-  m_AngularDamping: 0
 --- !u!1 &1437412004
 GameObject:
   m_ObjectHideFlags: 0

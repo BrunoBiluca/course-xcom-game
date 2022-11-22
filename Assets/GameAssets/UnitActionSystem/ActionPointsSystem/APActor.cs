@@ -13,6 +13,8 @@ namespace GameAssets
         public event Action OnCantExecuteAction;
         public event Action OnActionFinished;
 
+        private IAction currentAction;
+
         public APActor(IResourceManager actionPoints)
         {
             Intent = Optional<IAPActionIntent>.None();
@@ -26,20 +28,32 @@ namespace GameAssets
 
             if(ActionPoints.CurrentAmount < (uint)intent.ActionPointsCost)
             {
-                OnCantExecuteAction?.Invoke();
+                InvokeCantExecuteAction();
                 return;
             }
 
             var action = intent.Create();
 
-            action.OnCantExecuteAction += () => OnCantExecuteAction?.Invoke();
-            action.OnFinishAction += () => {
-                UnityDebug.I.Log(nameof(action.OnFinishAction));
-                ActionPoints.TrySubtract((uint)intent.ActionPointsCost);
-                OnActionFinished?.Invoke();
-            };
+            action.OnCantExecuteAction -= InvokeCantExecuteAction;
+            action.OnCantExecuteAction += InvokeCantExecuteAction;
 
+            action.OnFinishAction -= InvokeFinishAction;
+            action.OnFinishAction += InvokeFinishAction;
+
+            currentAction = action;
             action.Execute();
+        }
+
+        private void InvokeCantExecuteAction()
+        {
+            OnCantExecuteAction?.Invoke();
+        }
+
+        public void InvokeFinishAction()
+        {
+            UnityDebug.I.Log(nameof(currentAction.OnFinishAction));
+            ActionPoints.TrySubtract((uint)Intent.Get().ActionPointsCost);
+            OnActionFinished?.Invoke();
         }
 
         public void Set(IAPActionIntent actionFactory)

@@ -68,14 +68,13 @@ namespace GameAssets.Tests
         [TestCase(3, 5, TestName = "3 times of 5 when has only three action points")]
         public void Should_execute_action(int points, int executions)
         {
-            var actionManager = context
+            var actor = context
                 .WithActionSet()
                 .WithInitialActionPoints(points)
                 .Build();
 
-
             for(int i = 0; i < executions; i++)
-                actionManager.Execute();
+                actor.Execute();
 
             Assert.That(context.CantExecuteAction.WasTriggered, Is.EqualTo(executions > points));
             Assert.That(
@@ -83,10 +82,10 @@ namespace GameAssets.Tests
                 Is.EqualTo(Math.Abs(points - executions))
             );
 
-            Assert.That(actionManager.Intent.IsPresent, Is.True);
+            Assert.That(actor.Intent.IsPresent, Is.True);
 
             var remainingPoints = Math.Clamp(points - executions, 0, points);
-            Assert.That(actionManager.ActionPoints.CurrentAmount, Is.EqualTo(remainingPoints));
+            Assert.That(actor.ActionPoints.CurrentAmount, Is.EqualTo(remainingPoints));
 
             context.MockIntent.Verify((a) => a.Create(), Times.Exactly(points));
         }

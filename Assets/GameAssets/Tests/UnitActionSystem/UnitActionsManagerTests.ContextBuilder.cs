@@ -20,7 +20,9 @@ namespace GameAssets.Tests
             {
                 isActionSet = false;
                 MockIntent = new Mock<IAPActionIntent>();
-                MockIntent.Setup(i => i.Create()).Returns(new Mock<IAction>().Object);
+                var action = new Mock<IAction>();
+                action.Setup(a => a.Execute()).Raises(a => a.OnFinishAction += null);
+                MockIntent.Setup(i => i.Create()).Returns(action.Object);
                 actionPoints = new FiniteResourceManager(0, true);
             }
 
@@ -46,18 +48,17 @@ namespace GameAssets.Tests
 
             public APActor Build()
             {
-                var actionsManager = new APActor(actionPoints);
+                var actor = new APActor(actionPoints);
 
                 if(isActionSet)
                 {
                     MockIntent.SetupGet(i => i.ActionPointsCost).Returns(actionPointsCost);
-                    actionsManager.Set(MockIntent.Object);
+                    actor.Set(MockIntent.Object);
                 }
 
-                CantExecuteAction = EventTest
-                    .Create(actionsManager, nameof(actionsManager.OnCantExecuteAction));
+                CantExecuteAction = EventTest.Create(actor, nameof(actor.OnCantExecuteAction));
 
-                return actionsManager;
+                return actor;
             }
         }
     }
