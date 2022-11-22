@@ -9,7 +9,7 @@ namespace GameAssets
 {
     public class ActionPointsView : MonoBehaviour
     {
-        private IUnitActorSelector<IAPUnitActor> actorSelector;
+        private IActorSelector<IAPActor> actorSelector;
         private TextMeshProUGUI text;
 
         public void Awake()
@@ -17,7 +17,7 @@ namespace GameAssets
             text = transform.FindComponent<TextMeshProUGUI>("text");
         }
 
-        public void Setup(IUnitActorSelector<IAPUnitActor> actorSelector)
+        public void Setup(IActorSelector<IAPActor> actorSelector)
         {
             this.actorSelector = actorSelector;
         }

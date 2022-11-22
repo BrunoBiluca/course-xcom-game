@@ -60,11 +60,11 @@ namespace GameAssets
                 projectileFactory
             );
 
-            var apUnitActionsFactory = new APUnitActionsFactory(unitActionsFactory);
+            var actionSelection = new APUnitActionSelection(unitSelection);
 
-            var unitActionHandler = new APUnitActionSelection(unitSelection);
+            actionSelection.OnActionUnselected += () => gridManager.ResetValidation();
 
-            unitActionSelectionView.Setup(unitActionHandler, apUnitActionsFactory);
+            unitActionSelectionView.Setup(actionSelection, unitActionsFactory);
 
             actionPointsView.Setup(unitSelection);
 

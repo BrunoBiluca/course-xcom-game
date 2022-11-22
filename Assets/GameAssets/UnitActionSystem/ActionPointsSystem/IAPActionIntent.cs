@@ -1,6 +1,6 @@
 namespace GameAssets
 {
-    public interface IAPUnitAction : IUnitAction
+    public interface IAPActionIntent : IActionIntent
     {
         int ActionPointsCost { get; set; }
     }

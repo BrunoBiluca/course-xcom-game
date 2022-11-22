@@ -12,12 +12,12 @@ namespace GameAssets.Tests
         }
         public APUnitActionSelection Build()
         {
-            var unitActorSelector = new Mock<IUnitActorSelector<IAPUnitActor>>();
+            var unitActorSelector = new Mock<IActorSelector<IAPActor>>();
 
             if(isUnitSelected)
             {
                 unitActorSelector
-                    .Setup(s => s.CurrentUnitActor).Returns(new Mock<IAPUnitActor>().Object);
+                    .Setup(s => s.CurrentUnitActor).Returns(new Mock<IAPActor>().Object);
             }
 
             return new APUnitActionSelection(unitActorSelector.Object);

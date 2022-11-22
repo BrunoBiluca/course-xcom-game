@@ -1,14 +1,20 @@
 using System;
 using UnityEngine;
 using UnityFoundation.Code;
+using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
 using UnityFoundation.Physics3D;
+using UnityFoundation.ResourceManagement;
 
 namespace GameAssets
 {
     public class EnemyUnit : BilucaMono, IUnit
     {
+        [SerializeField] private GameObject ragdoll;
+
+        [SerializeField] private Transform root;
+
         public ITransform Transform { get; private set; }
 
         public string Name => "Enemy";
@@ -17,13 +23,17 @@ namespace GameAssets
 
         public IDamageable Damageable => HealthSystem;
 
-        public IAPUnitActor Actor => throw new NotImplementedException();
+        public IAPActor Actor { get; private set; }
+
+        public UnitConfigTemplate UnitConfigTemplate { get; private set; }
+
+        public ITransform RightShoulder { get; private set; }
+
+        public AnimatorController AnimatorController { get; private set; }
+
+        public ITransform ProjectileStart { get; private set; }
 
         public event Action OnActionFinished;
-
-        [SerializeField] private GameObject ragdoll;
-
-        [SerializeField] private Transform root;
 
         protected override void OnAwake()
         {
@@ -31,8 +41,16 @@ namespace GameAssets
 
             HealthSystem = GetComponent<HealthSystemMono>();
             HealthSystem.Setup(6);
-
             HealthSystem.OnDied += DieHandler;
+
+            Actor = new APActor(new FiniteResourceManager(4, true));
+        }
+
+        public void Setup(
+            UnitConfigTemplate unitConfigTemplate
+        )
+        {
+            UnitConfigTemplate = unitConfigTemplate;
         }
 
         private void DieHandler()
@@ -45,9 +63,23 @@ namespace GameAssets
 
         public void TakeAction()
         {
-            var action = new SpinUnitAction(AsyncProcessor.I, Transform);
-            action.OnFinishAction += () => OnActionFinished?.Invoke();
-            action.Execute();
+            TakeSpinAction();
+        }
+
+        public void TakeSpinAction()
+        {
+            if(Actor.ActionPoints.CurrentAmount == 0)
+            {
+                UnityDebug.I.LogHighlight(nameof(EnemyUnit), "finished take actions");
+                OnActionFinished?.Invoke();
+                return;
+            }
+
+            var action = new EnemySpinActionIntent(Transform);
+            Actor.Set(action);
+
+            Actor.OnActionFinished -= TakeSpinAction;
+            Actor.OnActionFinished += TakeSpinAction;
         }
     }
 }

@@ -30,7 +30,6 @@ namespace GameAssets
         public INavegationAgent TransformNav { get; private set; }
 
         private IWorldCursor worldCursor;
-        private WorldGridXZManager<UnitValue> gridManager;
         public IResourceManager ActionPoints => unitActionsManager.ActionPoints;
 
         public bool IsSelected { get; private set; }
@@ -40,12 +39,9 @@ namespace GameAssets
         public IHealthSystem HealthSystem { get; private set; }
         public IDamageable Damageable => HealthSystem;
 
-        public IAPUnitActor Actor => unitActionsManager;
+        public IAPActor Actor => unitActionsManager;
 
-        public APUnitActor unitActionsManager;
-
-        private Action<float> updateCallback;
-        private Optional<IUnitAction> currentAction;
+        public APActor unitActionsManager;
 
         public event Action OnSelectedStateChange;
         public event Action OnSelected;
@@ -53,8 +49,6 @@ namespace GameAssets
 
         protected override void OnAwake()
         {
-            currentAction = Optional<IUnitAction>.None();
-
             Transform = new TransformDecorator(transform);
             TransformNav = new TransformNavegationAgent(
                 new TransformDecorator(transform)) {
@@ -72,29 +66,19 @@ namespace GameAssets
             ProjectileStart = new TransformDecorator(projectileStart.transform);
 
             RightShoulder = new TransformDecorator(rightShoulderRef.transform);
-
-
-            OnObjectDestroyed += OnDestroyHandler;
         }
 
         public void Setup(
             UnitConfigTemplate unitConfigTemplate,
-            IWorldCursor worldCursor,
-            WorldGridXZManager<UnitValue> gridManager
+            IWorldCursor worldCursor
         )
         {
             this.worldCursor = worldCursor;
-            this.gridManager = gridManager;
 
             UnitConfigTemplate = unitConfigTemplate;
-            unitActionsManager = new APUnitActor(
+            unitActionsManager = new APActor(
                 new FiniteResourceManager(UnitConfigTemplate.MaxActionPoints, true)
             );
-        }
-
-        public void Update()
-        {
-            updateCallback?.Invoke(Time.deltaTime);
         }
 
         public Collider GetCollider()
@@ -117,11 +101,6 @@ namespace GameAssets
             }
         }
 
-        private void OnDestroyHandler()
-        {
-            gridManager.ResetValidation();
-        }
-
         private void ExecuteAction()
         {
             Actor.OnCantExecuteAction -= InvokeCantExecuteAction;
@@ -132,7 +111,7 @@ namespace GameAssets
 
         private void InvokeCantExecuteAction()
         {
-            gridManager.ResetValidation();
+            Actor.UnsetAction();
         }
 
         public void AnimationEventHandler(string eventName)

@@ -10,14 +10,14 @@ namespace GameAssets
         private LevelSetupConfig levelSetupConfig;
         private IWorldCursor worldCursor;
         private UnitWorldGridXZManager gridManager;
-        private IUnitActorSelector<IAPUnitActor> actorSelector;
+        private IActorSelector<IAPActor> actorSelector;
 
         public void Setup(
             LevelSetupConfig levelSetupConfig,
             IWorldCursor worldCursor,
             UnitWorldGridXZManager gridManager,
             ITurnSystem turnSystem,
-            IUnitActorSelector<IAPUnitActor> actorSelector
+            IActorSelector<IAPActor> actorSelector
         )
         {
             this.levelSetupConfig = levelSetupConfig;
@@ -44,7 +44,7 @@ namespace GameAssets
             foreach(var unitSetup in levelSetupConfig.Units)
             {
                 var unit = Instantiate(unitSetup.prefab).GetComponent<TrooperUnit>();
-                unit.Setup(unitSetup.UnitTemplate, worldCursor, gridManager);
+                unit.Setup(unitSetup.UnitTemplate, worldCursor);
 
                 unit.Transform.Position = gridManager.Grid
                     .GetCellCenterPosition(

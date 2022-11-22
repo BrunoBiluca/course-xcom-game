@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code.DebugHelper;
@@ -10,12 +11,13 @@ namespace GameAssets
     {
         private LevelSetupConfig levelSetupConfig;
         private UnitWorldGridXZManager gridManager;
-
         private ITurnSystem turnSystem;
 
         private List<EnemyUnit> enemies;
 
         public IBilucaLogger Logger { get; set; }
+
+        private int enemyIndex;
 
         public void Setup(
             LevelSetupConfig levelSetupConfig,
@@ -35,21 +37,28 @@ namespace GameAssets
         {
             Logger?.Log("Start enemy turn");
 
-            EnemyAction(0);
+            enemyIndex = 0;
+            EnemyAction();
         }
 
-        private void EnemyAction(int index)
+        private void EnemyAction()
         {
-            if(index == enemies.Count)
+            var currentEnemy = enemies[enemyIndex];
+            currentEnemy.OnActionFinished -= NextEnemy;
+            currentEnemy.OnActionFinished += NextEnemy;
+            currentEnemy.TakeAction();
+        }
+
+        private void NextEnemy()
+        {
+            enemyIndex++;
+            if(enemyIndex >= enemies.Count)
             {
                 FinishEnemyTurn();
                 return;
             }
 
-            var currentEnemy = enemies[index];
-
-            currentEnemy.OnActionFinished += () => EnemyAction(index + 1);
-            currentEnemy.TakeAction();
+            EnemyAction();
         }
 
         private void FinishEnemyTurn()
@@ -64,6 +73,7 @@ namespace GameAssets
             foreach(var enemy in levelSetupConfig.Enemies)
             {
                 var newEnemy = Instantiate(enemy.EnemyPrefab).GetComponent<EnemyUnit>();
+                newEnemy.Setup(enemy.UnitTemplate);
 
                 newEnemy.Transform.Position = gridManager.Grid
                     .GetCellCenterPosition(

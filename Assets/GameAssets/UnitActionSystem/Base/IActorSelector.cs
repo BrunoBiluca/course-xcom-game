@@ -2,7 +2,7 @@
 
 namespace GameAssets
 {
-    public interface IUnitActorSelector<TActor>
+    public interface IActorSelector<TActor>
     {
         public TActor CurrentUnitActor { get; }
 

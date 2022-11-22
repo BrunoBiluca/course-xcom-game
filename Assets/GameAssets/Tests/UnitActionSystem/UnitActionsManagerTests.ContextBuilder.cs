@@ -8,7 +8,7 @@ namespace GameAssets.Tests
     {
         public class ContextBuilder
         {
-            public Mock<IUnitAction> MockAction { get; private set; }
+            public Mock<IAPActionIntent> MockIntent { get; private set; }
 
             public EventTest CantExecuteAction { get; private set; }
 
@@ -19,7 +19,8 @@ namespace GameAssets.Tests
             public ContextBuilder()
             {
                 isActionSet = false;
-                MockAction = new Mock<IUnitAction>();
+                MockIntent = new Mock<IAPActionIntent>();
+                MockIntent.Setup(i => i.Create()).Returns(new Mock<IAction>().Object);
                 actionPoints = new FiniteResourceManager(0, true);
             }
 
@@ -33,8 +34,7 @@ namespace GameAssets.Tests
             public ContextBuilder WithImmediateAction()
             {
                 isActionSet = true;
-                MockAction = new Mock<IUnitAction>();
-                MockAction.SetupGet(a => a.ExecuteImmediatly).Returns(true);
+                MockIntent.SetupGet(a => a.ExecuteImmediatly).Returns(true);
                 return this;
             }
 
@@ -44,18 +44,15 @@ namespace GameAssets.Tests
                 return this;
             }
 
-            public APUnitActor Build()
+            public APActor Build()
             {
-                var actionsManager = new APUnitActor(actionPoints);
+                var actionsManager = new APActor(actionPoints);
 
                 if(isActionSet)
                 {
-                    var action = new APUnitAction(MockAction.Object) {
-                        ActionPointsCost = actionPointsCost
-                    };
-                    actionsManager.Set(action);
+                    MockIntent.SetupGet(i => i.ActionPointsCost).Returns(actionPointsCost);
+                    actionsManager.Set(MockIntent.Object);
                 }
-
 
                 CantExecuteAction = EventTest
                     .Create(actionsManager, nameof(actionsManager.OnCantExecuteAction));

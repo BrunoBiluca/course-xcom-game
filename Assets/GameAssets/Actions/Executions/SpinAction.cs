@@ -6,7 +6,7 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class SpinUnitAction : IUnitAction, IBilucaLoggable
+    public class SpinUnitAction : IAction, IBilucaLoggable
     {
         public IBilucaLogger Logger { get; set; }
 
@@ -24,12 +24,6 @@ namespace GameAssets
         {
             this.asyncProcessor = asyncProcessor;
             this.transform = transform;
-        }
-
-        public bool ExecuteImmediatly => true;
-
-        public void ApplyValidation()
-        {
         }
 
         public void Execute()
@@ -59,10 +53,6 @@ namespace GameAssets
             }
 
             transform.Rotation = Quaternion.Euler(0f, newAngle, 0f);
-        }
-
-        public void ResetValidation()
-        {
         }
     }
 }

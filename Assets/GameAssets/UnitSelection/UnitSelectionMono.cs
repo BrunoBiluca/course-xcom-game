@@ -7,14 +7,14 @@ using UnityFoundation.WorldCursors;
 namespace GameAssets
 {
     public sealed class UnitSelectionMono
-        : MonoBehaviour, IUnitActorSelector<IAPUnitActor>
+        : MonoBehaviour, IActorSelector<IAPActor>
     {
         private IWorldCursor worldCursor;
 
         private RaycastSelection unitSelection;
 
         public TrooperUnit CurrentUnit { get; private set; }
-        public IAPUnitActor CurrentUnitActor { get; private set; }
+        public IAPActor CurrentUnitActor { get; private set; }
 
         public event Action OnUnitSelected;
         public event Action OnUnitUnselected;

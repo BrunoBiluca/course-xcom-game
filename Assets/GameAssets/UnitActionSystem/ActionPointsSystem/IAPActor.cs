@@ -5,7 +5,7 @@ using UnityFoundation.ResourceManagement;
 
 namespace GameAssets
 {
-    public interface IAPUnitActor : IUnitActor<IAPUnitAction>
+    public interface IAPActor : IActor<IAPActionIntent>
     {
         IResourceManager ActionPoints { get; }
     }

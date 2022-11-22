@@ -13,6 +13,10 @@ namespace GameAssets
 
         IDamageable Damageable { get; }
 
-        IAPUnitActor Actor { get; }
+        IAPActor Actor { get; }
+        UnitConfigTemplate UnitConfigTemplate { get; }
+        ITransform RightShoulder { get; }
+        AnimatorController AnimatorController { get; }
+        ITransform ProjectileStart { get; }
     }
 }

@@ -20,6 +20,7 @@ namespace GameAssets
         public class EnemySetupConfig
         {
             public GameObject EnemyPrefab;
+            public UnitConfigTemplate UnitTemplate;
             public GridXZConfig.Position Position;
         }
 

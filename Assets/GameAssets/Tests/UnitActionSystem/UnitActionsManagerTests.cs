@@ -22,7 +22,7 @@ namespace GameAssets.Tests
 
             actionsManager.Execute();
 
-            context.MockAction.Verify((a) => a.Execute(), Times.Never());
+            context.MockIntent.Verify((a) => a.Create(), Times.Never());
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace GameAssets.Tests
 
             actionManager.Execute();
 
-            context.MockAction.Verify((a) => a.Execute(), Times.Never());
+            context.MockIntent.Verify((a) => a.Create(), Times.Never());
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace GameAssets.Tests
                 .WithInitialActionPoints(1)
                 .Build();
 
-            context.MockAction.Verify((a) => a.Execute(), Times.Once());
+            context.MockIntent.Verify((a) => a.Create(), Times.Once());
         }
 
         [Test]
@@ -53,11 +53,12 @@ namespace GameAssets.Tests
         {
             var actionManager = context.WithInitialActionPoints(0).Build();
 
-            var mockAction = new Mock<IUnitAction>();
+            var mockAction = new Mock<IAPActionIntent>();
+            mockAction.SetupGet(a => a.ActionPointsCost).Returns(2);
             mockAction.SetupGet(a => a.ExecuteImmediatly).Returns(true);
-            actionManager.Set(new APUnitAction(mockAction.Object));
+            actionManager.Set(mockAction.Object);
 
-            context.MockAction.Verify((a) => a.Execute(), Times.Never());
+            context.MockIntent.Verify((a) => a.Create(), Times.Never());
         }
 
         [Test]
@@ -82,12 +83,12 @@ namespace GameAssets.Tests
                 Is.EqualTo(Math.Abs(points - executions))
             );
 
-            Assert.That(actionManager.CurrentAction.IsPresent, Is.True);
+            Assert.That(actionManager.Intent.IsPresent, Is.True);
 
             var remainingPoints = Math.Clamp(points - executions, 0, points);
             Assert.That(actionManager.ActionPoints.CurrentAmount, Is.EqualTo(remainingPoints));
 
-            context.MockAction.Verify((a) => a.Execute(), Times.Exactly(points));
+            context.MockIntent.Verify((a) => a.Create(), Times.Exactly(points));
         }
 
         [Test]
@@ -100,7 +101,7 @@ namespace GameAssets.Tests
 
             actionManager.Execute();
 
-            context.MockAction.Verify((a) => a.Execute(), Times.Never());
+            context.MockIntent.Verify((a) => a.Create(), Times.Never());
         }
 
         [Test]
@@ -113,7 +114,7 @@ namespace GameAssets.Tests
 
             actionManager.Execute();
 
-            context.MockAction.Verify((a) => a.Execute(), Times.Once());
+            context.MockIntent.Verify((a) => a.Create(), Times.Once());
             Assert.That(actionManager.ActionPoints.CurrentAmount, Is.EqualTo(1));
         }
     }

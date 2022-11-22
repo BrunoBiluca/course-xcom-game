@@ -8,8 +8,8 @@ namespace GameAssets
     {
         private UnitActionsEnum? currentAction;
 
-        private IUnitActionSelector<IAPUnitAction> actionSelector;
-        private IUnitActionsFactory<IAPUnitAction> factory;
+        private IActionSelector<IAPActionIntent> actionSelector;
+        private UnitActionsFactory factory;
         private UnitActionSelectorButton[] buttons;
 
         public void Awake()
@@ -22,8 +22,8 @@ namespace GameAssets
         }
 
         public void Setup(
-            IUnitActionSelector<IAPUnitAction> actionSelector,
-            IUnitActionsFactory<IAPUnitAction> factory
+            IActionSelector<IAPActionIntent> actionSelector,
+            UnitActionsFactory factory
         )
         {
             this.factory = factory;
@@ -42,7 +42,10 @@ namespace GameAssets
             }
 
             SelectAction(actionType);
-            actionSelector.SetAction(factory.Get(actionType));
+
+            var unitAction = factory.Get(actionType);
+            unitAction.ApplyValidation();
+            actionSelector.SetAction(unitAction.ActionFactory);
         }
 
         private void SelectAction(UnitActionsEnum actionType)

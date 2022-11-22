@@ -5,7 +5,7 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class MoveUnitAction : IUnitAction
+    public class MoveUnitAction : IAction
     {
         private readonly TrooperUnit unit;
         private readonly IAsyncProcessor asyncProcessor;
@@ -54,14 +54,6 @@ namespace GameAssets
             unit.TransformNav.Update(time);
         }
 
-        public void ApplyValidation()
-        {
-            gridManager.Validator()
-                .WhereIsEmpty()
-                .WithRange(unit.transform.position, unit.UnitConfigTemplate.MovementRange)
-                .Apply();
-        }
-
         public bool CanExecute()
         {
             if(!worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos))
@@ -79,14 +71,7 @@ namespace GameAssets
             unit.TransformNav.OnReachDestination -= FinishNavegation;
             unit.AnimatorController.Play(new WalkingAnimation(false));
 
-            gridManager.ResetValidation();
-
             OnFinishAction?.Invoke();
-        }
-
-        public void ResetValidation()
-        {
-            gridManager.ResetValidation();
         }
     }
 }

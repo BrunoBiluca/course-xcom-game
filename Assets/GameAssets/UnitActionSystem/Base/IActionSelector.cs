@@ -3,7 +3,7 @@ using UnityFoundation.Code;
 
 namespace GameAssets
 {
-    public interface IUnitActionSelector<TAction> where TAction : IUnitAction
+    public interface IActionSelector<TAction> where TAction : IAPActionIntent
     {
         public event Action<TAction> OnActionSelected;
         public event Action OnActionUnselected;
