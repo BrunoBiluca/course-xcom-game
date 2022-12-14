@@ -7,8 +7,10 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
+    // TODO: Alterar essa class para RaycastActorSelector e criar uma classe de GridActorSelector
+    // a class GridActorSelector será responsável por selecionar um actor dentro de um cell
     public sealed class UnitSelectionMono
-        : MonoBehaviour, IActorSelector<IAPActor>
+        : MonoBehaviour, IActorSelector<IAPActor>, IBilucaLoggable
     {
         private IWorldCursor worldCursor;
 
@@ -16,6 +18,7 @@ namespace GameAssets
 
         public TrooperUnit CurrentUnit { get; private set; }
         public IAPActor CurrentUnitActor { get; private set; }
+        public IBilucaLogger Logger { get; set; }
 
         public event Action OnUnitSelected;
         public event Action OnUnitUnselected;
@@ -27,8 +30,6 @@ namespace GameAssets
 
         public void Start()
         {
-            // TODO: fazer essa configuração vir pelo Setup
-            // TODO: fazer um mono que seja apenas do tipo ISelectable, para usar em futuros projetos de forma simples
             int unitLayer = LayerMask.GetMask("Unit");
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
             unitSelection = new RaycastSelection(raycastHandler)
@@ -42,7 +43,8 @@ namespace GameAssets
             if(!worldCursor.ScreenPosition.IsPresentAndGet(out Vector2 pos))
                 return;
 
-
+            // TODO: remover essa relação com a classe TrooperUnit
+            // a relação deve ser apenas com IAPActor
             unitSelection.SelectByType<TrooperUnit>(pos)
                 .Some(SelectUnit)
                 .OrElse(UnselectUnit);
@@ -50,7 +52,7 @@ namespace GameAssets
 
         private void SelectUnit(TrooperUnit unit)
         {
-            UnityDebug.I.Log("Unit", unit.name, "was selected");
+            Logger?.Log("Unit", unit.name, "was selected");
 
             UnselectUnit();
 
@@ -63,7 +65,7 @@ namespace GameAssets
         {
             if(CurrentUnitActor != null)
             {
-                UnityDebug.I.Log("Unit was deselected");
+                Logger?.Log("Unit was deselected");
                 CurrentUnit.SetSelected(false);
                 CurrentUnitActor = null;
                 CurrentUnit = null;
