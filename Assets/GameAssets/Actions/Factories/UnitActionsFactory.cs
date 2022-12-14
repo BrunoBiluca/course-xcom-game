@@ -13,18 +13,21 @@ namespace GameAssets
         private readonly IWorldCursor worldCursor;
         private readonly UnitWorldGridManager gridManager;
         private readonly ProjectileFactory projectileFactory;
+        private readonly ActionPointsConfig actionPointsConfig;
 
         public UnitActionsFactory(
             UnitSelectionMono unitSelection,
             IWorldCursor worldCursor,
             UnitWorldGridManager gridManager,
-            ProjectileFactory projectileFactory
+            ProjectileFactory projectileFactory,
+            ActionPointsConfig actionPointsConfig
         )
         {
             this.unitSelection = unitSelection;
             this.worldCursor = worldCursor;
             this.gridManager = gridManager;
             this.projectileFactory = projectileFactory;
+            this.actionPointsConfig = actionPointsConfig;
         }
 
         public GridUnitAction Get(UnitActionsEnum action)
@@ -51,7 +54,9 @@ namespace GameAssets
                     worldCursor,
                     gridManager,
                     projectileFactory
-                )
+                ) {
+                    ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.SHOOT)
+                }
             );
         }
 
@@ -60,7 +65,9 @@ namespace GameAssets
             return new GridUnitAction(
                 gridManager,
                 new InRangeValidationIntent(unitSelection),
-                new MoveActionIntent(unitSelection, worldCursor, gridManager)
+                new MoveActionIntent(unitSelection, worldCursor, gridManager) {
+                    ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.MOVE)
+                }
             );
         }
 
@@ -69,7 +76,9 @@ namespace GameAssets
             return new GridUnitAction(
                 gridManager,
                 new NoValidationIntent(),
-                new SpinActionIntent(unitSelection)
+                new SpinActionIntent(unitSelection) {
+                    ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.SPIN)
+                }
             );
         }
     }

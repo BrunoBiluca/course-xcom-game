@@ -58,7 +58,8 @@ namespace GameAssets
                 unitSelection,
                 worldCursor,
                 gridManager,
-                projectileFactory
+                projectileFactory,
+                levelSetupConfig.actionPointsConfig
             );
 
             var actionSelection = new APUnitActionSelection(unitSelection);

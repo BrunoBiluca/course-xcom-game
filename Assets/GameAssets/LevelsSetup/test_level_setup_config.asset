@@ -36,3 +36,11 @@ MonoBehaviour:
     Position:
       X: 7
       Z: 7
+  actionPointsConfig:
+    Costs:
+      m_keys:
+      - MOVE
+      - SPIN
+      - SHOOT
+      - GRENADE
+      m_values: 01000000020000000100000000000000
