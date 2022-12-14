@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameAssets
+namespace GameAssets.ActorSystem
 {
     public interface IAction
     {

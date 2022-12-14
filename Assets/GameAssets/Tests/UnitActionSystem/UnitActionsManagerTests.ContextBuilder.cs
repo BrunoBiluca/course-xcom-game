@@ -2,7 +2,7 @@
 using UnityFoundation.ResourceManagement;
 using UnityFoundation.TestUtility;
 
-namespace GameAssets.Tests
+namespace GameAssets.ActorSystem.Tests
 {
     public partial class UnitActionsManagerTests
     {

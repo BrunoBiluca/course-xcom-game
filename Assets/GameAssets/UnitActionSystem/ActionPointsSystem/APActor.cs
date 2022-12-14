@@ -3,7 +3,7 @@ using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.ResourceManagement;
 
-namespace GameAssets
+namespace GameAssets.ActorSystem
 {
     public class APActor : IAPActor
     {
@@ -56,15 +56,15 @@ namespace GameAssets
             OnActionFinished?.Invoke();
         }
 
-        public void Set(IAPActionIntent actionFactory)
+        public void Set(IAPActionIntent intent)
         {
-            if(actionFactory == null)
+            if(intent == null)
                 throw new ArgumentNullException(
                     "Set action factory should not be null, use UnsetAction instead."
                 );
 
-            Intent = Optional<IAPActionIntent>.Some(actionFactory);
-            if(actionFactory.ExecuteImmediatly)
+            Intent = Optional<IAPActionIntent>.Some(intent);
+            if(intent.ExecuteImmediatly)
                 Execute();
         }
 

@@ -1,3 +1,4 @@
+using GameAssets.ActorSystem;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -25,6 +26,19 @@ namespace GameAssets.Tests
             Assert.Throws<ActorIsNotSelected>(
                 () => actionHandler.SetAction(new Mock<IAPActionIntent>().Object)
             );
+        }
+
+        [Test]
+        public void Should_throw_error_when_trying_to_sect_action_with_no_action_points_avaiable()
+        {
+            var actionHandler = new UnitActionHandlerBuilder()
+                .WithCurrentUnitSelected(0)
+                .Build();
+
+            Assert.Throws<NoAPAvaiable>(
+                () => actionHandler.SetAction(new Mock<IAPActionIntent>().Object)
+            );
+
         }
 
         [Test]

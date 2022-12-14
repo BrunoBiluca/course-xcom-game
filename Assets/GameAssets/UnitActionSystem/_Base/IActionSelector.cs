@@ -1,7 +1,7 @@
 using System;
 using UnityFoundation.Code;
 
-namespace GameAssets
+namespace GameAssets.ActorSystem
 {
     public interface IActionSelector<TAction> where TAction : IAPActionIntent
     {

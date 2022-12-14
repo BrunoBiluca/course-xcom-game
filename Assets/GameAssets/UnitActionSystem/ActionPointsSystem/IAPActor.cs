@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.ResourceManagement;
 
-namespace GameAssets
+namespace GameAssets.ActorSystem
 {
     public interface IAPActor : IActor<IAPActionIntent>
     {

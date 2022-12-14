@@ -2,7 +2,7 @@ using Moq;
 using NUnit.Framework;
 using System;
 
-namespace GameAssets.Tests
+namespace GameAssets.ActorSystem.Tests
 {
     public partial class UnitActionsManagerTests
     {

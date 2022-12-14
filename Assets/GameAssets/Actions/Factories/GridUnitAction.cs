@@ -1,4 +1,6 @@
-﻿namespace GameAssets
+﻿using GameAssets.ActorSystem;
+
+namespace GameAssets
 {
     public class GridUnitAction
     {

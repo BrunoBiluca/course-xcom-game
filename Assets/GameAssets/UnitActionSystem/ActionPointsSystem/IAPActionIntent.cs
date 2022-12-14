@@ -1,4 +1,4 @@
-namespace GameAssets
+namespace GameAssets.ActorSystem
 {
     public interface IAPActionIntent : IActionIntent
     {

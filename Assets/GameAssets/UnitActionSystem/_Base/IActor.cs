@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityFoundation.Code;
 
-namespace GameAssets
+namespace GameAssets.ActorSystem
 {
     public partial interface IActor<TFactory> where TFactory : IAPActionIntent
     {
