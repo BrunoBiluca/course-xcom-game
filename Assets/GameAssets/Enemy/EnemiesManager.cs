@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code.DebugHelper;
@@ -10,7 +9,7 @@ namespace GameAssets
     public class EnemiesManager : MonoBehaviour, IBilucaLoggable
     {
         private LevelSetupConfig levelSetupConfig;
-        private UnitWorldGridXZManager gridManager;
+        private UnitWorldGridManager gridManager;
         private ITurnSystem turnSystem;
 
         private List<EnemyUnit> enemies;
@@ -21,7 +20,7 @@ namespace GameAssets
 
         public void Setup(
             LevelSetupConfig levelSetupConfig,
-            UnitWorldGridXZManager gridManager,
+            UnitWorldGridManager gridManager,
             ITurnSystem turnSystem
         )
         {

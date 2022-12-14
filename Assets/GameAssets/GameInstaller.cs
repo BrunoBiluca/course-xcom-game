@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
@@ -26,7 +27,7 @@ namespace GameAssets
         [SerializeField] private UnitsManager unitsManager;
         [SerializeField] private EnemiesManager enemiesManager;
         [SerializeField] private ProjectileFactory projectileFactory;
-        private UnitWorldGridXZManager gridManager;
+        private UnitWorldGridManager gridManager;
 
         [Header("Debug")]
         [SerializeField] private UnityDebug unityDebug;
@@ -44,7 +45,7 @@ namespace GameAssets
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
             worldCursor.Setup(raycastHandler, grid.Grid);
 
-            gridManager = new UnitWorldGridXZManager(grid.Grid);
+            gridManager = new UnitWorldGridManager(grid.Grid);
 
             gridDebug.Setup(gridManager);
 
@@ -89,6 +90,11 @@ namespace GameAssets
             enemiesManager.Setup(levelSetupConfig, gridManager, turnSystem);
 
             turnSystemView.Setup(turnSystem);
+
+            foreach(var unit in FindObjectsOfType<MonoBehaviour>().OfType<IUnit>())
+            {
+                gridManager.Add(unit);
+            }
         }
 
         public void Update()

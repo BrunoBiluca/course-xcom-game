@@ -13,7 +13,7 @@ namespace GameAssets
     public class TrooperUnit :
         BilucaMono,
         IAnimationEventHandler,
-        IUnit,
+        ICharacterUnit,
         ISelectable
     {
         public UnitConfigTemplate UnitConfigTemplate { get; private set; }

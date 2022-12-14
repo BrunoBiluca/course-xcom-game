@@ -10,7 +10,7 @@ namespace GameAssets
         private readonly TrooperUnit unit;
         private readonly IAsyncProcessor asyncProcessor;
         private readonly IWorldCursor worldCursor;
-        private readonly UnitWorldGridXZManager gridManager;
+        private readonly UnitWorldGridManager gridManager;
 
         public event Action OnFinishAction;
         public event Action OnCantExecuteAction;
@@ -21,7 +21,7 @@ namespace GameAssets
             TrooperUnit unit,
             IAsyncProcessor asyncProcessor,
             IWorldCursor worldCursor,
-            UnitWorldGridXZManager gridManager
+            UnitWorldGridManager gridManager
         )
         {
             this.unit = unit;

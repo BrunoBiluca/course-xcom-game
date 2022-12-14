@@ -11,16 +11,16 @@ namespace GameAssets
 {
     public class StepMoveUnitAction : IAction
     {
-        private readonly IUnit unit;
-        private readonly UnitWorldGridXZManager gridManager;
+        private readonly ICharacterUnit unit;
+        private readonly UnitWorldGridManager gridManager;
         private readonly IWorldCursor worldCursor;
         private readonly IAsyncProcessor asyncProcessor;
         private List<Int2> path;
         private int step;
 
         public StepMoveUnitAction(
-            IUnit unit,
-            UnitWorldGridXZManager gridManager,
+            ICharacterUnit unit,
+            UnitWorldGridManager gridManager,
             IWorldCursor worldCursor,
             IAsyncProcessor asyncProcessor
         )
@@ -36,10 +36,38 @@ namespace GameAssets
 
         public void Execute()
         {
-            unit.AnimatorController.Play(new WalkingAnimation(true));
+            EvaluatePath();
+
+            if(CanMoveToDestination())
+            {
+                OnCantExecuteAction?.Invoke();
+                return;
+            }
+
+            StartMovement();
+        }
+        private void EvaluatePath()
+        {
+            var pathFinding = BuildPathFindingGrid();
+
+            var unitCell = gridManager.Grid.GetCell(unit.Transform.Position);
 
             worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos);
+            var targetCell = gridManager.Grid.GetCell(pos);
 
+            path = pathFinding.FindPath(
+                new Int2(unitCell.Position.X, unitCell.Position.Z),
+                new Int2(targetCell.Position.X, targetCell.Position.Z)
+            ).ToList();
+        }
+
+        private bool CanMoveToDestination()
+        {
+            return path.Count == 1;
+        }
+
+        private PathFinding BuildPathFindingGrid()
+        {
             var gridSize = new PathFinding.GridSize(
                 gridManager.Grid.Width,
                 gridManager.Grid.Depth
@@ -54,42 +82,38 @@ namespace GameAssets
             }
 
             gridManager.ResetValidation();
+            return pathFinding;
+        }
 
-            var unitCell = gridManager.Grid.GetCell(unit.Transform.Position);
-            var targetCell = gridManager.Grid.GetCell(pos);
-
-            path = pathFinding.FindPath(
-                new Int2(unitCell.Position.X, unitCell.Position.Z),
-                new Int2(targetCell.Position.X, targetCell.Position.Z)
-            ).ToList();
-
-            if(path.Count == 1)
-            {
-                OnCantExecuteAction?.Invoke();
-                return;
-            }
-
+        private void StartMovement()
+        {
             step = 1;
-            Move();
 
+            unit.AnimatorController.Play(new WalkingAnimation(true));
+            unit.TransformNav.OnReachDestination += ReachDestination;
+
+            Move();
             asyncProcessor.ExecuteEveryFrame(UpdateNavegation);
         }
 
         private void Move()
         {
-            if(step == path.Count - 1)
+            if(step == path.Count)
             {
-                unit.AnimatorController.Play(new WalkingAnimation(false));
-                OnFinishAction?.Invoke();
+                FinishMovement();
                 return;
             }
 
             var nextPosition = gridManager.Grid
                 .GetCellCenterPosition(new GridCellPositionXZ(path[step].X, path[step].Y));
             unit.TransformNav.SetDestination(nextPosition);
+        }
 
+        private void FinishMovement()
+        {
+            unit.AnimatorController.Play(new WalkingAnimation(false));
             unit.TransformNav.OnReachDestination -= ReachDestination;
-            unit.TransformNav.OnReachDestination += ReachDestination;
+            OnFinishAction?.Invoke();
         }
 
         private void ReachDestination()

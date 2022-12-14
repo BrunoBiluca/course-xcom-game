@@ -11,13 +11,13 @@ namespace GameAssets
     {
         private readonly UnitSelectionMono unitSelection;
         private readonly IWorldCursor worldCursor;
-        private readonly UnitWorldGridXZManager gridManager;
+        private readonly UnitWorldGridManager gridManager;
         private readonly ProjectileFactory projectileFactory;
 
         public UnitActionsFactory(
             UnitSelectionMono unitSelection,
             IWorldCursor worldCursor,
-            UnitWorldGridXZManager gridManager,
+            UnitWorldGridManager gridManager,
             ProjectileFactory projectileFactory
         )
         {
@@ -53,13 +53,16 @@ namespace GameAssets
                     unitSelection.CurrentUnit.Transform.Position,
                     unitSelection.CurrentUnit.UnitConfigTemplate.ShootRange
                 )
-                .WhereUnit((unit) =>
-                    DamageableLayerManager.I
+                .WhereUnit((unit) => {
+                    if(unit is not ICharacterUnit characterUnit)
+                        return false;
+
+                    return DamageableLayerManager.I
                         .LayerCanDamage(
                             unitSelection.CurrentUnit.Damageable.Layer,
-                            unit.Damageable.Layer
-                        )
-                );
+                            characterUnit.Damageable.Layer
+                        );
+                });
 
             return unitAction;
         }

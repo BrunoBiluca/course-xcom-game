@@ -7,13 +7,13 @@ namespace GameAssets
     {
         private readonly UnitSelectionMono unitSelection;
         private readonly IWorldCursor worldCursor;
-        private readonly UnitWorldGridXZManager gridManager;
+        private readonly UnitWorldGridManager gridManager;
         private readonly ProjectileFactory projectileFactory;
 
         public ShootActionIntent(
             UnitSelectionMono unitSelection,
             IWorldCursor worldCursor,
-            UnitWorldGridXZManager gridManager,
+            UnitWorldGridManager gridManager,
             ProjectileFactory projectileFactory
         )
         {

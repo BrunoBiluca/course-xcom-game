@@ -11,12 +11,12 @@ namespace GameAssets
 
         private readonly UnitSelectionMono unitSelection;
         private readonly IWorldCursor worldCursor;
-        private readonly UnitWorldGridXZManager gridManager;
+        private readonly UnitWorldGridManager gridManager;
 
         public MoveActionIntent(
             UnitSelectionMono unitSelection,
             IWorldCursor worldCursor,
-            UnitWorldGridXZManager gridManager
+            UnitWorldGridManager gridManager
         )
         {
             this.unitSelection = unitSelection;

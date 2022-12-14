@@ -9,11 +9,11 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class UnitWorldGridXZManager : WorldGridXZManager<UnitValue>
+    public class UnitWorldGridManager : WorldGridXZManager<UnitValue>
     {
         public List<IUnit> Units { get; private set; }
 
-        public UnitWorldGridXZManager(IWorldGridXZ<UnitValue> worldGrid) : base(worldGrid)
+        public UnitWorldGridManager(IWorldGridXZ<UnitValue> worldGrid) : base(worldGrid)
         {
             Units = new List<IUnit>();
         }

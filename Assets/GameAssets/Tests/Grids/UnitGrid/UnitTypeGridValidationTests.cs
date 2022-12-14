@@ -30,7 +30,7 @@ namespace GameAssets.Tests
                 Value = new UnitValue()
             };
 
-            var unit = new Mock<IUnit>();
+            var unit = new Mock<ICharacterUnit>();
             unit.SetupGet(u => u.Transform).Returns(new Mock<ITransform>().Object);
 
             cell.Value.Add(unit.Object);
@@ -45,7 +45,7 @@ namespace GameAssets.Tests
                 Value = new UnitValue()
             };
 
-            var unit = new Mock<IUnit>();
+            var unit = new Mock<ICharacterUnit>();
             unit.SetupGet(u => u.Name).Returns("test_name");
             unit.SetupGet(u => u.Transform).Returns(new Mock<ITransform>().Object);
 

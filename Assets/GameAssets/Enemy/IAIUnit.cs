@@ -1,6 +1,6 @@
 ﻿namespace GameAssets
 {
-    public interface IAIUnit : IUnit
+    public interface IAIUnit : ICharacterUnit
     {
         void TakeActions();
         void EndActions();

@@ -14,9 +14,9 @@ namespace GameAssets
         [field: SerializeField] public bool DebugMode { get; private set; }
 
         private IWorldGridXZ<GridDebugValue> grid;
-        private UnitWorldGridXZManager gridManager;
+        private UnitWorldGridManager gridManager;
 
-        public void Setup(UnitWorldGridXZManager gridManager)
+        public void Setup(UnitWorldGridManager gridManager)
         {
             grid = new WorldGridXZ<GridDebugValue>(
                 gridManager.Grid.InitialPosition,

@@ -7,9 +7,9 @@ namespace GameAssets
 {
     public class ShootAction : IAction
     {
-        private readonly IUnit unit;
+        private readonly ICharacterUnit unit;
         private readonly IWorldCursor worldCursor;
-        private readonly UnitWorldGridXZManager gridManager;
+        private readonly UnitWorldGridManager gridManager;
         private readonly ProjectileFactory projectileFactory;
 
         public bool ExecuteImmediatly => false;
@@ -18,9 +18,9 @@ namespace GameAssets
         public event Action OnFinishAction;
 
         public ShootAction(
-            IUnit unit,
+            ICharacterUnit unit,
             IWorldCursor worldCursor,
-            UnitWorldGridXZManager gridManager,
+            UnitWorldGridManager gridManager,
             ProjectileFactory projectileFactory
         )
         {
@@ -40,7 +40,11 @@ namespace GameAssets
                 return;
             }
 
-            var shootedUnit = cellValue.Units[0];
+            if(cellValue.Units[0] is not ICharacterUnit shootedUnit)
+            {
+                OnCantExecuteAction?.Invoke();
+                return;
+            }
 
             unit.Transform.LookAt(shootedUnit.Transform.Position);
 

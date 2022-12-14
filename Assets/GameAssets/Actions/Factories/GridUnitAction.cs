@@ -7,7 +7,7 @@
         public IAPActionIntent intent { get; }
 
         public GridUnitAction(
-            UnitWorldGridXZManager gridManager,
+            UnitWorldGridManager gridManager,
             IAPActionIntent intent
         )
         {

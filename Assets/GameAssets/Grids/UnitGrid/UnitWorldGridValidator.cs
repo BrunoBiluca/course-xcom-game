@@ -8,11 +8,11 @@ namespace GameAssets
 {
     public class UnitWorldGridValidator
     {
-        private readonly UnitWorldGridXZManager gridManager;
+        private readonly UnitWorldGridManager gridManager;
 
         private List<IGridValidation<UnitValue>> gridValidations;
 
-        public UnitWorldGridValidator(UnitWorldGridXZManager gridManager)
+        public UnitWorldGridValidator(UnitWorldGridManager gridManager)
         {
             this.gridManager = gridManager;
             gridValidations = new List<IGridValidation<UnitValue>>();

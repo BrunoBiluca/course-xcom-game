@@ -9,13 +9,13 @@ namespace GameAssets
     {
         private LevelSetupConfig levelSetupConfig;
         private IWorldCursor worldCursor;
-        private UnitWorldGridXZManager gridManager;
+        private UnitWorldGridManager gridManager;
         private IActorSelector<IAPActor> actorSelector;
 
         public void Setup(
             LevelSetupConfig levelSetupConfig,
             IWorldCursor worldCursor,
-            UnitWorldGridXZManager gridManager,
+            UnitWorldGridManager gridManager,
             ITurnSystem turnSystem,
             IActorSelector<IAPActor> actorSelector
         )
