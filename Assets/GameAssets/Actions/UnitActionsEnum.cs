@@ -4,6 +4,7 @@ namespace GameAssets
     {
         MOVE,
         SPIN,
-        SHOOT
+        SHOOT,
+        GRENADE
     }
 }

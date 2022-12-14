@@ -33,60 +33,44 @@ namespace GameAssets
                 UnitActionsEnum.SPIN => InstantiateSpin(),
                 UnitActionsEnum.MOVE => InstantiateMove(),
                 UnitActionsEnum.SHOOT => InstantiateShoot(),
+                UnitActionsEnum.GRENADE => throw new NotImplementedException(),
                 _ => throw new NotImplementedException(),
             };
         }
 
         private GridUnitAction InstantiateShoot()
         {
-            var unitAction = new GridUnitAction(
+            return new GridUnitAction(
                 gridManager,
-                new ShootActionIntent(unitSelection,
+                new DirectDamageValidationIntent(
+                    unitSelection,
+                    DamageableLayerManager.I
+                ),
+                new ShootActionIntent(
+                    unitSelection,
                     worldCursor,
                     gridManager,
                     projectileFactory
                 )
             );
-
-            unitAction.Validator
-                .WithRange(
-                    unitSelection.CurrentUnit.Transform.Position,
-                    unitSelection.CurrentUnit.UnitConfigTemplate.ShootRange
-                )
-                .WhereUnit((unit) => {
-                    if(unit is not ICharacterUnit characterUnit)
-                        return false;
-
-                    return DamageableLayerManager.I
-                        .LayerCanDamage(
-                            unitSelection.CurrentUnit.Damageable.Layer,
-                            characterUnit.Damageable.Layer
-                        );
-                });
-
-            return unitAction;
         }
 
         private GridUnitAction InstantiateMove()
         {
-            var intent = new MoveActionIntent(unitSelection, worldCursor, gridManager);
-            var unitAction = new GridUnitAction(gridManager, intent);
-
-            unitAction.Validator
-                .WhereIsEmpty()
-                .WithRange(
-                    unitSelection.CurrentUnit.transform.position,
-                    unitSelection.CurrentUnit.UnitConfigTemplate.MovementRange
-                );
-
-            return unitAction;
+            return new GridUnitAction(
+                gridManager,
+                new InRangeValidationIntent(unitSelection),
+                new MoveActionIntent(unitSelection, worldCursor, gridManager)
+            );
         }
 
         private GridUnitAction InstantiateSpin()
         {
-            var action = new SpinActionIntent(unitSelection);
-
-            return new GridUnitAction(gridManager, action);
+            return new GridUnitAction(
+                gridManager,
+                new NoValidationIntent(),
+                new SpinActionIntent(unitSelection)
+            );
         }
     }
 }

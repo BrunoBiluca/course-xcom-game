@@ -24,7 +24,7 @@ namespace GameAssets
             this.projectileFactory = projectileFactory;
         }
 
-        public int ActionPointsCost {get; set; } = 1;
+        public int ActionPointsCost { get; set; } = 1;
 
         public bool ExecuteImmediatly => false;
 

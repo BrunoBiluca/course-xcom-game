@@ -3,7 +3,7 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class SimpleUnit : MonoBehaviour, IUnit
+    public class BlockadeUnit : MonoBehaviour, IUnit
     {
         public string Name => gameObject.name;
 

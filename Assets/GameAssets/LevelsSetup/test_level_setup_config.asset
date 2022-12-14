@@ -32,6 +32,7 @@ MonoBehaviour:
   Enemies:
   - EnemyPrefab: {fileID: 4091461879376266685, guid: 2a6e14109f353f042a9a2b291c637e6b,
       type: 3}
+    UnitTemplate: {fileID: 11400000, guid: 9e411d85c61834641817985068ab343c, type: 2}
     Position:
       X: 7
       Z: 7
