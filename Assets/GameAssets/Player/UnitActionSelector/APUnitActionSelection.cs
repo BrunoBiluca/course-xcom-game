@@ -29,19 +29,23 @@ namespace GameAssets
 
         public void SetAction(IAPActionIntent action)
         {
-            if(unitActorSelector.CurrentUnitActor == null)
+            var currentActor = unitActorSelector.CurrentUnitActor;
+            if(currentActor == null)
                 throw new ActorIsNotSelected();
+
+            if(currentActor.ActionPoints.IsEmpty)
+                throw new NoAPAvaiable();
 
             CurrentAction = Optional<IAPActionIntent>.Some(action);
             OnActionSelected?.Invoke(action);
 
-            unitActorSelector.CurrentUnitActor.OnCantExecuteAction -= CantExecuteActionHandle;
-            unitActorSelector.CurrentUnitActor.OnCantExecuteAction += CantExecuteActionHandle;
+            currentActor.OnCantExecuteAction -= CantExecuteActionHandle;
+            currentActor.OnCantExecuteAction += CantExecuteActionHandle;
 
-            unitActorSelector.CurrentUnitActor.OnActionFinished -= UnselectAction;
-            unitActorSelector.CurrentUnitActor.OnActionFinished += UnselectAction;
+            currentActor.OnActionFinished -= UnselectAction;
+            currentActor.OnActionFinished += UnselectAction;
 
-            unitActorSelector.CurrentUnitActor.Set(action);
+            currentActor.Set(action);
 
             Logger?.Log("Action", CurrentAction.Get().GetType().ToString(), "was selected");
         }

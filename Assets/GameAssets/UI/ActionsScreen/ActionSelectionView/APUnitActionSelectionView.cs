@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityFoundation.Code;
@@ -41,11 +42,19 @@ namespace GameAssets
                 return;
             }
 
-            SelectAction(actionType);
 
-            var unitAction = factory.Get(actionType);
-            unitAction.ApplyValidation();
-            actionSelector.SetAction(unitAction.intent);
+            try
+            {
+                var unitAction = factory.Get(actionType);
+                actionSelector.SetAction(unitAction.intent);
+                unitAction.ApplyValidation();
+                SelectAction(actionType);
+            }
+            catch(InvalidOperationException)
+            {
+                CleanActions();
+                actionSelector.UnselectAction();
+            }
         }
 
         private void SelectAction(UnitActionsEnum actionType)
