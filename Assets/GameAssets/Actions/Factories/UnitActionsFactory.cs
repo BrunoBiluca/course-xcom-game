@@ -66,8 +66,8 @@ namespace GameAssets
 
         private GridUnitAction InstantiateMove()
         {
-            var action = new MoveActionIntent(unitSelection, worldCursor, gridManager);
-            var unitAction = new GridUnitAction(gridManager, action);
+            var intent = new MoveActionIntent(unitSelection, worldCursor, gridManager);
+            var unitAction = new GridUnitAction(gridManager, intent);
 
             unitAction.Validator
                 .WhereIsEmpty()

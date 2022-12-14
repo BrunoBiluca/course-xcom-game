@@ -4,14 +4,14 @@
     {
         public UnitWorldGridValidator Validator { get; private set; }
 
-        public IAPActionIntent ActionFactory { get; }
+        public IAPActionIntent intent { get; }
 
         public GridUnitAction(
             UnitWorldGridXZManager gridManager,
-            IAPActionIntent actionFactory
+            IAPActionIntent intent
         )
         {
-            ActionFactory = actionFactory;
+            this.intent = intent;
             Validator = new UnitWorldGridValidator(gridManager);
         }
 

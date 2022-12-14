@@ -18,9 +18,9 @@ namespace GameAssets
             Units = new List<IUnit>();
         }
 
-        public void Add(IUnit transform)
+        public void Add(IUnit unit)
         {
-            Units.Add(transform);
+            Units.Add(unit);
         }
 
         public void Update()
@@ -36,10 +36,10 @@ namespace GameAssets
             }
         }
 
-        private void UpdateGridPosition(IUnit transform)
+        private void UpdateGridPosition(IUnit unit)
         {
-            var newGridPos = Grid.GetCellWorldPosition(transform.Transform.Position);
-            Grid.TryUpdateValue(newGridPos, (val) => val.Add(transform));
+            var newGridPos = Grid.GetCellWorldPosition(unit.Transform.Position);
+            Grid.TryUpdateValue(newGridPos, (val) => val.Add(unit));
         }
 
         public UnitWorldGridValidator Validator()

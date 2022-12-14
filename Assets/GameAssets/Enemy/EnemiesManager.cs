@@ -46,7 +46,7 @@ namespace GameAssets
             var currentEnemy = enemies[enemyIndex];
             currentEnemy.OnActionFinished -= NextEnemy;
             currentEnemy.OnActionFinished += NextEnemy;
-            currentEnemy.TakeAction();
+            currentEnemy.TakeActions();
         }
 
         private void NextEnemy()

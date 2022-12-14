@@ -1,7 +1,5 @@
 using System;
 using UnityEngine;
-using UnityFoundation.Code;
-using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
 using UnityFoundation.Physics3D;
@@ -9,7 +7,8 @@ using UnityFoundation.ResourceManagement;
 
 namespace GameAssets
 {
-    public class EnemyUnit : BilucaMono, IUnit
+
+    public class EnemyUnit : BilucaMono, IAIUnit
     {
         [SerializeField] private GameObject ragdoll;
 
@@ -32,6 +31,8 @@ namespace GameAssets
         public AnimatorController AnimatorController { get; private set; }
 
         public ITransform ProjectileStart { get; private set; }
+
+        public INavegationAgent TransformNav => throw new NotImplementedException();
 
         public event Action OnActionFinished;
 
@@ -61,25 +62,15 @@ namespace GameAssets
             ragdollHandler.Setup(new TransformDecorator(root));
         }
 
-        public void TakeAction()
+        public void TakeActions()
         {
-            TakeSpinAction();
+            var brain = new EnemyBrain(this);
+            brain.TakeActions();
         }
 
-        public void TakeSpinAction()
+        public void EndActions()
         {
-            if(Actor.ActionPoints.CurrentAmount == 0)
-            {
-                UnityDebug.I.LogHighlight(nameof(EnemyUnit), "finished take actions");
-                OnActionFinished?.Invoke();
-                return;
-            }
-
-            var action = new EnemySpinActionIntent(Transform);
-            Actor.Set(action);
-
-            Actor.OnActionFinished -= TakeSpinAction;
-            Actor.OnActionFinished += TakeSpinAction;
+            OnActionFinished?.Invoke();
         }
     }
 }

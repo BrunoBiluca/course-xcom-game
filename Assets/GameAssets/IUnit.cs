@@ -18,5 +18,6 @@ namespace GameAssets
         ITransform RightShoulder { get; }
         AnimatorController AnimatorController { get; }
         ITransform ProjectileStart { get; }
+        INavegationAgent TransformNav { get; }
     }
 }

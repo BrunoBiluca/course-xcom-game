@@ -18,6 +18,12 @@ namespace GameAssets
             gridValidations = new List<IGridValidation<UnitValue>>();
         }
 
+        public UnitWorldGridValidator WhereIsNotEmpty()
+        {
+            gridValidations.Add(new NotEmptyCellGridValidation<UnitValue>());
+            return this;
+        }
+
         public UnitWorldGridValidator WhereIsEmpty()
         {
             gridValidations.Add(new EmptyCellGridValidation<UnitValue>());

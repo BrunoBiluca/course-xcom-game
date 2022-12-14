@@ -45,7 +45,7 @@ namespace GameAssets
 
             var unitAction = factory.Get(actionType);
             unitAction.ApplyValidation();
-            actionSelector.SetAction(unitAction.ActionFactory);
+            actionSelector.SetAction(unitAction.intent);
         }
 
         private void SelectAction(UnitActionsEnum actionType)

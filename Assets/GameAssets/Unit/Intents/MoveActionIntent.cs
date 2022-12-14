@@ -26,8 +26,11 @@ namespace GameAssets
 
         public IAction Create()
         {
-            return new MoveUnitAction(
-                unitSelection.CurrentUnit, AsyncProcessor.I, worldCursor, gridManager
+            //return new MoveUnitAction(
+            //    unitSelection.CurrentUnit, AsyncProcessor.I, worldCursor, gridManager
+            //);
+            return new StepMoveUnitAction(
+                unitSelection.CurrentUnit, gridManager, worldCursor, AsyncProcessor.I
             );
         }
     }
