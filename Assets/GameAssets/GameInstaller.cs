@@ -27,6 +27,7 @@ namespace GameAssets
         [SerializeField] private UnitsManager unitsManager;
         [SerializeField] private EnemiesManager enemiesManager;
         [SerializeField] private ProjectileFactory projectileFactory;
+        [SerializeField] private GrenadeProjectileFactory grenadeFactory;
         private UnitWorldGridManager gridManager;
 
         [Header("Debug")]
@@ -59,6 +60,7 @@ namespace GameAssets
                 worldCursor,
                 gridManager,
                 projectileFactory,
+                grenadeFactory,
                 levelSetupConfig.actionPointsConfig
             );
 

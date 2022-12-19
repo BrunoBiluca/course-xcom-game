@@ -36,6 +36,18 @@ MonoBehaviour:
     Position:
       X: 7
       Z: 7
+  - EnemyPrefab: {fileID: 4091461879376266685, guid: 2a6e14109f353f042a9a2b291c637e6b,
+      type: 3}
+    UnitTemplate: {fileID: 11400000, guid: 9e411d85c61834641817985068ab343c, type: 2}
+    Position:
+      X: 8
+      Z: 7
+  - EnemyPrefab: {fileID: 4091461879376266685, guid: 2a6e14109f353f042a9a2b291c637e6b,
+      type: 3}
+    UnitTemplate: {fileID: 11400000, guid: 9e411d85c61834641817985068ab343c, type: 2}
+    Position:
+      X: 6
+      Z: 7
   actionPointsConfig:
     Costs:
       m_keys:
@@ -43,4 +55,4 @@ MonoBehaviour:
       - SPIN
       - SHOOT
       - GRENADE
-      m_values: 01000000020000000100000000000000
+      m_values: 01000000020000000100000001000000

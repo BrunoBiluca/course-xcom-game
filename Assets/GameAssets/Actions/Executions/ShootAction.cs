@@ -18,6 +18,8 @@ namespace GameAssets
         public event Action OnCantExecuteAction;
         public event Action OnFinishAction;
 
+        public int Damage { get; set; } = 2;
+
         public ShootAction(
             ICharacterUnit unit,
             IWorldCursor worldCursor,
@@ -69,7 +71,7 @@ namespace GameAssets
             );
 
             proj.OnReachTarget += () => {
-                shootedUnit.Damageable.Damage(2, unit.Damageable.Layer);
+                shootedUnit.Damageable.Damage(Damage, unit.Damageable.Layer);
                 CameraManager.I.HideActionCamera(1f);
                 OnFinishAction?.Invoke();
             };

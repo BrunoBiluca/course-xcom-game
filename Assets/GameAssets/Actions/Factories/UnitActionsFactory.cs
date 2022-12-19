@@ -1,6 +1,5 @@
 using System;
 using UnityFoundation.Code;
-using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.HealthSystem;
 using UnityFoundation.WorldCursors;
 
@@ -13,6 +12,7 @@ namespace GameAssets
         private readonly IWorldCursor worldCursor;
         private readonly UnitWorldGridManager gridManager;
         private readonly ProjectileFactory projectileFactory;
+        private readonly GrenadeProjectileFactory grenadeFactory;
         private readonly ActionPointsConfig actionPointsConfig;
 
         public UnitActionsFactory(
@@ -20,6 +20,7 @@ namespace GameAssets
             IWorldCursor worldCursor,
             UnitWorldGridManager gridManager,
             ProjectileFactory projectileFactory,
+            GrenadeProjectileFactory grenadeFactory,
             ActionPointsConfig actionPointsConfig
         )
         {
@@ -27,6 +28,7 @@ namespace GameAssets
             this.worldCursor = worldCursor;
             this.gridManager = gridManager;
             this.projectileFactory = projectileFactory;
+            this.grenadeFactory = grenadeFactory;
             this.actionPointsConfig = actionPointsConfig;
         }
 
@@ -36,9 +38,26 @@ namespace GameAssets
                 UnitActionsEnum.SPIN => InstantiateSpin(),
                 UnitActionsEnum.MOVE => InstantiateMove(),
                 UnitActionsEnum.SHOOT => InstantiateShoot(),
-                UnitActionsEnum.GRENADE => throw new NotImplementedException(),
+                UnitActionsEnum.GRENADE => InstantiateGrenadeThrow(),
                 _ => throw new NotImplementedException(),
             };
+        }
+
+        private GridUnitAction InstantiateGrenadeThrow()
+        {
+            return new GridUnitAction(
+                gridManager,
+                new UnitInRangeValidationIntent(
+                    unitSelection,
+                    c => c.GrenadeRange,
+                    u => u is ICharacterUnit
+                ),
+                new ThrowGrenadeIntent(
+                    gridManager, unitSelection, worldCursor, grenadeFactory
+                ) {
+                    ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.GRENADE)
+                }
+            );
         }
 
         private GridUnitAction InstantiateShoot()
@@ -64,7 +83,7 @@ namespace GameAssets
         {
             return new GridUnitAction(
                 gridManager,
-                new InRangeValidationIntent(unitSelection),
+                new InRangeValidationIntent(unitSelection, (c) => c.MovementRange),
                 new MoveActionIntent(unitSelection, worldCursor, gridManager) {
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.MOVE)
                 }

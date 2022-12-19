@@ -1,14 +1,19 @@
-﻿namespace GameAssets
+﻿using System;
+
+namespace GameAssets
 {
     public sealed class InRangeValidationIntent : IGridValidationIntent
     {
         private UnitSelectionMono unitSelection;
+        private readonly Func<UnitConfigTemplate, int> property;
 
         public InRangeValidationIntent(
-            UnitSelectionMono unitSelection
+            UnitSelectionMono unitSelection,
+            Func<UnitConfigTemplate, int> property
         )
         {
             this.unitSelection = unitSelection;
+            this.property = property;
         }
 
         public void Validate(ref UnitWorldGridValidator validator)
@@ -17,7 +22,7 @@
                 .WhereIsEmpty()
                 .WithRange(
                     unitSelection.CurrentUnit.transform.position,
-                    unitSelection.CurrentUnit.UnitConfigTemplate.MovementRange
+                    property(unitSelection.CurrentUnit.UnitConfigTemplate)
                 );
         }
     }

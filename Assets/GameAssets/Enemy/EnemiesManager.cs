@@ -36,6 +36,8 @@ namespace GameAssets
         {
             Logger?.Log("Start enemy turn");
 
+            enemies.RemoveAll(e => e == null);
+
             enemyIndex = 0;
             EnemyAction();
         }
