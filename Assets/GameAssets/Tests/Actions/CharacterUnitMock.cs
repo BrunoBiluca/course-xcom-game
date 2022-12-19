@@ -28,6 +28,7 @@ namespace GameAssets.Tests
             var unit = new Mock<ICharacterUnit>();
             unit.Setup(u => u.Damageable).Returns(Damageable.Object);
             unit.Setup((u) => u.Transform.Position).Returns(startPosition);
+            unit.Setup((u) => u.Transform.IsValid).Returns(true);
 
             return unit;
         }

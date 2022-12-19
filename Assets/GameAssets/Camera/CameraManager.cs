@@ -12,7 +12,12 @@ namespace GameAssets
 
         public void ShakeCamera()
         {
-            GetComponent<CinemachineImpulseSource>().GenerateImpulse();
+            var impulseSource = GetComponent<CinemachineImpulseSource>();
+
+            if(impulseSource == null)
+                return;
+
+            impulseSource.GenerateImpulse();
         }
 
         public void ShowActionCamera(Vector3 position, Vector3 direction)

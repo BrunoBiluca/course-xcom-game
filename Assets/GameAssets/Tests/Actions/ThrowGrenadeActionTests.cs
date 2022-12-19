@@ -11,6 +11,27 @@ using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests
 {
+    public class ProjectileFactoryMock
+    {
+        public Mock<IProjectile> Projectile { get; private set; }
+        public IProjectileFactory ProjectileFactory { get; private set; }
+
+        public void RaiseProjectileReachedTarget()
+        {
+            Projectile.Raise(mock => mock.OnReachTarget += null);
+        }
+
+        public void Build()
+        {
+            var projectileFactory = new Mock<IProjectileFactory>();
+            Projectile = new Mock<IProjectile>();
+            projectileFactory
+                .Setup(pf => pf.Create(It.IsAny<Vector3>(), It.IsAny<Vector3>()))
+                .Returns(Projectile.Object);
+
+            ProjectileFactory = projectileFactory.Object;
+        }
+    }
 
     public class ThrowGrenadeActionTests : MonoBehaviour
     {
@@ -22,23 +43,19 @@ namespace GameAssets.Tests
             );
             var gridManager = new UnitWorldGridManager(worldGrid);
 
-            var projectileFactory = new Mock<IProjectileFactory>();
-            var projectile = new Mock<IProjectile>();
-            projectileFactory
-                .Setup(pf => pf.Create(It.IsAny<Vector3>(), It.IsAny<Vector3>()))
-                .Returns(projectile.Object);
-
+            var projectileFactoryMock = new ProjectileFactoryMock();
+            projectileFactoryMock.Build();
             var action = new ThrowGrenadeAction(
-                gridManager, Vector3.zero, Vector3.one, projectileFactory.Object
+                gridManager, Vector3.zero, Vector3.one, projectileFactoryMock.ProjectileFactory
             );
 
-            var eventTest = EventTest.Create(action, nameof(action.OnCantExecuteAction));
+            var cantExecuteEvent = EventTest.Create(action, nameof(action.OnCantExecuteAction));
 
             action.Execute();
 
-            projectile.Raise(mock => mock.OnReachTarget += null);
+            projectileFactoryMock.RaiseProjectileReachedTarget();
 
-            Assert.That(eventTest.WasTriggered, Is.True);
+            Assert.That(cantExecuteEvent.WasTriggered, Is.True);
         }
 
         [Test]
@@ -52,14 +69,11 @@ namespace GameAssets.Tests
         {
             var gridManager = gridManagerBuilder.Build();
 
-            var projectileFactory = new Mock<IProjectileFactory>();
-            var projectile = new Mock<IProjectile>();
-            projectileFactory
-                .Setup(pf => pf.Create(It.IsAny<Vector3>(), It.IsAny<Vector3>()))
-                .Returns(projectile.Object);
+            var projectileFactoryMock = new ProjectileFactoryMock();
+            projectileFactoryMock.Build();
 
             var action = new ThrowGrenadeAction(
-                gridManager, Vector3.zero, explosionPosition, projectileFactory.Object
+                gridManager, Vector3.zero, explosionPosition, projectileFactoryMock.ProjectileFactory
             ) {
                 Config = new ThrowGrenadeAction.Settings() { ExplosionRange = explosionRange }
             };
@@ -69,7 +83,7 @@ namespace GameAssets.Tests
 
             action.Execute();
 
-            projectile.Raise(mock => mock.OnReachTarget += null);
+            projectileFactoryMock.RaiseProjectileReachedTarget();
 
             Assert.That(cantExecuteEvent.WasTriggered, Is.False);
             Assert.That(finishEvent.WasTriggered, Is.True);

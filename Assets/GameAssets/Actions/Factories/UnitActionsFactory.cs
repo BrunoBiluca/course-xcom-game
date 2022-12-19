@@ -50,7 +50,7 @@ namespace GameAssets
                 new UnitInRangeValidationIntent(
                     unitSelection,
                     c => c.GrenadeRange,
-                    u => u is ICharacterUnit
+                    u => u is ICharacterUnit || u is IDestroyableUnit
                 ),
                 new ThrowGrenadeIntent(
                     gridManager, unitSelection, worldCursor, grenadeFactory
