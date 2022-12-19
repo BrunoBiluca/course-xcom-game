@@ -56,7 +56,7 @@ namespace GameAssets
                 OnCantExecuteAction?.Invoke();
                 return;
             }
-
+            CameraManager.I.ShakeCamera();
             foreach(var character in units.OfType<ICharacterUnit>())
                 character.Damageable.Damage(3, null);
 

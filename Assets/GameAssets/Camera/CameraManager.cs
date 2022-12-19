@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Timer;
@@ -8,6 +9,11 @@ namespace GameAssets
     public class CameraManager : Singleton<CameraManager>
     {
         [SerializeField] private VisibilityHandlerMono actionCamera;
+
+        public void ShakeCamera()
+        {
+            GetComponent<CinemachineImpulseSource>().GenerateImpulse();
+        }
 
         public void ShowActionCamera(Vector3 position, Vector3 direction)
         {
