@@ -11,7 +11,16 @@ namespace GameAssets
 {
     public class UnitWorldGridManager : WorldGridManager<UnitValue>
     {
+        public enum GridState
+        {
+            None,
+            Attack,
+            Interact
+        }
+
         public List<IUnit> Units { get; private set; }
+
+        public GridState State { get; set; }
 
         public UnitWorldGridManager(IWorldGridXZ<UnitValue> worldGrid) : base(worldGrid)
         {
@@ -77,6 +86,12 @@ namespace GameAssets
             }
 
             return units;
+        }
+
+        public override void ResetValidation()
+        {
+            base.ResetValidation();
+            State = GridState.None;
         }
     }
 }

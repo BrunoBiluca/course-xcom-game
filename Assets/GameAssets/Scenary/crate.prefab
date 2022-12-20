@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5386023473477067992}
+  - component: {fileID: 1665589351}
   m_Layer: 0
   m_Name: crate
   m_TagString: Untagged
@@ -32,6 +33,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1665589351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455896432462332818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bccca1fbb789fe40b03a4cadf7b7a76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyedObjPrefab: {fileID: 8644859722757323097, guid: e7bcc3e115a68ce44a9cb261ced1f408,
+    type: 3}
 --- !u!1001 &3567686988523363053
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2506,7 +2521,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4
+  m_VersionIndex: 7
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

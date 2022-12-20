@@ -19,7 +19,6 @@ namespace GameAssets
         public void Validate(ref UnitWorldGridValidator validator)
         {
             validator
-                .WhereIsEmpty()
                 .WithRange(
                     unitSelection.CurrentUnit.transform.position,
                     property(unitSelection.CurrentUnit.UnitConfigTemplate)

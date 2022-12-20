@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Sprinter
   <MovementRange>k__BackingField: 5
-  <MaxActionPoints>k__BackingField: 1
+  <MaxActionPoints>k__BackingField: 9
   <ShootRange>k__BackingField: 4
   <GrenadeRange>k__BackingField: 3

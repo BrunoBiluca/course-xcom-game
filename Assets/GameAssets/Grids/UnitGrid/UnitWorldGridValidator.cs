@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code.Grid;
+using static GameAssets.UnitWorldGridManager;
 
 namespace GameAssets
 {
@@ -49,8 +50,9 @@ namespace GameAssets
             return this;
         }
 
-        public void Apply()
+        public void Apply(GridState state)
         {
+            gridManager.State = state;
             gridManager.ApplyValidator(gridValidations.ToArray());
         }
     }

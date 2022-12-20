@@ -47,16 +47,13 @@ namespace GameAssets
         {
             return new GridUnitAction(
                 gridManager,
-                new UnitInRangeValidationIntent(
-                    unitSelection,
-                    c => c.GrenadeRange,
-                    u => u is ICharacterUnit || u is IDestroyableUnit
-                ),
                 new ThrowGrenadeIntent(
                     gridManager, unitSelection, worldCursor, grenadeFactory
                 ) {
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.GRENADE)
-                }
+                },
+                UnitWorldGridManager.GridState.Attack,
+                new InRangeValidationIntent(unitSelection, c => c.GrenadeRange)
             );
         }
 
@@ -64,10 +61,6 @@ namespace GameAssets
         {
             return new GridUnitAction(
                 gridManager,
-                new DirectDamageValidationIntent(
-                    unitSelection,
-                    DamageableLayerManager.I
-                ),
                 new ShootActionIntent(
                     unitSelection,
                     worldCursor,
@@ -75,7 +68,9 @@ namespace GameAssets
                     projectileFactory
                 ) {
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.SHOOT)
-                }
+                },
+                UnitWorldGridManager.GridState.Attack,
+                new DirectDamageValidationIntent(unitSelection, DamageableLayerManager.I)
             );
         }
 
@@ -83,10 +78,12 @@ namespace GameAssets
         {
             return new GridUnitAction(
                 gridManager,
-                new InRangeValidationIntent(unitSelection, (c) => c.MovementRange),
                 new MoveActionIntent(unitSelection, worldCursor, gridManager) {
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.MOVE)
-                }
+                },
+                UnitWorldGridManager.GridState.None,
+                new IsEmptyValidationIntent(),
+                new InRangeValidationIntent(unitSelection, (c) => c.MovementRange)
             );
         }
 
@@ -94,10 +91,11 @@ namespace GameAssets
         {
             return new GridUnitAction(
                 gridManager,
-                new NoValidationIntent(),
                 new SpinActionIntent(unitSelection) {
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.SPIN)
-                }
+                },
+                UnitWorldGridManager.GridState.None,
+                new NoValidationIntent()
             );
         }
     }

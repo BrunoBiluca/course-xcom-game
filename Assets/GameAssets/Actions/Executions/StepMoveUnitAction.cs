@@ -75,7 +75,7 @@ namespace GameAssets
             );
             var pathFinding = new PathFinding(gridSize);
 
-            gridManager.Validator().WhereIsNotEmpty().Apply();
+            gridManager.Validator().WhereIsNotEmpty().Apply(UnitWorldGridManager.GridState.None);
 
             foreach(var cell in gridManager.GetAllAvailableCells())
             {

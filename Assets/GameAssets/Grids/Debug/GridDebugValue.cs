@@ -6,6 +6,7 @@ namespace GameAssets
     public class GridDebugValue
     {
         private readonly GameObject cellRef;
+        private readonly Material cellMat;
         private readonly TextMeshPro text;
 
         public GridDebugValue(
@@ -15,6 +16,7 @@ namespace GameAssets
         {
             this.text = text;
             this.cellRef = cellRef;
+            cellMat = cellRef.transform.Find("quad").GetComponent<Renderer>().material;
         }
 
         public void SetText(string text)
@@ -30,6 +32,11 @@ namespace GameAssets
         public void DisableCellRef()
         {
             cellRef.SetActive(false);
+        }
+
+        public void SetColor(Color color)
+        {
+            cellMat.color = color;
         }
     }
 }

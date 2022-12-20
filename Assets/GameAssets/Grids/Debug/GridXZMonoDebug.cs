@@ -32,6 +32,11 @@ namespace GameAssets
         {
             gameObject.SetActive(DebugMode);
 
+            UpdateCells();
+        }
+
+        private void UpdateCells()
+        {
             foreach(var c in grid.Cells)
             {
                 c.Value.SetText(gridManager.Grid.Cells[c.Position.X, c.Position.Z].ToString());
@@ -40,7 +45,21 @@ namespace GameAssets
 
             foreach(var c in gridManager.GetAllAvailableCells())
             {
-                grid.Cells[c.Position.X, c.Position.Z].Value.EnableCellRef();
+                var gridValue = grid.Cells[c.Position.X, c.Position.Z].Value;
+                gridValue.EnableCellRef();
+
+                switch(gridManager.State)
+                {
+                    case UnitWorldGridManager.GridState.None:
+                        gridValue.SetColor(Color.white);
+                        break;
+                    case UnitWorldGridManager.GridState.Attack:
+                        gridValue.SetColor(Color.red);
+                        break;
+                    case UnitWorldGridManager.GridState.Interact:
+                        gridValue.SetColor(Color.blue);
+                        break;
+                }
             }
         }
 
@@ -52,7 +71,7 @@ namespace GameAssets
                 for(int z = 0; z < grid.Cells.GetLength(1); z++)
                     DrawGridCell(x, z);
 
-            DrawGridBorders();
+            GridDebug.DrawLines(grid, Time.deltaTime);
         }
 
         private void DrawGridCell(int x, int z)
@@ -78,36 +97,6 @@ namespace GameAssets
             grid.TrySetValue(
                 text.transform.position,
                 new GridDebugValue(text, cellRef)
-            );
-
-            Debug.DrawLine(
-                cellWorldPos,
-                cellWorldPos + Vector3.forward * grid.CellSize,
-                Color.white,
-                100f
-            );
-            Debug.DrawLine(
-                cellWorldPos,
-                cellWorldPos + Vector3.right * grid.CellSize,
-                Color.white,
-                100f
-            );
-        }
-
-        private void DrawGridBorders()
-        {
-            Debug.DrawLine(
-                grid.DepthPosition,
-                grid.WidthAndDepthPosition,
-                Color.white,
-                100f
-            );
-
-            Debug.DrawLine(
-                grid.WidthPosition,
-                grid.WidthAndDepthPosition,
-                Color.white,
-                100f
             );
         }
     }
