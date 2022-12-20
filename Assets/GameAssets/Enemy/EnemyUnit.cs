@@ -15,8 +15,6 @@ namespace GameAssets
 
         [SerializeField] private Transform root;
 
-        public ITransform Transform { get; private set; }
-
         public string Name => "Enemy";
 
         public IHealthSystem HealthSystem { get; private set; }
@@ -39,8 +37,6 @@ namespace GameAssets
 
         protected override void OnAwake()
         {
-            Transform = new TransformDecorator(transform);
-
             HealthSystem = GetComponent<HealthSystemMono>();
             HealthSystem.Setup(6);
             HealthSystem.OnDied += DieHandler;

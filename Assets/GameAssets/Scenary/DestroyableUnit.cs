@@ -8,14 +8,10 @@ namespace GameAssets
     {
         [SerializeField] private GameObject destroyedObjPrefab;
 
-        public string Name => gameObject.name;
-
-        public ITransform Transform { get; private set; }
+        public string Name => Transform.Name;
 
         protected override void OnAwake()
         {
-            Transform = new TransformDecorator(transform);
-
             OnObjectDestroyed += OnDestroyed;
         }
 

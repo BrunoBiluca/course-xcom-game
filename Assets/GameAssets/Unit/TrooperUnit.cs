@@ -16,7 +16,6 @@ namespace GameAssets
         ISelectable
     {
         public UnitConfigTemplate UnitConfigTemplate { get; private set; }
-        public ITransform Transform { get; private set; }
 
         [SerializeField] private GameObject projectileStart;
         public ITransform ProjectileStart { get; private set; }
@@ -48,9 +47,7 @@ namespace GameAssets
 
         protected override void OnAwake()
         {
-            Transform = new TransformDecorator(transform);
-            TransformNav = new TransformNavegationAgent(
-                new TransformDecorator(transform)) {
+            TransformNav = new TransformNavegationAgent(Transform) {
                 Speed = 10f,
                 StoppingDistance = 0.1f
             };
@@ -87,17 +84,25 @@ namespace GameAssets
 
         public void SetSelected(bool isSelected)
         {
-            IsSelected = isSelected;
-            OnSelectedStateChange?.Invoke();
+            UpdateSelected(isSelected);
+            SubscribeExecuteActionEvent();
+        }
+
+        private void SubscribeExecuteActionEvent()
+        {
+            worldCursor.OnSecondaryClick -= ExecuteAction;
             if(IsSelected)
-            {
-                worldCursor.OnSecondaryClick -= ExecuteAction;
                 worldCursor.OnSecondaryClick += ExecuteAction;
-            }
+        }
+
+        private void UpdateSelected(bool isSelected)
+        {
+            IsSelected = isSelected;
+            if(IsSelected)
+                OnSelected?.Invoke();
             else
-            {
-                worldCursor.OnSecondaryClick -= ExecuteAction;
-            }
+                OnUnselected?.Invoke();
+            OnSelectedStateChange?.Invoke();
         }
 
         private void ExecuteAction()

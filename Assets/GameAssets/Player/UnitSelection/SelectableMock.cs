@@ -13,14 +13,10 @@ namespace GameAssets
         public event Action OnSelected;
         public event Action OnUnselected;
 
-        public Collider GetCollider()
-        {
-            return GetComponent<Collider>();
-        }
-
         public void SetSelected(bool state)
         {
             State = state;
+            OnSelectedStateChange?.Invoke();
         }
     }
 }
