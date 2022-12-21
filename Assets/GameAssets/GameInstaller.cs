@@ -21,7 +21,6 @@ namespace GameAssets
         [Header("Grid")]
         [SerializeField] private UnitGridWorldCursor worldCursor;
         [SerializeField] private UnitWorldGridXZ grid;
-        [SerializeField] private GridXZMonoDebug gridDebug;
 
         [Header("Managers")]
         [SerializeField] private UnitSelectionMono unitSelection;
@@ -29,25 +28,22 @@ namespace GameAssets
         [SerializeField] private EnemiesManager enemiesManager;
         [SerializeField] private ProjectileFactory projectileFactory;
         [SerializeField] private GrenadeProjectileFactory grenadeFactory;
-        private UnitWorldGridManager gridManager;
 
         [Header("Debug")]
         [SerializeField] private UnityDebug unityDebug;
+        [SerializeField] private GridXZMonoDebug gridDebug;
 
-        public PrettyObject BePretty()
-        {
-            var installerColor = new Color(.38f, .35f, .06f);
-            return new PrettyObject(false, installerColor, Color.white, gameObject);
-        }
+        private UnitWorldGridManager gridManager;
+
 
         protected override void OnStart()
         {
             grid.Setup(levelSetupConfig.GridConfig);
 
-            var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
-            worldCursor.Setup(raycastHandler, grid.Grid);
-
             gridManager = new UnitWorldGridManager(grid.Grid);
+
+            var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
+            worldCursor.Setup(raycastHandler, grid.Grid, gridManager);
 
             worldGridView.Setup(gridManager, worldCursor);
             gridDebug.Setup(gridManager);
@@ -106,5 +102,12 @@ namespace GameAssets
         {
             gridManager.Update();
         }
+
+        public PrettyObject BePretty()
+        {
+            var installerColor = new Color(.38f, .35f, .06f);
+            return new PrettyObject(false, installerColor, Color.white, gameObject);
+        }
+
     }
 }

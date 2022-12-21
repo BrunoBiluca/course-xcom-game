@@ -9,13 +9,13 @@ namespace GameAssets
     public class UnitsManager : MonoBehaviour
     {
         private LevelSetupConfig levelSetupConfig;
-        private IWorldCursor worldCursor;
+        private UnitGridWorldCursor worldCursor;
         private UnitWorldGridManager gridManager;
         private IActorSelector<IAPActor> actorSelector;
 
         public void Setup(
             LevelSetupConfig levelSetupConfig,
-            IWorldCursor worldCursor,
+            UnitGridWorldCursor worldCursor,
             UnitWorldGridManager gridManager,
             ITurnSystem turnSystem,
             IActorSelector<IAPActor> actorSelector

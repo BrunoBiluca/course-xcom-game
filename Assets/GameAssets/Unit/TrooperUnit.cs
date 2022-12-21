@@ -27,7 +27,6 @@ namespace GameAssets
         public AnimatorController AnimatorController { get; private set; }
         public INavegationAgent TransformNav { get; private set; }
 
-        private IWorldCursor worldCursor;
         public IResourceManager ActionPoints => unitActionsManager.ActionPoints;
 
         public bool IsSelected { get; private set; }
@@ -44,6 +43,8 @@ namespace GameAssets
         public event Action OnSelectedStateChange;
         public event Action OnSelected;
         public event Action OnUnselected;
+
+        private UnitGridWorldCursor worldCursor;
 
         protected override void OnAwake()
         {
@@ -66,7 +67,7 @@ namespace GameAssets
 
         public void Setup(
             UnitConfigTemplate unitConfigTemplate,
-            IWorldCursor worldCursor
+            UnitGridWorldCursor worldCursor
         )
         {
             this.worldCursor = worldCursor;
@@ -75,6 +76,8 @@ namespace GameAssets
             unitActionsManager = new APActor(
                 new FiniteResourceManager(UnitConfigTemplate.MaxActionPoints, true)
             );
+            Actor.OnCantExecuteAction += InvokeCantExecuteAction;
+            OnObjectDestroyed += () => Actor.OnCantExecuteAction -= InvokeCantExecuteAction;
         }
 
         public Collider GetCollider()
@@ -90,9 +93,9 @@ namespace GameAssets
 
         private void SubscribeExecuteActionEvent()
         {
-            worldCursor.OnSecondaryClick -= ExecuteAction;
+            worldCursor.OnAvaiableCellSecondaryClicked -= ExecuteAction;
             if(IsSelected)
-                worldCursor.OnSecondaryClick += ExecuteAction;
+                worldCursor.OnAvaiableCellSecondaryClicked += ExecuteAction;
         }
 
         private void UpdateSelected(bool isSelected)
@@ -107,8 +110,6 @@ namespace GameAssets
 
         private void ExecuteAction()
         {
-            Actor.OnCantExecuteAction -= InvokeCantExecuteAction;
-            Actor.OnCantExecuteAction += InvokeCantExecuteAction;
 
             Actor.Execute();
         }
