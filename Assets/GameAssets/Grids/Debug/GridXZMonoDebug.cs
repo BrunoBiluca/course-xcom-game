@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
@@ -6,11 +5,8 @@ using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
-    // TODO: esse cara já é um forte candidato para virar genérico e não ser monobehaviour
     public class GridXZMonoDebug : MonoBehaviour
     {
-        [SerializeField] private GameObject cellPrefab;
-
         [field: SerializeField] public bool DebugMode { get; private set; }
 
         private IWorldGridXZ<GridDebugValue> grid;
@@ -40,26 +36,6 @@ namespace GameAssets
             foreach(var c in grid.Cells)
             {
                 c.Value.SetText(gridManager.Grid.Cells[c.Position.X, c.Position.Z].ToString());
-                c.Value.DisableCellRef();
-            }
-
-            foreach(var c in gridManager.GetAllAvailableCells())
-            {
-                var gridValue = grid.Cells[c.Position.X, c.Position.Z].Value;
-                gridValue.EnableCellRef();
-
-                switch(gridManager.State)
-                {
-                    case UnitWorldGridManager.GridState.None:
-                        gridValue.SetColor(Color.white);
-                        break;
-                    case UnitWorldGridManager.GridState.Attack:
-                        gridValue.SetColor(Color.red);
-                        break;
-                    case UnitWorldGridManager.GridState.Interact:
-                        gridValue.SetColor(Color.blue);
-                        break;
-                }
             }
         }
 
@@ -78,13 +54,6 @@ namespace GameAssets
         {
             var gridCellWorldPos = new Vector3(x * grid.CellSize, 0f, z * grid.CellSize);
             var cellWorldPos = grid.GetCellWorldPosition(gridCellWorldPos);
-            var cellWorldCenter = grid.GetCellCenterPosition(gridCellWorldPos);
-
-            var cellRef = Instantiate(cellPrefab, transform);
-            cellRef.transform.localPosition = new Vector3(
-                cellWorldCenter.x, 0.05f, cellWorldCenter.z
-            );
-            cellRef.transform.localScale = Vector3.one * grid.CellSize;
 
             var text = DebugDraw.DrawWordTextCell(
                 grid.Cells[x, z].ToString(),
@@ -94,10 +63,7 @@ namespace GameAssets
                 transform
             );
 
-            grid.TrySetValue(
-                text.transform.position,
-                new GridDebugValue(text, cellRef)
-            );
+            grid.TrySetValue(cellWorldPos, new GridDebugValue(text));
         }
     }
 }

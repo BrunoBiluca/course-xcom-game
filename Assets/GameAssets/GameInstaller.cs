@@ -16,6 +16,7 @@ namespace GameAssets
         [SerializeField] private APUnitActionSelectionView unitActionSelectionView;
         [SerializeField] private ActionPointsView actionPointsView;
         [SerializeField] private TurnSystemView turnSystemView;
+        [SerializeField] private WorldGridView worldGridView;
 
         [Header("Grid")]
         [SerializeField] private UnitGridWorldCursor worldCursor;
@@ -48,6 +49,7 @@ namespace GameAssets
 
             gridManager = new UnitWorldGridManager(grid.Grid);
 
+            worldGridView.Setup(gridManager, worldCursor);
             gridDebug.Setup(gridManager);
 
             var unitSelection = FindObjectOfType<UnitSelectionMono>();
