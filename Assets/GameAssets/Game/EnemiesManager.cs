@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.Grid;
+using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.TurnSystem;
 
 namespace GameAssets
 {
-    public class EnemiesManager : MonoBehaviour, IBilucaLoggable
+    public class EnemiesManager : BilucaMono, IBilucaLoggable
     {
         private LevelSetupConfig levelSetupConfig;
         private UnitWorldGridManager gridManager;
@@ -14,7 +17,8 @@ namespace GameAssets
 
         private List<EnemyUnit> enemies;
 
-        public IBilucaLogger Logger { get; set; }
+        public int CurrentEnemiesCount => enemies.Count;
+        public event Action OnEnemiesDied;
 
         private int enemyIndex;
 
@@ -29,7 +33,7 @@ namespace GameAssets
 
             this.turnSystem = turnSystem;
             turnSystem.OnEnemyTurnStarted += EnemyStartTurn;
-            SetupUnits();
+            SetupEnemies();
         }
 
         private void EnemyStartTurn()
@@ -68,7 +72,7 @@ namespace GameAssets
             turnSystem.EndEnemyTurn();
         }
 
-        public void SetupUnits()
+        public void SetupEnemies()
         {
             enemies = new List<EnemyUnit>();
             foreach(var enemy in levelSetupConfig.Enemies)
@@ -81,9 +85,18 @@ namespace GameAssets
                         new GridCellPositionXZ(enemy.Position.X, enemy.Position.Z)
                 );
 
+                newEnemy.Obj.OnObjectDestroyed += () => HandleEnemyDestroyed(newEnemy);
+
                 enemies.Add(newEnemy);
                 gridManager.Add(newEnemy);
             }
+        }
+
+        private void HandleEnemyDestroyed(EnemyUnit enemy)
+        {
+            enemies.Remove(enemy);
+            if(enemies.IsEmpty())
+                OnEnemiesDied?.Invoke();
         }
     }
 }

@@ -77,7 +77,7 @@ namespace GameAssets
                 new FiniteResourceManager(UnitConfigTemplate.MaxActionPoints, true)
             );
             Actor.OnCantExecuteAction += InvokeCantExecuteAction;
-            OnObjectDestroyed += () => Actor.OnCantExecuteAction -= InvokeCantExecuteAction;
+            Obj.OnObjectDestroyed += () => Actor.OnCantExecuteAction -= InvokeCantExecuteAction;
         }
 
         public Collider GetCollider()

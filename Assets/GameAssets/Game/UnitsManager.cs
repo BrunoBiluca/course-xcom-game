@@ -1,4 +1,5 @@
 using GameAssets.ActorSystem;
+using System;
 using UnityEngine;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.TurnSystem;
@@ -12,6 +13,10 @@ namespace GameAssets
         private UnitGridWorldCursor worldCursor;
         private UnitWorldGridManager gridManager;
         private IActorSelector<IAPActor> actorSelector;
+
+        public int CurrentUnitsCount { get; private set; }
+
+        public event Action OnUnitsDied;
 
         public void Setup(
             LevelSetupConfig levelSetupConfig,
@@ -52,8 +57,18 @@ namespace GameAssets
                         new GridCellPositionXZ(unitSetup.Position.X, unitSetup.Position.Z)
                     );
 
+                unit.Obj.OnObjectDestroyed += HandleUnitDetroy;
                 gridManager.Add(unit);
             }
+
+            CurrentUnitsCount = levelSetupConfig.Units.Length;
+        }
+
+        private void HandleUnitDetroy()
+        {
+            CurrentUnitsCount--;
+            if(CurrentUnitsCount == 0)
+                OnUnitsDied?.Invoke();
         }
 
         public TrooperUnit[] GetAllUnits()

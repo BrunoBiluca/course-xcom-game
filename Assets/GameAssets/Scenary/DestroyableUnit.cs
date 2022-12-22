@@ -12,7 +12,7 @@ namespace GameAssets
 
         protected override void OnAwake()
         {
-            OnObjectDestroyed += OnDestroyed;
+            Obj.OnObjectDestroyed += OnDestroyed;
         }
 
         private void OnDestroyed()
@@ -31,5 +31,7 @@ namespace GameAssets
                 ApplyForce(child, position, force, radius);
             }
         }
+
+        public void Destroy() => Obj.Destroy();
     }
 }

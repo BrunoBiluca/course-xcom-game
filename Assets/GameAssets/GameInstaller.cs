@@ -23,6 +23,7 @@ namespace GameAssets
         [SerializeField] private UnitWorldGridXZ grid;
 
         [Header("Managers")]
+        [SerializeField] private GameManager gameManager;
         [SerializeField] private UnitSelectionMono unitSelection;
         [SerializeField] private UnitsManager unitsManager;
         [SerializeField] private EnemiesManager enemiesManager;
@@ -96,6 +97,8 @@ namespace GameAssets
             {
                 gridManager.Add(unit);
             }
+
+            gameManager.Setup(unitsManager, enemiesManager);
         }
 
         public void Update()
