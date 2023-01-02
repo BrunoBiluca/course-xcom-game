@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code.Grid;
-using static GameAssets.UnitWorldGridManager;
 
 namespace GameAssets
 {
@@ -11,7 +9,7 @@ namespace GameAssets
     {
         private readonly UnitWorldGridManager gridManager;
 
-        private List<IGridValidation<UnitValue>> gridValidations;
+        private readonly List<IGridValidation<UnitValue>> gridValidations;
 
         public UnitWorldGridValidator(UnitWorldGridManager gridManager)
         {
@@ -50,7 +48,7 @@ namespace GameAssets
             return this;
         }
 
-        public void Apply(GridState state)
+        public void Apply(UnitWorldGridManager.GridState state)
         {
             gridManager.State = state;
             gridManager.ApplyValidator(gridValidations.ToArray());

@@ -17,3 +17,4 @@ MonoBehaviour:
   <MaxActionPoints>k__BackingField: 9
   <ShootRange>k__BackingField: 7
   <GrenadeRange>k__BackingField: 4
+  <MeleeRange>k__BackingField: 1

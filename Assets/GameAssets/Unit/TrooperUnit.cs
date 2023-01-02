@@ -11,7 +11,6 @@ namespace GameAssets
 {
     public class TrooperUnit :
         BilucaMono,
-        IAnimationEventHandler,
         ICharacterUnit,
         ISelectable
     {
@@ -24,7 +23,7 @@ namespace GameAssets
 
         public ITransform RightShoulder { get; private set; }
 
-        public AnimatorController AnimatorController { get; private set; }
+        public IAnimatorController AnimatorController { get; private set; }
         public INavegationAgent TransformNav { get; private set; }
 
         public IResourceManager ActionPoints => unitActionsManager.ActionPoints;
@@ -53,9 +52,7 @@ namespace GameAssets
                 StoppingDistance = 0.1f
             };
 
-            AnimatorController = new AnimatorController(
-                new AnimatorDecorator(GetComponentInChildren<Animator>())
-            );
+            AnimatorController = GetComponent<UnitAnimatorController>();
 
             HealthSystem = gameObject.GetComponent<HealthSystemMono>();
             HealthSystem.Setup(10);
@@ -117,13 +114,6 @@ namespace GameAssets
         private void InvokeCantExecuteAction()
         {
             Actor.UnsetAction();
-        }
-
-        public void AnimationEventHandler(string eventName)
-        {
-            Debug.Log("Animation: " + eventName);
-
-            // TODO: o AnimationController deve ser chamado para executar esse evento
         }
     }
 }

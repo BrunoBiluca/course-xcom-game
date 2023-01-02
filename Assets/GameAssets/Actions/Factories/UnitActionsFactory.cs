@@ -39,8 +39,23 @@ namespace GameAssets
                 UnitActionsEnum.MOVE => InstantiateMove(),
                 UnitActionsEnum.SHOOT => InstantiateShoot(),
                 UnitActionsEnum.GRENADE => InstantiateGrenadeThrow(),
+                UnitActionsEnum.MELEE => InstantiateMelee(),
                 _ => throw new NotImplementedException(),
             };
+        }
+
+        private GridUnitAction InstantiateMelee()
+        {
+            return new GridUnitAction(
+                gridManager,
+                new MeleeAttackIntent(gridManager, unitSelection, worldCursor),
+                UnitWorldGridManager.GridState.Attack,
+                new DirectDamageValidationIntent(
+                    unitSelection, 
+                    DamageableLayerManager.I,
+                    c => c.MeleeRange
+                )
+            );
         }
 
         private GridUnitAction InstantiateGrenadeThrow()
@@ -70,7 +85,11 @@ namespace GameAssets
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.SHOOT)
                 },
                 UnitWorldGridManager.GridState.Attack,
-                new DirectDamageValidationIntent(unitSelection, DamageableLayerManager.I)
+                new DirectDamageValidationIntent(
+                    unitSelection, 
+                    DamageableLayerManager.I,
+                    c => c.ShootRange
+                )
             );
         }
 

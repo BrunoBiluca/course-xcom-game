@@ -10,5 +10,6 @@ namespace GameAssets
         [field: SerializeField] public uint MaxActionPoints { get; private set; }
         [field: SerializeField] public int ShootRange { get; private set; }
         [field: SerializeField] public int GrenadeRange { get; private set; }
+        [field: SerializeField] public int MeleeRange { get; private set; }
     }
 }

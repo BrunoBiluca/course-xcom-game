@@ -27,7 +27,7 @@ namespace GameAssets
 
         public ITransform RightShoulder { get; private set; }
 
-        public AnimatorController AnimatorController { get; private set; }
+        public IAnimatorController AnimatorController { get; private set; }
 
         public ITransform ProjectileStart { get; private set; }
 

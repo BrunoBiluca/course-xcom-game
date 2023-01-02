@@ -34,6 +34,12 @@ namespace GameAssets.ActorSystem
 
             var action = intent.Create();
 
+            if(action == null)
+            {
+                InvokeCantExecuteAction();
+                return;
+            }
+
             action.OnCantExecuteAction -= InvokeCantExecuteAction;
             action.OnCantExecuteAction += InvokeCantExecuteAction;
 

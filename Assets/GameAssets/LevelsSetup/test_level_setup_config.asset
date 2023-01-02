@@ -55,4 +55,5 @@ MonoBehaviour:
       - SPIN
       - SHOOT
       - GRENADE
-      m_values: 01000000020000000100000001000000
+      - MELEE
+      m_values: 0100000002000000010000000300000002000000

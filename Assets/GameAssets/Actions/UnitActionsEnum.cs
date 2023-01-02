@@ -5,6 +5,7 @@ namespace GameAssets
         MOVE,
         SPIN,
         SHOOT,
-        GRENADE
+        GRENADE,
+        MELEE
     }
 }

@@ -14,7 +14,7 @@ namespace GameAssets
         IAPActor Actor { get; }
         UnitConfigTemplate UnitConfigTemplate { get; }
         ITransform RightShoulder { get; }
-        AnimatorController AnimatorController { get; }
+        IAnimatorController AnimatorController { get; }
         ITransform ProjectileStart { get; }
         INavegationAgent TransformNav { get; }
     }
