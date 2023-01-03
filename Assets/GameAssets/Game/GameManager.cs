@@ -16,7 +16,7 @@ namespace GameAssets
             EnemiesManager enemiesManager
         )
         {
-            unitsManager.OnUnitsDied += FinishWithLoserPlayer;
+            unitsManager.OnAllUnitsDied += FinishWithLoserPlayer;
             enemiesManager.OnEnemiesDied += FinishWithWinnerPlayer;
         }
 

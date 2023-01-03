@@ -16,7 +16,7 @@ namespace GameAssets
 
         public int CurrentUnitsCount { get; private set; }
 
-        public event Action OnUnitsDied;
+        public event Action OnAllUnitsDied;
 
         public void Setup(
             LevelSetupConfig levelSetupConfig,
@@ -41,7 +41,7 @@ namespace GameAssets
             actorSelector.UnselectUnit();
             foreach(var u in GetAllUnits())
             {
-                u.ActionPoints.FullReffil();
+                u.Actor.ActionPoints.FullReffil();
             }
         }
 
@@ -68,7 +68,7 @@ namespace GameAssets
         {
             CurrentUnitsCount--;
             if(CurrentUnitsCount == 0)
-                OnUnitsDied?.Invoke();
+                OnAllUnitsDied?.Invoke();
         }
 
         public TrooperUnit[] GetAllUnits()

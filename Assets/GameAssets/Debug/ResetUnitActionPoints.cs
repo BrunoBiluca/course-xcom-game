@@ -15,7 +15,7 @@ namespace GameAssets
 
             foreach(var u in units)
             {
-                u.ActionPoints.FullReffil();
+                u.Actor.ActionPoints.FullReffil();
             }
         }
     }

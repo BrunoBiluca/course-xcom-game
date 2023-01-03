@@ -1,11 +1,7 @@
-using Assets.UnityFoundation.Systems.HealthSystem;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityFoundation.Code.Grid;
-using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {

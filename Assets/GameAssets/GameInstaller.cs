@@ -17,6 +17,7 @@ namespace GameAssets
         [SerializeField] private ActionPointsView actionPointsView;
         [SerializeField] private TurnSystemView turnSystemView;
         [SerializeField] private WorldGridView worldGridView;
+        [SerializeField] private UnitsView unitsView;
 
         [Header("Grid")]
         [SerializeField] private UnitGridWorldCursor worldCursor;
@@ -99,6 +100,8 @@ namespace GameAssets
             }
 
             gameManager.Setup(unitsManager, enemiesManager);
+
+            unitsView.Setup(unitsManager);
         }
 
         public void Update()

@@ -1,10 +1,12 @@
 using GameAssets.ActorSystem;
 using System;
 using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.Code.Extensions;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
 using UnityFoundation.ResourceManagement;
+using UnityFoundation.UI.Components;
 using UnityFoundation.WorldCursors;
 
 namespace GameAssets
@@ -25,8 +27,6 @@ namespace GameAssets
 
         public IAnimatorController AnimatorController { get; private set; }
         public INavegationAgent TransformNav { get; private set; }
-
-        public IResourceManager ActionPoints => unitActionsManager.ActionPoints;
 
         public bool IsSelected { get; private set; }
 
@@ -56,6 +56,9 @@ namespace GameAssets
 
             HealthSystem = gameObject.GetComponent<HealthSystemMono>();
             HealthSystem.Setup(10);
+
+            var healthController = new HealthSystemController(HealthSystem);
+            healthController.AddHealthBar(transform.FindComponent<IHealthBar>("health_bar"));
 
             ProjectileStart = new TransformDecorator(projectileStart.transform);
 
