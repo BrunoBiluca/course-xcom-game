@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 6954561205222543393}
   - component: {fileID: 1537363093236871266}
   m_Layer: 5
-  m_Name: portrait
+  m_Name: portrait_holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

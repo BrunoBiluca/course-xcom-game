@@ -24,27 +24,34 @@ namespace GameAssets
             foreach(var unit in unitsManager.GetAllUnits())
             {
                 var view = Instantiate(unitViewPrefab, unitsViewHolder).transform;
-
-                var portrait = view.FindComponent<Image>("portrait");
-
-                var name = view.FindComponent<TextMeshProUGUI>("container", "name");
-                name.text = unit.Name;
-
-                var healthController = new HealthSystemController(unit.HealthSystem);
-                healthController
-                    .AddHealthBar(
-                        view.FindComponent<IHealthBar>("container.health_bar_holder.health_bar")
-                    )
-                    .AddDiedView(
-                        view
-                            .FindTransform("container.health_bar_holder.died_icon")
-                            .gameObject.Decorate()
-                    );
-
-                var actionPoints = view
-                    .FindComponent<TextMeshProUGUI>("container", "action_points", "value");
-                actionPoints.text = unit.Actor.ActionPoints.MaxAmount.ToString();
+                SetupView(unit, view);
             }
+        }
+
+        private static void SetupView(TrooperUnit unit, Transform view)
+        {
+            view.Setup<Image>(
+                "portrait_holder.portrait",
+                i => i.sprite = unit.UnitConfigTemplate.Portrait
+            );
+
+            view.Setup<TextMeshProUGUI>("container.name", t => t.text = unit.Name);
+
+            view.Setup<TextMeshProUGUI>(
+                "container.action_points.value",
+                t => t.text = unit.Actor.ActionPoints.MaxAmount.ToString()
+            );
+
+            var healthController = new HealthSystemController(unit.HealthSystem);
+            healthController
+                .AddHealthBar(
+                    view.FindComponent<IHealthBar>("container.health_bar_holder.health_bar")
+                )
+                .AddDiedView(
+                    view
+                        .FindTransform("container.health_bar_holder.died_icon")
+                        .gameObject.Decorate()
+                );
         }
     }
 }

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07be7f9d5f5dc240ae1ba426dfc53c8, type: 3}
   m_Name: sprinter_unit
   m_EditorClassIdentifier: 
+  <Portrait>k__BackingField: {fileID: 21300000, guid: 3e4bce5241c7642d392b39886c15f562,
+    type: 3}
   <Name>k__BackingField: Sprinter
   <MovementRange>k__BackingField: 5
   <MaxActionPoints>k__BackingField: 9
