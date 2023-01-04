@@ -30,8 +30,16 @@ namespace GameAssets
                 var name = view.FindComponent<TextMeshProUGUI>("container", "name");
                 name.text = unit.Name;
 
-                var healthbar = view.FindComponent<IHealthBar>("container", "health_bar");
-                healthbar.Setup(unit.HealthSystem.BaseHealth);
+                var healthController = new HealthSystemController(unit.HealthSystem);
+                healthController
+                    .AddHealthBar(
+                        view.FindComponent<IHealthBar>("container.health_bar_holder.health_bar")
+                    )
+                    .AddDiedView(
+                        view
+                            .FindTransform("container.health_bar_holder.died_icon")
+                            .gameObject.Decorate()
+                    );
 
                 var actionPoints = view
                     .FindComponent<TextMeshProUGUI>("container", "action_points", "value");
