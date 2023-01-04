@@ -12,6 +12,11 @@ namespace GameAssets
         private IWorldGridXZ<GridDebugValue> grid;
         private UnitWorldGridManager gridManager;
 
+        public void Start()
+        {
+            GameInstaller.I.OnInstallerFinish += () => Setup(GameInstaller.I.GridManager);
+        }
+
         public void Setup(UnitWorldGridManager gridManager)
         {
             grid = new WorldGridXZ<GridDebugValue>(
@@ -33,6 +38,8 @@ namespace GameAssets
 
         private void UpdateCells()
         {
+            if(grid == null) return;
+
             foreach(var c in grid.Cells)
             {
                 c.Value.SetText(gridManager.Grid.Cells[c.Position.X, c.Position.Z].ToString());

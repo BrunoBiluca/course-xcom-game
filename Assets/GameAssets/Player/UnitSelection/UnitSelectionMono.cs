@@ -26,6 +26,7 @@ namespace GameAssets
         public void Setup(IWorldCursor worldCursor)
         {
             this.worldCursor = worldCursor;
+            worldCursor.OnClick += TrySelectUnit;
         }
 
         public void Start()
@@ -34,8 +35,6 @@ namespace GameAssets
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
             unitSelection = new RaycastSelection(raycastHandler)
                 .SetLayers(unitLayer);
-
-            worldCursor.OnClick += TrySelectUnit;
         }
 
         private void TrySelectUnit()

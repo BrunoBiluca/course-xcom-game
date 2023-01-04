@@ -8,7 +8,7 @@ namespace GameAssets
 {
     public class CameraManager : Singleton<CameraManager>
     {
-        [SerializeField] private VisibilityHandlerMono actionCamera;
+        [SerializeField] private ViewerMono actionCamera;
 
         public void ShakeCamera()
         {

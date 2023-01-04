@@ -25,6 +25,7 @@ namespace GameAssets
 
         public void Update()
         {
+            if(actorSelector == null) return;
             if(actorSelector.CurrentUnitActor == null) return;
 
             var actor = actorSelector.CurrentUnitActor;

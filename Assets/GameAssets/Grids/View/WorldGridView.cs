@@ -1,30 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityFoundation.Code;
-using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.WorldCursors;
+using static GameAssets.WorldGridView;
 
 namespace GameAssets
 {
-
-    public class WorldGridView : MonoBehaviour
+    public class WorldGridView : BilucaMonoWithSetup<Params>
     {
+        public class Params
+        {
+            public UnitWorldGridManager gridManager;
+            public IWorldCursor worldCursor;
+        }
+
         [SerializeField] private GameObject cellPrefab;
 
         private UnitWorldGridManager gridManager;
         private IWorldCursor worldCursor;
         private WorldGridXZ<GridViewValue> grid;
 
-        public void Setup(
-            UnitWorldGridManager gridManager,
-            IWorldCursor worldCursor
-        )
+        protected override void OnSetup(Params parameters)
         {
-            this.gridManager = gridManager;
-            this.worldCursor = worldCursor;
+            gridManager = parameters.gridManager;
+            worldCursor = parameters.worldCursor;
 
             transform.position = gridManager.Grid.InitialPosition;
             grid = new WorldGridXZ<GridViewValue>(
@@ -36,7 +35,7 @@ namespace GameAssets
             Display();
         }
 
-        public void Update()
+        protected override void OnUpdate()
         {
             UpdateCells();
         }

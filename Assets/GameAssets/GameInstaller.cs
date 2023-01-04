@@ -1,5 +1,9 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.UnityAdapter;
@@ -9,6 +13,8 @@ namespace GameAssets
 {
     public class GameInstaller : Singleton<GameInstaller>, IPrettyable
     {
+        public event Action OnInstallerFinish;
+
         [Header("Config")]
         [SerializeField] private LevelSetupConfig levelSetupConfig;
 
@@ -21,7 +27,6 @@ namespace GameAssets
 
         [Header("Grid")]
         [SerializeField] private UnitGridWorldCursor worldCursor;
-        [SerializeField] private UnitWorldGridXZ grid;
 
         [Header("Managers")]
         [SerializeField] private GameManager gameManager;
@@ -31,34 +36,41 @@ namespace GameAssets
         [SerializeField] private ProjectileFactory projectileFactory;
         [SerializeField] private GrenadeProjectileFactory grenadeFactory;
 
-        [Header("Debug")]
-        [SerializeField] private UnityDebug unityDebug;
-        [SerializeField] private GridXZMonoDebug gridDebug;
+        [SerializeField] private GameSceneManager sceneManager;
+        [SerializeField] private GameBinder binder;
 
-        private UnitWorldGridManager gridManager;
+        public UnitWorldGridManager GridManager { get; private set; }
 
-
-        protected override void OnStart()
+        protected override void OnAwake()
         {
-            grid.Setup(levelSetupConfig.GridConfig);
+            binder.OnBinderFinish += StartInstaller;
+        }
 
-            gridManager = new UnitWorldGridManager(grid.Grid);
+        private void StartInstaller()
+        {
+            Debug.Log("Start GameInstaller");
+            var grid = binder.GetReference<UnitWorldGridXZ>();
+            GridManager = new UnitWorldGridManager(grid.Grid);
 
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
-            worldCursor.Setup(raycastHandler, grid.Grid, gridManager);
+            worldCursor.Setup(raycastHandler, grid.Grid, GridManager);
 
-            worldGridView.Setup(gridManager, worldCursor);
-            gridDebug.Setup(gridManager);
+            worldGridView.Setup(
+                new WorldGridView.Params() {
+                    gridManager = GridManager,
+                    worldCursor = worldCursor
+                }
+            );
 
             var unitSelection = FindObjectOfType<UnitSelectionMono>();
             unitSelection.Setup(worldCursor);
 
-            unitSelection.OnUnitUnselected += () => gridManager.ResetValidation();
+            unitSelection.OnUnitUnselected += () => GridManager.ResetValidation();
 
             var unitActionsFactory = new UnitActionsFactory(
                 unitSelection,
                 worldCursor,
-                gridManager,
+                GridManager,
                 projectileFactory,
                 grenadeFactory,
                 levelSetupConfig.actionPointsConfig
@@ -66,7 +78,7 @@ namespace GameAssets
 
             var actionSelection = new APUnitActionSelection(unitSelection);
 
-            actionSelection.OnActionUnselected += () => gridManager.ResetValidation();
+            actionSelection.OnActionUnselected += () => GridManager.ResetValidation();
 
             unitActionSelectionView.Setup(actionSelection, unitActionsFactory);
 
@@ -76,7 +88,7 @@ namespace GameAssets
                 new GameObjectDecorator(actionPointsView.gameObject),
                 new GameObjectDecorator(unitActionSelectionView.gameObject)
             ) {
-                Logger = unityDebug
+                Logger = binder.GetReference<IBilucaLogger>()
             };
             selectableVisibility.Hide();
 
@@ -86,27 +98,32 @@ namespace GameAssets
             var turnSystem = new TurnSystem();
 
             unitsManager.Setup(
-                levelSetupConfig, worldCursor, gridManager, turnSystem, unitSelection
+                levelSetupConfig, worldCursor, GridManager, turnSystem, unitSelection
             );
 
-            enemiesManager.Logger = unityDebug;
-            enemiesManager.Setup(levelSetupConfig, gridManager, turnSystem);
+            enemiesManager.Logger = binder.GetReference<IBilucaLogger>();
+            enemiesManager.Setup(levelSetupConfig, GridManager, turnSystem);
 
             turnSystemView.Setup(turnSystem);
 
             foreach(var unit in FindObjectsOfType<MonoBehaviour>().OfType<IUnit>())
             {
-                gridManager.Add(unit);
+                GridManager.Add(unit);
             }
 
             gameManager.Setup(unitsManager, enemiesManager);
 
             unitsView.Setup(unitsManager);
+
+            OnInstallerFinish?.Invoke();
+            Debug.Log("Finish GameInstaller");
         }
 
         public void Update()
         {
-            gridManager.Update();
+            if(GridManager == null) return;
+
+            GridManager.Update();
         }
 
         public PrettyObject BePretty()
@@ -114,6 +131,5 @@ namespace GameAssets
             var installerColor = new Color(.38f, .35f, .06f);
             return new PrettyObject(false, installerColor, Color.white, gameObject);
         }
-
     }
 }
