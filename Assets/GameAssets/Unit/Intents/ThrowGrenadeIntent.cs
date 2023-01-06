@@ -1,7 +1,7 @@
-using GameAssets.ActorSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.WorldCursors;
 

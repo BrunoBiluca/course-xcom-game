@@ -1,8 +1,8 @@
-using GameAssets.ActorSystem;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 

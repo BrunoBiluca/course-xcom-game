@@ -1,4 +1,4 @@
-﻿using GameAssets.ActorSystem;
+﻿using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 

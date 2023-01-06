@@ -1,8 +1,8 @@
-﻿using GameAssets.ActorSystem;
+﻿using GameAssets;
 using Moq;
 using UnityFoundation.ResourceManagement;
 
-namespace GameAssets.Tests
+namespace UnityFoundation.CharacterSystem.ActorSystem.Tests
 {
     public sealed class UnitActionHandlerBuilder
     {

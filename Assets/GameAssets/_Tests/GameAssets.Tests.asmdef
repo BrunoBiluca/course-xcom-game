@@ -8,7 +8,8 @@
         "UnityFoundation.Code",
         "UnityFoundation.TestUtility",
         "UnityFoundation.ResourceManagement",
-        "UnityFoundation.HealthSystem"
+        "UnityFoundation.HealthSystem",
+        "UnityFoundation.ActorSystem"
     ],
     "includePlatforms": [
         "Editor"

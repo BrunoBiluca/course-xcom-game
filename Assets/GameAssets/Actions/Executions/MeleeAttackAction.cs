@@ -1,6 +1,6 @@
-using GameAssets.ActorSystem;
 using System;
 using UnityEditor.Experimental.GraphView;
+using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
 

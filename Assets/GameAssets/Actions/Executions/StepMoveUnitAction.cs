@@ -1,8 +1,8 @@
-using GameAssets.ActorSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Algorithms;
 using UnityFoundation.Code.Grid;

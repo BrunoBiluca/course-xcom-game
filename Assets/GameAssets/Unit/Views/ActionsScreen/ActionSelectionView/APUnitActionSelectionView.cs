@@ -1,7 +1,7 @@
-using GameAssets.ActorSystem;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 
 namespace GameAssets

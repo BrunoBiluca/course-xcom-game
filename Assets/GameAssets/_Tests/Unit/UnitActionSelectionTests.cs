@@ -1,7 +1,7 @@
-using GameAssets.ActorSystem;
 using Moq;
 using NUnit.Framework;
-using System;
+using UnityFoundation.CharacterSystem.ActorSystem;
+using UnityFoundation.CharacterSystem.ActorSystem.Tests;
 using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests

@@ -1,4 +1,4 @@
-﻿using GameAssets.ActorSystem;
+﻿using UnityFoundation.CharacterSystem.ActorSystem;
 
 namespace GameAssets
 {

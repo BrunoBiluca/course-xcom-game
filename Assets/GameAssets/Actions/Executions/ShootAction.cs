@@ -1,5 +1,5 @@
-using GameAssets.ActorSystem;
 using System;
+using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.HealthSystem;
 using UnityFoundation.WorldCursors;
