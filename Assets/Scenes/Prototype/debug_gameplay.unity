@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &49351468
+--- !u!1 &269694222
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,8 +131,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 49351470}
-  - component: {fileID: 49351469}
+  - component: {fileID: 269694224}
+  - component: {fileID: 269694223}
   m_Layer: 0
   m_Name: grid_debug
   m_TagString: Untagged
@@ -140,26 +140,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &49351469
+--- !u!114 &269694223
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49351468}
+  m_GameObject: {fileID: 269694222}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b96d7ee6f06b7d40beba31acd37d565, type: 3}
+  m_Script: {fileID: 11500000, guid: 81ae5210a776d624aa323edb7d35c5fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <DebugMode>k__BackingField: 1
---- !u!4 &49351470
+--- !u!4 &269694224
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49351468}
+  m_GameObject: {fileID: 269694222}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
