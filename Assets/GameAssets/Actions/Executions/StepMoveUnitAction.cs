@@ -5,30 +5,33 @@ using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Algorithms;
+using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class StepMoveUnitAction : IAction
+    public class StepMoveUnitAction : IAction, IBilucaLoggable
     {
         private readonly ICharacterUnit unit;
         private readonly UnitWorldGridManager gridManager;
-        private readonly IWorldCursor worldCursor;
+        private readonly Vector3 position;
         private readonly IAsyncProcessor asyncProcessor;
         private List<Int2> path;
         private int step;
 
+        public IBilucaLogger Logger { get; set; }
+
         public StepMoveUnitAction(
             ICharacterUnit unit,
             UnitWorldGridManager gridManager,
-            IWorldCursor worldCursor,
+            Vector3 position,
             IAsyncProcessor asyncProcessor
         )
         {
             this.unit = unit;
             this.gridManager = gridManager;
-            this.worldCursor = worldCursor;
+            this.position = position;
             this.asyncProcessor = asyncProcessor;
         }
 
@@ -37,10 +40,12 @@ namespace GameAssets
 
         public void Execute()
         {
+            Logger?.LogHighlight(unit.Name, "is moving towards", position.ToString());
             EvaluatePath();
 
             if(CanMoveToDestination())
             {
+                Logger?.LogHighlight(unit.Name, "can't move to", position.ToString());
                 OnCantExecuteAction?.Invoke();
                 return;
             }
@@ -53,8 +58,7 @@ namespace GameAssets
 
             var unitCell = gridManager.Grid.GetCell(unit.Transform.Position);
 
-            worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos);
-            var targetCell = gridManager.Grid.GetCell(pos);
+            var targetCell = gridManager.Grid.GetCell(position);
 
             path = pathFinding.FindPath(
                 new Int2(unitCell.Position.X, unitCell.Position.Z),
@@ -88,6 +92,7 @@ namespace GameAssets
 
         private void StartMovement()
         {
+            Logger?.LogHighlight(unit.Name, "Start movement with path", string.Join("\n", path));
             step = 1;
 
             unit.AnimatorController.Play(new WalkingAnimation(true));
@@ -112,6 +117,7 @@ namespace GameAssets
 
         private void FinishMovement()
         {
+            Logger?.LogHighlight(unit.Name, "finished moving");
             unit.AnimatorController.Play(new WalkingAnimation(false));
             unit.TransformNav.OnReachDestination -= ReachDestination;
             OnFinishAction?.Invoke();

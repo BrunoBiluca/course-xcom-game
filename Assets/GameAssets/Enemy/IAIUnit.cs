@@ -1,8 +1,9 @@
-﻿namespace GameAssets
+﻿using System.Threading.Tasks;
+
+namespace GameAssets
 {
     public interface IAIUnit : ICharacterUnit
     {
-        void TakeActions();
-        void EndActions();
+        Task TakeActions();
     }
 }

@@ -2,6 +2,13 @@
 
 namespace GameAssets
 {
+    public enum UnitFactions
+    {
+        Player,
+        Enemy,
+        Furniture
+    }
+
     /// <summary>
     /// Base interface for placeable units in the grid
     /// </summary>
@@ -9,5 +16,6 @@ namespace GameAssets
     {
         string Name { get; }
         ITransform Transform { get; }
+        UnitFactions Faction { get; }
     }
 }

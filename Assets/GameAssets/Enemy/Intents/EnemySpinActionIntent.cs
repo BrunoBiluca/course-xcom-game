@@ -4,7 +4,7 @@ using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public class EnemySpinActionIntent : IAPActionIntent
+    public class EnemySpinActionIntent : IAPIntent
     {
         public int ActionPointsCost { get; set; } = 2;
 

@@ -7,7 +7,7 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class ThrowGrenadeIntent : IAPActionIntent
+    public class ThrowGrenadeIntent : IAPIntent
     {
         private readonly UnitWorldGridManager gridManager;
         private readonly UnitSelectionMono unitSelection;

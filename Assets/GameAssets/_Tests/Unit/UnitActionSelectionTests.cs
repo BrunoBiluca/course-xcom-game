@@ -24,7 +24,7 @@ namespace GameAssets.Tests
             var actionHandler = new UnitActionHandlerBuilder().Build();
 
             Assert.Throws<ActorIsNotSelected>(
-                () => actionHandler.SetAction(new Mock<IAPActionIntent>().Object)
+                () => actionHandler.SetAction(new Mock<IAPIntent>().Object)
             );
         }
 
@@ -36,7 +36,7 @@ namespace GameAssets.Tests
                 .Build();
 
             Assert.Throws<NoAPAvaiable>(
-                () => actionHandler.SetAction(new Mock<IAPActionIntent>().Object)
+                () => actionHandler.SetAction(new Mock<IAPIntent>().Object)
             );
 
         }
@@ -46,10 +46,10 @@ namespace GameAssets.Tests
         {
             var actionHandler = new UnitActionHandlerBuilder().WithCurrentUnitSelected().Build();
 
-            var actionSelected = EventTest<IAPActionIntent>
+            var actionSelected = EventTest<IAPIntent>
                 .Create(actionHandler, nameof(actionHandler.OnActionSelected));
 
-            actionHandler.SetAction(new Mock<IAPActionIntent>().Object);
+            actionHandler.SetAction(new Mock<IAPIntent>().Object);
 
             var action = actionHandler.CurrentAction;
             Assert.That(action.IsPresent, Is.True, "should have action");
@@ -63,7 +63,7 @@ namespace GameAssets.Tests
         {
             var actionHandler = new UnitActionHandlerBuilder().WithCurrentUnitSelected().Build();
 
-            actionHandler.SetAction(new Mock<IAPActionIntent>().Object);
+            actionHandler.SetAction(new Mock<IAPIntent>().Object);
 
             var actionUnselected = EventTest
                 .Create(actionHandler, nameof(actionHandler.OnActionUnselected));

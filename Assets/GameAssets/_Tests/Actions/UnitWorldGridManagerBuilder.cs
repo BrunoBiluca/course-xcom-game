@@ -22,7 +22,7 @@ namespace GameAssets.Tests
             var gridManager = new UnitWorldGridManager(worldGrid);
 
             foreach(var unit in Units)
-                gridManager.Add(unit.Build().Object);
+                gridManager.Add(unit.Build());
 
             gridManager.Update();
 

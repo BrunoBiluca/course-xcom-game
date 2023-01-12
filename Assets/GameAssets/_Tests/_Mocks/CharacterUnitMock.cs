@@ -5,7 +5,7 @@ using UnityFoundation.HealthSystem;
 
 namespace GameAssets.Tests
 {
-    public class CharacterUnitMock
+    public class CharacterUnitMock : MockBuilder<ICharacterUnit>
     {
         public Mock<IDamageable> Damageable { get; private set; }
         public Mock<IAnimatorController> AnimatorController { get; private set; }
@@ -14,20 +14,31 @@ namespace GameAssets.Tests
 
         private Vector3 startPosition;
 
+        private Mock<ICharacterUnit> unit;
+
+        public CharacterUnitMock()
+        {
+            unit = new Mock<ICharacterUnit>();
+        }
+
         public CharacterUnitMock WithPosition(Vector3 position)
         {
             startPosition = position;
             return this;
         }
 
-        public Mock<ICharacterUnit> Build()
+        public CharacterUnitMock WithFaction(UnitFactions faction)
+        {
+            unit.Setup(u => u.Faction).Returns(faction);
+            return this;
+        }
+
+        protected override Mock<ICharacterUnit> OnBuild()
         {
             Damageable ??= new Mock<IDamageable>();
             Damageable
                 .Setup(d => d.Damage(It.IsAny<float>(), null))
                 .Callback(() => WasDamaged = true);
-
-            var unit = new Mock<ICharacterUnit>();
 
             AnimatorController ??= new Mock<IAnimatorController>();
             AnimatorController
@@ -42,11 +53,6 @@ namespace GameAssets.Tests
             unit.Setup((u) => u.Transform.IsValid).Returns(true);
 
             return unit;
-        }
-
-        public ICharacterUnit Object()
-        {
-            return Build().Object;
         }
     }
 }

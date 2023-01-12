@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
@@ -10,14 +11,14 @@ using UnityFoundation.UI.Components;
 
 namespace GameAssets
 {
-
     public class EnemyUnit : BilucaMono, IAIUnit
     {
         [SerializeField] private GameObject ragdoll;
 
         [SerializeField] private Transform root;
+        [SerializeField] private GameObject projectileStart;
 
-        public string Name => "Enemy";
+        public string Name => Transform.Name;
 
         public IHealthSystem HealthSystem { get; private set; }
 
@@ -25,7 +26,7 @@ namespace GameAssets
 
         public IAPActor Actor { get; private set; }
 
-        public UnitConfigTemplate UnitConfigTemplate { get; private set; }
+        public UnitConfig UnitConfig { get; private set; }
 
         public ITransform RightShoulder { get; private set; }
 
@@ -33,27 +34,44 @@ namespace GameAssets
 
         public ITransform ProjectileStart { get; private set; }
 
-        public INavegationAgent TransformNav => throw new NotImplementedException();
+        public INavegationAgent TransformNav { get; private set; }
 
-        public event Action OnActionFinished;
+        public UnitFactions Faction => UnitFactions.Enemy;
 
-        protected override void OnAwake()
+        private EnemyBrain brain;
+
+        public void Setup(
+            UnitConfig unitConfigTemplate,
+            UnitWorldGridManager gridManager,
+            IEnemyActionIntentFactory intentFactory
+        )
         {
+            UnitConfig = unitConfigTemplate;
+
+            brain = new EnemyBrain(this, intentFactory, gridManager) { Logger = Logger };
+
+            OnSetup();
+        }
+
+        private void OnSetup()
+        {
+            Actor = new APActor(new FiniteResourceManager(UnitConfig.MaxActionPoints, true));
+
+            ProjectileStart = projectileStart.transform.Decorate();
+
+            AnimatorController = GetComponent<UnitAnimatorController>();
+
             HealthSystem = GetComponent<HealthSystemMono>();
-            HealthSystem.Setup(6);
+            HealthSystem.Setup(UnitConfig.InitialHealth);
             HealthSystem.OnDied += DieHandler;
 
             var healthController = new HealthSystemController(HealthSystem);
             healthController.AddHealthBar(transform.FindComponent<IHealthBar>("health_bar"));
 
-            Actor = new APActor(new FiniteResourceManager(4, true));
-        }
-
-        public void Setup(
-            UnitConfigTemplate unitConfigTemplate
-        )
-        {
-            UnitConfigTemplate = unitConfigTemplate;
+            TransformNav = new TransformNavegationAgent(Transform) {
+                Speed = 10f,
+                StoppingDistance = 0.1f
+            };
         }
 
         private void DieHandler()
@@ -61,18 +79,49 @@ namespace GameAssets
             var ragdollHandler = Instantiate(ragdoll, transform.position, transform.rotation)
                 .GetComponent<RagdollHandler>();
 
-            ragdollHandler.Setup(new TransformDecorator(root));
+            ragdollHandler.Setup(root.Decorate());
         }
 
-        public void TakeActions()
+        private bool canTakeNextDecision;
+
+        public async Task TakeActions()
         {
-            var brain = new EnemyBrain(this);
-            brain.TakeActions();
+            Actor.OnActionFinished += EnabledNextDecision;
+
+            Logger?.LogHighlight(Name, "Start taking actions");
+
+            canTakeNextDecision = true;
+            while(CanAct())
+            {
+                if(canTakeNextDecision)
+                {
+                    canTakeNextDecision = false;
+                    var chosenIntent = brain.ChooseIntent();
+
+                    chosenIntent.Some(i => {
+                        Logger?.LogHighlight(Name, "has the intent of", i.GetType().ToString());
+                        Actor.Set(i);
+                    }).OrElse(() => {
+                        Actor.ActionPoints.Emptify();
+                    });
+                }
+
+                var delay = 25;
+                await Task.Delay(delay);
+            }
+
+            Logger?.LogHighlight(Name, "finished take actions");
+            Actor.OnActionFinished -= EnabledNextDecision;
         }
 
-        public void EndActions()
+        private void EnabledNextDecision()
         {
-            OnActionFinished?.Invoke();
+            canTakeNextDecision = true;
+        }
+
+        private bool CanAct()
+        {
+            return Actor.ActionPoints.CurrentAmount > 0;
         }
     }
 }

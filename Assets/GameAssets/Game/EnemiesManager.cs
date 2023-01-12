@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Threading.Tasks;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.Grid;
@@ -13,6 +13,7 @@ namespace GameAssets
     {
         private LevelSetupConfig levelSetupConfig;
         private UnitWorldGridManager gridManager;
+        private IEnemyActionIntentFactory enemyActionIntentFactory;
         private ITurnSystem turnSystem;
 
         private List<EnemyUnit> enemies;
@@ -20,16 +21,16 @@ namespace GameAssets
         public int CurrentEnemiesCount => enemies.Count;
         public event Action OnEnemiesDied;
 
-        private int enemyIndex;
-
         public void Setup(
             LevelSetupConfig levelSetupConfig,
             UnitWorldGridManager gridManager,
-            ITurnSystem turnSystem
+            ITurnSystem turnSystem,
+            IEnemyActionIntentFactory enemyActionIntentFactory
         )
         {
             this.levelSetupConfig = levelSetupConfig;
             this.gridManager = gridManager;
+            this.enemyActionIntentFactory = enemyActionIntentFactory;
 
             this.turnSystem = turnSystem;
             turnSystem.OnEnemyTurnStarted += EnemyStartTurn;
@@ -38,47 +39,45 @@ namespace GameAssets
 
         private void EnemyStartTurn()
         {
-            Logger?.Log("Start enemy turn");
-
             enemies.RemoveAll(e => e == null);
-
-            enemyIndex = 0;
-            EnemyAction();
+            enemies.ForEach(e => e.Actor.ActionPoints.FullReffil());
+            _ = EnemyStartTurnAsync();
         }
 
-        private void EnemyAction()
+        private async Task EnemyStartTurnAsync()
         {
-            var currentEnemy = enemies[enemyIndex];
-            currentEnemy.OnActionFinished -= NextEnemy;
-            currentEnemy.OnActionFinished += NextEnemy;
-            currentEnemy.TakeActions();
-        }
-
-        private void NextEnemy()
-        {
-            enemyIndex++;
-            if(enemyIndex >= enemies.Count)
+            try
             {
-                FinishEnemyTurn();
-                return;
+                Logger?.Log("Start enemy turn");
+                foreach(var enemy in enemies)
+                {
+                    Logger?.Log(enemy.Name);
+                    await enemy.TakeActions();
+                }
+
+                Logger?.Log("Finish enemy turn");
+                turnSystem.EndEnemyTurn();
             }
-
-            EnemyAction();
-        }
-
-        private void FinishEnemyTurn()
-        {
-            Logger?.Log("Finish enemy turn");
-            turnSystem.EndEnemyTurn();
+            catch(Exception ex)
+            {
+                Logger?.Error(ex);
+            }
         }
 
         public void SetupEnemies()
         {
             enemies = new List<EnemyUnit>();
+            var count = 1;
             foreach(var enemy in levelSetupConfig.Enemies)
             {
                 var newEnemy = Instantiate(enemy.EnemyPrefab).GetComponent<EnemyUnit>();
-                newEnemy.Setup(enemy.UnitTemplate);
+                newEnemy.Transform.Name = "Enemy " + count++;
+                newEnemy.Logger = Logger;
+                newEnemy.Setup(
+                    enemy.UnitTemplate.UnitConfig,
+                    gridManager,
+                    enemyActionIntentFactory
+                );
 
                 newEnemy.Transform.Position = gridManager.Grid
                     .GetCellCenterPosition(

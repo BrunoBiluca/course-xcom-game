@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07be7f9d5f5dc240ae1ba426dfc53c8, type: 3}
   m_Name: enemy
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Enemy
-  <MovementRange>k__BackingField: 4
-  <MaxActionPoints>k__BackingField: 4
-  <ShootRange>k__BackingField: 4
+  <UnitConfig>k__BackingField:
+    <Portrait>k__BackingField: {fileID: 0}
+    <Name>k__BackingField: Enemy
+    <InitialHealth>k__BackingField: 6
+    <MovementRange>k__BackingField: 3
+    <MaxActionPoints>k__BackingField: 1
+    <ShootDamage>k__BackingField: 1
+    <ShootRange>k__BackingField: 4
+    <GrenadeRange>k__BackingField: 0
+    <MeleeRange>k__BackingField: 0

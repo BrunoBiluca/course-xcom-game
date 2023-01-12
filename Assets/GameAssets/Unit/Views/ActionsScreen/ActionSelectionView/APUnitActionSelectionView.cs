@@ -3,16 +3,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
+using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {
-    public class APUnitActionSelectionView : MonoBehaviour
+    public class APUnitActionSelectionView : MonoBehaviour, IBilucaLoggable
     {
         private UnitActionsEnum? currentAction;
 
-        private IActionSelector<IAPActionIntent> actionSelector;
+        private IActionSelector<IAPIntent> actionSelector;
         private UnitActionsFactory factory;
         private UnitActionSelectorButton[] buttons;
+
+        public IBilucaLogger Logger { get; set; }
 
         public void Awake()
         {
@@ -24,7 +27,7 @@ namespace GameAssets
         }
 
         public void Setup(
-            IActionSelector<IAPActionIntent> actionSelector,
+            IActionSelector<IAPIntent> actionSelector,
             UnitActionsFactory factory
         )
         {
@@ -43,7 +46,6 @@ namespace GameAssets
                 return;
             }
 
-
             try
             {
                 var unitAction = factory.Get(actionType);
@@ -51,8 +53,9 @@ namespace GameAssets
                 unitAction.ApplyValidation();
                 SelectAction(actionType);
             }
-            catch(InvalidOperationException)
+            catch(InvalidOperationException ex)
             {
+                Logger?.Log($"Unit can't execute action because: {ex.Message}");
                 CleanActions();
                 actionSelector.UnselectAction();
             }

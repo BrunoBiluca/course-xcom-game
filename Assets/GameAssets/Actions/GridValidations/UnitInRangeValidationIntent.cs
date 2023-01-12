@@ -5,12 +5,12 @@ namespace GameAssets
     public sealed class UnitInRangeValidationIntent : IGridValidationIntent
     {
         private readonly UnitSelectionMono unitSelection;
-        private readonly Func<UnitConfigTemplate, int> rangeProperty;
+        private readonly Func<UnitConfig, int> rangeProperty;
         private readonly Func<IUnit, bool> unitValidation;
 
         public UnitInRangeValidationIntent(
             UnitSelectionMono unitSelection,
-            Func<UnitConfigTemplate, int> rangeProperty,
+            Func<UnitConfig, int> rangeProperty,
             Func<IUnit, bool> unitValidation
         )
         {
@@ -24,7 +24,7 @@ namespace GameAssets
             validator
                 .WithRange(
                     unitSelection.CurrentUnit.Transform.Position,
-                    rangeProperty(unitSelection.CurrentUnit.UnitConfigTemplate)
+                    rangeProperty(unitSelection.CurrentUnit.UnitConfig)
                 )
                 .WhereUnit((unit) => unitValidation(unit));
         }

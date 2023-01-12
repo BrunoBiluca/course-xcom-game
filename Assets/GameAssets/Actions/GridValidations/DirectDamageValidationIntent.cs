@@ -8,12 +8,12 @@ namespace GameAssets
     {
         private readonly UnitSelectionMono unitSelection;
         private readonly DamageableLayerManager damageableLayerManager;
-        private readonly Func<UnitConfigTemplate, int> property;
+        private readonly Func<UnitConfig, int> property;
 
         public DirectDamageValidationIntent(
             UnitSelectionMono unitSelection,
             DamageableLayerManager damageableLayerManager,
-            Func<UnitConfigTemplate, int> property
+            Func<UnitConfig, int> property
         )
         {
             this.unitSelection = unitSelection;
@@ -26,7 +26,7 @@ namespace GameAssets
             validator
                 .WithRange(
                     unitSelection.CurrentUnit.Transform.Position,
-                    property(unitSelection.CurrentUnit.UnitConfigTemplate)
+                    property(unitSelection.CurrentUnit.UnitConfig)
                 )
                 .WhereUnit((unit) => {
                     if(unit is not ICharacterUnit characterUnit)

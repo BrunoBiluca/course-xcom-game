@@ -5,11 +5,11 @@ namespace GameAssets
     public sealed class InRangeValidationIntent : IGridValidationIntent
     {
         private UnitSelectionMono unitSelection;
-        private readonly Func<UnitConfigTemplate, int> property;
+        private readonly Func<UnitConfig, int> property;
 
         public InRangeValidationIntent(
             UnitSelectionMono unitSelection,
-            Func<UnitConfigTemplate, int> property
+            Func<UnitConfig, int> property
         )
         {
             this.unitSelection = unitSelection;
@@ -21,7 +21,7 @@ namespace GameAssets
             validator
                 .WithRange(
                     unitSelection.CurrentUnit.transform.position,
-                    property(unitSelection.CurrentUnit.UnitConfigTemplate)
+                    property(unitSelection.CurrentUnit.UnitConfig)
                 );
         }
     }

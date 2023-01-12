@@ -5,7 +5,9 @@ using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
-    public class UnitWorldGridManager : WorldGridManager<UnitValue>
+    // TODO: essa classe deve ser severamente refatorada
+    // separar as responsabilidades de validação do gerenciamento do grid
+    public class UnitWorldGridManager : WorldGridManager<UnitValue>, IUnitWorldGridManager
     {
         public enum GridState
         {
@@ -88,6 +90,14 @@ namespace GameAssets
         {
             base.ResetValidation();
             State = GridState.None;
+        }
+
+        public IEnumerable<Vector3> GetAllAvailableCellsPositions()
+        {
+            foreach(var c in GetAllAvailableCells())
+            {
+                yield return new Vector3(c.Position.X, 0, c.Position.Z) * Grid.CellSize;
+            }
         }
     }
 }

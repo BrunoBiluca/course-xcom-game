@@ -8,14 +8,15 @@ namespace GameAssets
     /// <summary>
     /// Character units placed in the grid
     /// </summary>
-    public interface ICharacterUnit : IUnit
+    public interface ICharacterUnit : IUnit, IDestroyable
     {
         IDamageable Damageable { get; }
         IAPActor Actor { get; }
-        UnitConfigTemplate UnitConfigTemplate { get; }
+        UnitConfig UnitConfig { get; }
         ITransform RightShoulder { get; }
         IAnimatorController AnimatorController { get; }
         ITransform ProjectileStart { get; }
         INavegationAgent TransformNav { get; }
+        IHealthSystem HealthSystem { get; }
     }
 }

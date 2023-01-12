@@ -16,7 +16,7 @@ namespace GameAssets
         ICharacterUnit,
         ISelectable
     {
-        public UnitConfigTemplate UnitConfigTemplate { get; private set; }
+        public UnitConfig UnitConfig { get; private set; }
 
         [SerializeField] private GameObject projectileStart;
         public ITransform ProjectileStart { get; private set; }
@@ -30,12 +30,14 @@ namespace GameAssets
 
         public bool IsSelected { get; private set; }
 
-        public string Name => UnitConfigTemplate.Name;
+        public string Name => UnitConfig.Name;
 
         public IHealthSystem HealthSystem { get; private set; }
         public IDamageable Damageable => HealthSystem;
 
         public IAPActor Actor => unitActionsManager;
+
+        public UnitFactions Faction => UnitFactions.Player;
 
         public APActor unitActionsManager;
 
@@ -66,15 +68,15 @@ namespace GameAssets
         }
 
         public void Setup(
-            UnitConfigTemplate unitConfigTemplate,
+            UnitConfig unitConfigTemplate,
             UnitGridWorldCursor worldCursor
         )
         {
             this.worldCursor = worldCursor;
 
-            UnitConfigTemplate = unitConfigTemplate;
+            UnitConfig = unitConfigTemplate;
             unitActionsManager = new APActor(
-                new FiniteResourceManager(UnitConfigTemplate.MaxActionPoints, true)
+                new FiniteResourceManager(UnitConfig.MaxActionPoints, true)
             );
             Actor.OnCantExecuteAction += InvokeCantExecuteAction;
             Obj.OnObjectDestroyed += () => Actor.OnCantExecuteAction -= InvokeCantExecuteAction;

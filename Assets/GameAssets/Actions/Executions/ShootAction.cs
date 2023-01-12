@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.HealthSystem;
@@ -9,7 +10,7 @@ namespace GameAssets
     public class ShootAction : IAction
     {
         private readonly ICharacterUnit unit;
-        private readonly IWorldCursor worldCursor;
+        private readonly Vector3 position;
         private readonly UnitWorldGridManager gridManager;
         private readonly ProjectileFactory projectileFactory;
 
@@ -18,24 +19,22 @@ namespace GameAssets
         public event Action OnCantExecuteAction;
         public event Action OnFinishAction;
 
-        public int Damage { get; set; } = 2;
-
         public ShootAction(
             ICharacterUnit unit,
-            IWorldCursor worldCursor,
+            Vector3 position,
             UnitWorldGridManager gridManager,
             ProjectileFactory projectileFactory
         )
         {
             this.unit = unit;
-            this.worldCursor = worldCursor;
+            this.position = position;
             this.gridManager = gridManager;
             this.projectileFactory = projectileFactory;
         }
 
         public void Execute()
         {
-            var cellValue = gridManager.GetValueIfCellIsAvailable(worldCursor.WorldPosition.Get());
+            var cellValue = gridManager.GetValueIfCellIsAvailable(position);
 
             if(cellValue == default)
             {
@@ -51,9 +50,12 @@ namespace GameAssets
 
             unit.Transform.LookAt(shootedUnit.Transform.Position);
 
-            CameraManager.I.ShowActionCamera(
-                unit.RightShoulder.Position, shootedUnit.Transform.Position
-            );
+            if(unit.RightShoulder != null)
+            {
+                CameraManager.I.ShowActionCamera(
+                    unit.RightShoulder.Position, shootedUnit.Transform.Position
+                );
+            }
 
             // TODO: existe uma ordem nessas execuções
             // primeiro fazemos a animação
@@ -71,8 +73,13 @@ namespace GameAssets
             );
 
             proj.OnReachTarget += () => {
-                shootedUnit.Damageable.Damage(Damage, unit.Damageable.Layer);
-                CameraManager.I.HideActionCamera(1f);
+                shootedUnit.Damageable.Damage(unit.UnitConfig.ShootDamage, unit.Damageable.Layer);
+
+                if(unit.RightShoulder != null)
+                {
+                    CameraManager.I.HideActionCamera(1f);
+                }
+
                 OnFinishAction?.Invoke();
             };
         }

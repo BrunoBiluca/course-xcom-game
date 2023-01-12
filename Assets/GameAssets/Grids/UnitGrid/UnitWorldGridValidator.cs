@@ -48,6 +48,11 @@ namespace GameAssets
             return this;
         }
 
+        public void Apply()
+        {
+            Apply(UnitWorldGridManager.GridState.None);
+        }
+
         public void Apply(UnitWorldGridManager.GridState state)
         {
             gridManager.State = state;

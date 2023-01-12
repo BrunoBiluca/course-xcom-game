@@ -1,40 +1,55 @@
+using System;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityFoundation.CharacterSystem.ActorSystem;
+using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
+using static UnityEngine.UI.CanvasScaler;
 
 namespace GameAssets
 {
-    public class EnemyBrain
+    public enum EnemyIntents
     {
-        private readonly IAIUnit unit;
+        SHOOT,
+        MOVE
+    }
 
-        public EnemyBrain(IAIUnit unit)
+    public class EnemyBrainContext
+    {
+        public Vector3 TargetPosition { get; set; }
+        public Optional<IAPIntent> ChosenIntent { get; set; }
+    }
+
+    public class EnemyBrain : DecisionTree<EnemyBrainContext>, IBilucaLoggable
+    {
+        public IBilucaLogger Logger { get; set; }
+
+        public EnemyBrain(
+            IAIUnit unit,
+            IEnemyActionIntentFactory intentsFactory,
+            IUnitWorldGridManager gridManager
+        )
         {
-            this.unit = unit;
+            Context = new EnemyBrainContext();
+
+            var tryMove = new TryMoveTowardsPlayerUnitsDecision(unit, gridManager);
+            var tryShoot = new TryShootDecision(unit, gridManager);
+            var takeShoot = new ChoseIntent(unit, intentsFactory, EnemyIntents.SHOOT);
+            var takeMove = new ChoseIntent(unit, intentsFactory, EnemyIntents.MOVE);
+
+            var root = tryShoot
+                .SetNext(takeShoot)
+                .SetFailed(
+                    tryMove.SetNext(takeMove)
+                );
+            SetRootHandler(root);
         }
 
-        public void TakeActions()
+        public Optional<IAPIntent> ChooseIntent()
         {
-            TakeAction();
-        }
-
-        private void TakeAction()
-        {
-            if(unit.Actor.ActionPoints.CurrentAmount == 0)
-            {
-                UnityDebug.I.LogHighlight(nameof(EnemyUnit), "finished take actions");
-                unit.EndActions();
-                return;
-            }
-
-            TakeSpinAction();
-        }
-
-        private void TakeSpinAction()
-        {
-            var action = new EnemySpinActionIntent(unit.Transform);
-            unit.Actor.Set(action);
-
-            unit.Actor.OnActionFinished -= TakeAction;
-            unit.Actor.OnActionFinished += TakeAction;
+            Context = new EnemyBrainContext();
+            EvaluateDecisions(Context);
+            return Context.ChosenIntent;
         }
     }
 }

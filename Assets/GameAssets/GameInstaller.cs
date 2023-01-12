@@ -49,6 +49,12 @@ namespace GameAssets
         private void StartInstaller()
         {
             Debug.Log("Start GameInstaller");
+
+            foreach(var obj in FindObjectsOfType<MonoBehaviour>().OfType<IBilucaLoggable>())
+            {
+                obj.Logger = binder.GetReference<IBilucaLogger>();
+            }
+
             var grid = binder.GetReference<UnitWorldGridXZ>();
             GridManager = new UnitWorldGridManager(grid.Grid);
 
@@ -95,14 +101,21 @@ namespace GameAssets
             unitSelection.OnUnitSelected += () => selectableVisibility.Show();
             unitSelection.OnUnitUnselected += () => selectableVisibility.Hide();
 
-            var turnSystem = new TurnSystem();
+            var turnSystem = new TurnSystem() { Logger = binder.GetReference<IBilucaLogger>() };
 
             unitsManager.Setup(
                 levelSetupConfig, worldCursor, GridManager, turnSystem, unitSelection
             );
 
+            var enemyIntentFactory = new EnemyActionIntentFactory(GridManager, projectileFactory);
+
             enemiesManager.Logger = binder.GetReference<IBilucaLogger>();
-            enemiesManager.Setup(levelSetupConfig, GridManager, turnSystem);
+            enemiesManager.Setup(
+                levelSetupConfig,
+                GridManager,
+                turnSystem,
+                enemyIntentFactory
+            );
 
             turnSystemView.Setup(turnSystem);
 

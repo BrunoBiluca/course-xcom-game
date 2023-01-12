@@ -1,12 +1,15 @@
 using UnityEngine;
+using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {
-    public class SelectionMarkMono : MonoBehaviour
+    public class SelectionMarkMono : MonoBehaviour, IBilucaLoggable
     {
         [SerializeField] private GameObject selectionMark;
 
         private ISelectable selectable;
+
+        public IBilucaLogger Logger { get; set; }
 
         public void Start()
         {
@@ -20,7 +23,12 @@ namespace GameAssets
             if(selectionMark == null)
                 selectionMark = transform.Find("selection_mark").gameObject;
 
-            selectionMark.SetActive(selectable.IsSelected);
+            if(selectionMark != null)
+            {
+                Logger?.LogWarning($"Selection mark not found on {transform.name}");
+                selectionMark.SetActive(selectable.IsSelected);
+            }
+
         }
     }
 }

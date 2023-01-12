@@ -1,20 +1,22 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.TurnSystem;
-using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class UnitsManager : MonoBehaviour
+    public class UnitsManager : MonoBehaviour, IUnitsManager
     {
         private LevelSetupConfig levelSetupConfig;
         private UnitGridWorldCursor worldCursor;
         private UnitWorldGridManager gridManager;
         private IActorSelector<IAPActor> actorSelector;
 
-        public int CurrentUnitsCount { get; private set; }
+        private List<ICharacterUnit> units;
+
+        public int CurrentUnitsCount => units.Count;
 
         public event Action OnAllUnitsDied;
 
@@ -47,43 +49,44 @@ namespace GameAssets
 
         public void SetupUnits()
         {
+            units = new List<ICharacterUnit>();
             foreach(var unitSetup in levelSetupConfig.Units)
             {
                 var unit = Instantiate(unitSetup.prefab).GetComponent<TrooperUnit>();
-                unit.Setup(unitSetup.UnitTemplate, worldCursor);
+                unit.Setup(unitSetup.UnitTemplate.UnitConfig, worldCursor);
 
                 unit.Transform.Position = gridManager.Grid
                     .GetCellCenterPosition(
                         new GridCellPositionXZ(unitSetup.Position.X, unitSetup.Position.Z)
                     );
 
-                unit.Obj.OnObjectDestroyed += HandleUnitDetroy;
-                gridManager.Add(unit);
-            }
+                unit.Obj.OnObjectDestroyed += () => {
+                    units.Remove(unit);
+                    HandleUnitDetroy();
+                };
 
-            CurrentUnitsCount = levelSetupConfig.Units.Length;
+                gridManager.Add(unit);
+                units.Add(unit);
+            }
         }
 
         private void HandleUnitDetroy()
         {
-            CurrentUnitsCount--;
             if(CurrentUnitsCount == 0)
                 OnAllUnitsDied?.Invoke();
         }
 
-        public TrooperUnit[] GetAllUnits()
+        public ICharacterUnit[] GetAllUnits()
         {
-            return FindObjectsOfType<TrooperUnit>();
+            return units.ToArray();
         }
 
         public void DestroyAllUnits()
         {
-            var units = GetAllUnits();
-
             foreach(var u in units)
-            {
-                Destroy(u.gameObject);
-            }
+                u.Destroy();
+
+            units.Clear();
         }
 
         public void ResetUnits()

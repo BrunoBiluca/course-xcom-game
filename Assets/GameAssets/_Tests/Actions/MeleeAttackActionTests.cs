@@ -16,8 +16,8 @@ namespace GameAssets.Tests
 
             var action = new MeleeAttackAction(
                 actionConfig, 
-                attacker.Object(), 
-                target.Object()
+                attacker.Build(), 
+                target.Build()
             );
 
             action.Execute();

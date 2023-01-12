@@ -4,7 +4,7 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public sealed class MoveActionIntent : IAPActionIntent
+    public sealed class MoveActionIntent : IAPIntent
     {
         public bool ExecuteImmediatly => false;
 
@@ -31,7 +31,10 @@ namespace GameAssets
             //    unitSelection.CurrentUnit, AsyncProcessor.I, worldCursor, gridManager
             //);
             return new StepMoveUnitAction(
-                unitSelection.CurrentUnit, gridManager, worldCursor, AsyncProcessor.I
+                unitSelection.CurrentUnit,
+                gridManager,
+                worldCursor.WorldPosition.Get(),
+                AsyncProcessor.I
             );
         }
     }

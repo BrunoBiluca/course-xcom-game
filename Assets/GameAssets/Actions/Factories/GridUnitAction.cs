@@ -7,11 +7,11 @@ namespace GameAssets
         private UnitWorldGridValidator validator;
         private readonly UnitWorldGridManager.GridState state;
 
-        public IAPActionIntent Intent { get; }
+        public IAPIntent Intent { get; }
 
         public GridUnitAction(
             UnitWorldGridManager gridManager,
-            IAPActionIntent intent,
+            IAPIntent intent,
             UnitWorldGridManager.GridState state,
             params IGridValidationIntent[] validationIntents
         )

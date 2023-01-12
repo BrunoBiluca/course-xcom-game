@@ -7,28 +7,28 @@ namespace GameAssets
 {
     // TODO: esse cara é importante de ter testes, vai ser utilizado em qualquer sistema que deve se selecionar uma action de um actor
     public sealed class APUnitActionSelection
-        : IActionSelector<IAPActionIntent>, IBilucaLoggable
+        : IActionSelector<IAPIntent>, IBilucaLoggable
     {
         public IBilucaLogger Logger { get; set; }
 
         private readonly IActorSelector<IAPActor> unitActorSelector;
 
-        public event Action<IAPActionIntent> OnActionSelected;
+        public event Action<IAPIntent> OnActionSelected;
         public event Action OnActionUnselected;
 
-        public Optional<IAPActionIntent> CurrentAction { get; private set; }
+        public Optional<IAPIntent> CurrentAction { get; private set; }
 
         public APUnitActionSelection(
             IActorSelector<IAPActor> unitActorSelector
         )
         {
-            CurrentAction = Optional<IAPActionIntent>.None();
+            CurrentAction = Optional<IAPIntent>.None();
             this.unitActorSelector = unitActorSelector;
 
             unitActorSelector.OnUnitUnselected += UnselectAction;
         }
 
-        public void SetAction(IAPActionIntent action)
+        public void SetAction(IAPIntent action)
         {
             var currentActor = unitActorSelector.CurrentUnitActor;
             if(currentActor == null)
@@ -37,7 +37,7 @@ namespace GameAssets
             if(currentActor.ActionPoints.IsEmpty)
                 throw new NoAPAvaiable();
 
-            CurrentAction = Optional<IAPActionIntent>.Some(action);
+            CurrentAction = Optional<IAPIntent>.Some(action);
             OnActionSelected?.Invoke(action);
 
             currentActor.OnCantExecuteAction -= CantExecuteActionHandle;
@@ -61,10 +61,10 @@ namespace GameAssets
 
         public void UnselectAction()
         {
-            if(!CurrentAction.IsPresentAndGet(out IAPActionIntent action)) return;
+            if(!CurrentAction.IsPresentAndGet(out IAPIntent action)) return;
 
             Logger?.Log("Action", CurrentAction.Get().GetType().ToString(), "was deselected");
-            CurrentAction = Optional<IAPActionIntent>.None();
+            CurrentAction = Optional<IAPIntent>.None();
 
             unitActorSelector.CurrentUnitActor?.UnsetAction();
             OnActionUnselected?.Invoke();

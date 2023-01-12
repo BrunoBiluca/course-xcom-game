@@ -10,6 +10,8 @@ namespace GameAssets
 
         public string Name => Transform.Name;
 
+        public UnitFactions Faction => UnitFactions.Furniture;
+
         protected override void OnAwake()
         {
             Obj.OnObjectDestroyed += OnDestroyed;

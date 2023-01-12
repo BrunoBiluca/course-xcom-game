@@ -4,7 +4,7 @@ using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {
-    public class SpinActionIntent : IAPActionIntent
+    public class SpinActionIntent : IAPIntent
     {
         public bool ExecuteImmediatly => true;
 

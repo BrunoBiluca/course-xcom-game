@@ -28,11 +28,11 @@ namespace GameAssets
             }
         }
 
-        private static void SetupView(TrooperUnit unit, Transform view)
+        private static void SetupView(ICharacterUnit unit, Transform view)
         {
             view.Setup<Image>(
                 "portrait_holder.portrait",
-                i => i.sprite = unit.UnitConfigTemplate.Portrait
+                i => i.sprite = unit.UnitConfig.Portrait
             );
 
             view.Setup<TextMeshProUGUI>("container.name", t => t.text = unit.Name);

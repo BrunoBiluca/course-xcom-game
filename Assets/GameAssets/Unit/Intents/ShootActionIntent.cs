@@ -4,7 +4,7 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class ShootActionIntent : IAPActionIntent
+    public class ShootActionIntent : IAPIntent
     {
         private readonly UnitSelectionMono unitSelection;
         private readonly IWorldCursor worldCursor;
@@ -32,7 +32,7 @@ namespace GameAssets
         {
             return new ShootAction(
                 unitSelection.CurrentUnit,
-                worldCursor,
+                worldCursor.WorldPosition.Get(),
                 gridManager,
                 projectileFactory
             );
