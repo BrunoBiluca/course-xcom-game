@@ -36,7 +36,6 @@ namespace GameAssets
         [SerializeField] private ProjectileFactory projectileFactory;
         [SerializeField] private GrenadeProjectileFactory grenadeFactory;
 
-        [SerializeField] private GameSceneManager sceneManager;
         [SerializeField] private GameBinder binder;
 
         public UnitWorldGridManager GridManager { get; private set; }

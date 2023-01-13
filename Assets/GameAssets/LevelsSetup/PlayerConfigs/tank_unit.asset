@@ -16,8 +16,10 @@ MonoBehaviour:
     <Portrait>k__BackingField: {fileID: 21300000, guid: f802ceda35f5c4662a240c6ceef56a64,
       type: 3}
     <Name>k__BackingField: Tank
+    <InitialHealth>k__BackingField: 8
     <MovementRange>k__BackingField: 2
     <MaxActionPoints>k__BackingField: 9
+    <ShootDamage>k__BackingField: 2
     <ShootRange>k__BackingField: 4
     <GrenadeRange>k__BackingField: 3
     <MeleeRange>k__BackingField: 1

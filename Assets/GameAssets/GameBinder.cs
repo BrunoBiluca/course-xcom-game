@@ -13,7 +13,7 @@ namespace GameAssets
 
         public void Awake()
         {
-            GetComponent<GameSceneManager>().OnAllScenesLoaded += SetupBinder;
+            GetComponent<GameSceneLoader>().OnAllScenesLoaded += SetupBinder;
         }
 
         private void SetupBinder()

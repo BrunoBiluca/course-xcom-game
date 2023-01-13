@@ -333,7 +333,6 @@ MonoBehaviour:
   enemiesManager: {fileID: 69300416}
   projectileFactory: {fileID: 69300420}
   grenadeFactory: {fileID: 69300421}
-  sceneManager: {fileID: 0}
   binder: {fileID: 103762352}
 --- !u!114 &103762352
 MonoBehaviour:
@@ -356,12 +355,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 103762349}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64bddd5c4a0b3f045b37d763bd165088, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a0f872e4732cd548947fba0ea554703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ScenesToLoad>k__BackingField:
-  - debug_gameplay
-  - scenary_prototype_grid
+  configSO: {fileID: 11400000, guid: 8ffb3d242bb49064c88f14572ab241b8, type: 2}
 --- !u!224 &256438992 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 504975131295895295, guid: 7530f374a7325c84f91ab94a67822c9f,
@@ -685,8 +682,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.21593174, y: 0.31686193, z: -0.07432393, w: 0.9205694}
+  m_LocalPosition: {x: 2.67, y: 9.1811695, z: -2.176941}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
