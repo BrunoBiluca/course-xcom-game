@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
@@ -91,27 +90,27 @@ namespace GameAssets
             Logger?.LogHighlight(Name, "Start taking actions");
 
             canTakeNextDecision = true;
-            while(CanAct())
-            {
-                if(canTakeNextDecision)
-                {
-                    canTakeNextDecision = false;
-                    var chosenIntent = brain.ChooseIntent();
 
-                    chosenIntent.Some(i => {
-                        Logger?.LogHighlight(Name, "has the intent of", i.GetType().ToString());
-                        Actor.Set(i);
-                    }).OrElse(() => {
-                        Actor.ActionPoints.Emptify();
-                    });
-                }
-
-                var delay = 25;
-                await Task.Delay(delay);
-            }
+            await LoopConditionAsync.While(CanAct).Loop(DecideAction);
 
             Logger?.LogHighlight(Name, "finished take actions");
             Actor.OnActionFinished -= EnabledNextDecision;
+        }
+
+        private void DecideAction()
+        {
+            if(!canTakeNextDecision)
+                return;
+
+            canTakeNextDecision = false;
+            var chosenIntent = brain.ChooseIntent();
+
+            chosenIntent.Some(i => {
+                Logger?.LogHighlight(Name, "has the intent of", i.GetType().ToString());
+                Actor.Set(i);
+            }).OrElse(() => {
+                Actor.ActionPoints.Emptify();
+            });
         }
 
         private void EnabledNextDecision()

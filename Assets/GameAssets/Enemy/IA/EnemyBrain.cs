@@ -18,6 +18,11 @@ namespace GameAssets
     {
         public Vector3 TargetPosition { get; set; }
         public Optional<IAPIntent> ChosenIntent { get; set; }
+
+        public EnemyBrainContext()
+        {
+            ChosenIntent = Optional<IAPIntent>.None();
+        }
     }
 
     public class EnemyBrain : BaseDecisionTree<EnemyBrainContext>, IBilucaLoggable
