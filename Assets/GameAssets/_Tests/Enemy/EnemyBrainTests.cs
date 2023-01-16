@@ -24,7 +24,7 @@ namespace GameAssets.Tests
                 gridManagerMock.Build()
             );
 
-            enemyBrain.EvaluateDecisions();
+            enemyBrain.Evaluate();
 
             enemyMock.OnActionFinishedWas(false);
         }

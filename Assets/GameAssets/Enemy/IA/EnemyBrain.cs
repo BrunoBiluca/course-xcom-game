@@ -20,7 +20,7 @@ namespace GameAssets
         public Optional<IAPIntent> ChosenIntent { get; set; }
     }
 
-    public class EnemyBrain : DecisionTree<EnemyBrainContext>, IBilucaLoggable
+    public class EnemyBrain : BaseDecisionTree<EnemyBrainContext>, IBilucaLoggable
     {
         public IBilucaLogger Logger { get; set; }
 
@@ -30,26 +30,27 @@ namespace GameAssets
             IUnitWorldGridManager gridManager
         )
         {
-            Context = new EnemyBrainContext();
-
             var tryMove = new TryMoveTowardsPlayerUnitsDecision(unit, gridManager);
             var tryShoot = new TryShootDecision(unit, gridManager);
             var takeShoot = new ChoseIntent(unit, intentsFactory, EnemyIntents.SHOOT);
             var takeMove = new ChoseIntent(unit, intentsFactory, EnemyIntents.MOVE);
 
-            var root = tryShoot
+            Root = tryShoot
                 .SetNext(takeShoot)
                 .SetFailed(
                     tryMove.SetNext(takeMove)
                 );
-            SetRootHandler(root);
         }
 
         public Optional<IAPIntent> ChooseIntent()
         {
-            Context = new EnemyBrainContext();
-            EvaluateDecisions(Context);
+            Evaluate();
             return Context.ChosenIntent;
+        }
+
+        public override EnemyBrainContext InitilizeContext()
+        {
+            return new EnemyBrainContext();
         }
     }
 }
