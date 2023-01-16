@@ -33,7 +33,5 @@ namespace GameAssets
                 ApplyForce(child, position, force, radius);
             }
         }
-
-        public void Destroy() => Obj.Destroy();
     }
 }
