@@ -1,5 +1,6 @@
 ﻿using Moq;
 using UnityFoundation.CharacterSystem.ActorSystem;
+using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests
 {

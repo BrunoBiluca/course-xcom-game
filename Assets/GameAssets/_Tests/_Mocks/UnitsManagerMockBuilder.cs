@@ -1,5 +1,6 @@
 ﻿using Moq;
 using UnityEngine;
+using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests
 {

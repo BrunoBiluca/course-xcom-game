@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityFoundation.HealthSystem;
+using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests
 {
