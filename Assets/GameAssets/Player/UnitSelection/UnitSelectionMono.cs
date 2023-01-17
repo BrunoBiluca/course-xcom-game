@@ -1,20 +1,20 @@
 using System;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
+using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    // TODO: Alterar essa class para RaycastActorSelector e criar uma classe de GridActorSelector
-    // a class GridActorSelector será responsável por selecionar um actor dentro de um cell
+
     public sealed class UnitSelectionMono
         : MonoBehaviour, IActorSelector<IAPActor>, IBilucaLoggable
     {
         private IWorldCursor worldCursor;
 
-        private RaycastSelection unitSelection;
+        private RaycastSelector unitSelection;
 
         public TrooperUnit CurrentUnit { get; private set; }
         public IAPActor CurrentUnitActor { get; private set; }
@@ -33,7 +33,7 @@ namespace GameAssets
         {
             int unitLayer = LayerMask.GetMask("Unit");
             var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
-            unitSelection = new RaycastSelection(raycastHandler)
+            unitSelection = new RaycastSelector(raycastHandler)
                 .SetLayers(unitLayer);
         }
 
@@ -44,7 +44,7 @@ namespace GameAssets
 
             // TODO: remover essa relação com a classe TrooperUnit
             // a relação deve ser apenas com IAPActor
-            unitSelection.SelectByType<TrooperUnit>(pos)
+            unitSelection.Select<TrooperUnit>(pos)
                 .Some(SelectUnit)
                 .OrElse(UnselectUnit);
         }

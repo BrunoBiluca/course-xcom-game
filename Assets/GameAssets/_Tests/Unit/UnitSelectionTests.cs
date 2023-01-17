@@ -1,6 +1,7 @@
 using Moq;
 using NUnit.Framework;
 using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets.Tests
@@ -11,7 +12,7 @@ namespace GameAssets.Tests
         public void Should_not_select_any_unit_if_found_none()
         {
             var raycastHandler = new RaycastHandler(new Mock<ICamera>().Object);
-            var unitSelection = new RaycastSelection(raycastHandler);
+            var unitSelection = new RaycastSelector(raycastHandler);
 
             var unit = unitSelection.Select(Vector3.zero);
 
@@ -23,7 +24,7 @@ namespace GameAssets.Tests
         {
             var testCase = new TestCase();
             testCase.FoundUnit();
-            var unitSelection = new RaycastSelection(testCase.GetRaycastHandler());
+            var unitSelection = new RaycastSelector(testCase.GetRaycastHandler());
 
             var selectedUnit = unitSelection.Select(Vector3.zero);
 
@@ -36,7 +37,7 @@ namespace GameAssets.Tests
             var testCase = new TestCase();
             testCase.FoundUnit();
 
-            var unitSelection = new RaycastSelection(testCase.GetRaycastHandler());
+            var unitSelection = new RaycastSelector(testCase.GetRaycastHandler());
 
             Assert.IsTrue(unitSelection.Select(Vector3.zero).IsPresent);
 
@@ -54,7 +55,7 @@ namespace GameAssets.Tests
             var testCase = new TestCase();
             testCase.FoundUnit();
 
-            var unitSelection = new RaycastSelection(testCase.GetRaycastHandler());
+            var unitSelection = new RaycastSelector(testCase.GetRaycastHandler());
 
             Assert.IsTrue(unitSelection.Select(Vector3.zero).IsPresent);
 
