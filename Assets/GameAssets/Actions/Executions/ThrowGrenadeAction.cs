@@ -1,10 +1,8 @@
-using NUnit.Framework;
 using System;
 using System.Linq;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
-using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
@@ -50,12 +48,6 @@ namespace GameAssets
         private void ReachTargetHandler()
         {
             var units = gridManager.GetUnitsInRange(targetPos, Config.ExplosionRange);
-
-            if(units.Count == 0)
-            {
-                OnCantExecuteAction?.Invoke();
-                return;
-            }
 
             CameraManager.I.ShakeCamera();
 

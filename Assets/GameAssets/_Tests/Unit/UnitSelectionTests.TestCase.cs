@@ -17,13 +17,13 @@ namespace GameAssets.Tests
                 raycastHandler = new Mock<IRaycastHandler>();
 
                 unit = new GameObject("unit");
-                unit.AddComponent<SelectableMock>();
+                unit.AddComponent<SelectableMono>();
                 unit.AddComponent<BoxCollider>();
             }
 
-            public SelectableMock GetSelectableUnit()
+            public SelectableMono GetSelectableUnit()
             {
-                return unit.GetComponent<SelectableMock>();
+                return unit.GetComponent<SelectableMono>();
             }
 
             public TestCase FoundUnit()

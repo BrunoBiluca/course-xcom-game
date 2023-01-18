@@ -11,10 +11,7 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class TrooperUnit :
-        BilucaMono,
-        ICharacterUnit,
-        ISelectable
+    public class TrooperUnit : BilucaMono, ICharacterUnit
     {
         public UnitConfig UnitConfig { get; private set; }
 
@@ -39,11 +36,9 @@ namespace GameAssets
 
         public UnitFactions Faction => UnitFactions.Player;
 
-        public APActor unitActionsManager;
+        public ISelectable Selectable { get; private set; }
 
-        public event Action OnSelectedStateChange;
-        public event Action OnSelected;
-        public event Action OnUnselected;
+        public APActor unitActionsManager;
 
         private UnitGridWorldCursor worldCursor;
 
@@ -55,16 +50,21 @@ namespace GameAssets
             };
 
             AnimatorController = GetComponent<UnitAnimatorController>();
-
             HealthSystem = gameObject.GetComponent<HealthSystemMono>();
-            HealthSystem.Setup(10);
 
+            ProjectileStart = projectileStart.transform.Decorate();
+            RightShoulder = rightShoulderRef.transform.Decorate();
+
+            Selectable = new SelectableObject(this);
+            Selectable.OnSelectedStateChange += SubscribeExecuteActionEvent;
+        }
+
+        public void Start()
+        {
             var healthController = new HealthSystemController(HealthSystem);
             healthController.AddHealthBar(transform.FindComponent<IHealthBar>("health_bar"));
 
-            ProjectileStart = new TransformDecorator(projectileStart.transform);
-
-            RightShoulder = new TransformDecorator(rightShoulderRef.transform);
+            GetComponent<SelectionMarkMono>().Setup(Selectable);
         }
 
         public void Setup(
@@ -75,50 +75,26 @@ namespace GameAssets
             this.worldCursor = worldCursor;
 
             UnitConfig = unitConfigTemplate;
+
+            HealthSystem.Setup(UnitConfig.InitialHealth);
+
             unitActionsManager = new APActor(
                 new FiniteResourceManager(UnitConfig.MaxActionPoints, true)
             );
+
             Actor.OnCantExecuteAction += InvokeCantExecuteAction;
             Obj.OnObjectDestroyed += () => Actor.OnCantExecuteAction -= InvokeCantExecuteAction;
-        }
-
-        public Collider GetCollider()
-        {
-            return GetComponent<Collider>();
-        }
-
-        public void SetSelected(bool isSelected)
-        {
-            UpdateSelected(isSelected);
-            SubscribeExecuteActionEvent();
         }
 
         private void SubscribeExecuteActionEvent()
         {
             worldCursor.OnAvaiableCellSecondaryClicked -= ExecuteAction;
-            if(IsSelected)
+            if(Selectable.IsSelected)
                 worldCursor.OnAvaiableCellSecondaryClicked += ExecuteAction;
         }
 
-        private void UpdateSelected(bool isSelected)
-        {
-            IsSelected = isSelected;
-            if(IsSelected)
-                OnSelected?.Invoke();
-            else
-                OnUnselected?.Invoke();
-            OnSelectedStateChange?.Invoke();
-        }
+        private void ExecuteAction() => Actor.Execute();
 
-        private void ExecuteAction()
-        {
-
-            Actor.Execute();
-        }
-
-        private void InvokeCantExecuteAction()
-        {
-            Actor.UnsetAction();
-        }
+        private void InvokeCantExecuteAction() => Actor.UnsetAction();
     }
 }

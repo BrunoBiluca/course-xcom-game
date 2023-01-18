@@ -1,6 +1,7 @@
 ﻿using Moq;
 using System;
 using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.HealthSystem;
 using UnityFoundation.TestUtility;
 
@@ -31,6 +32,12 @@ namespace GameAssets.Tests
         public CharacterUnitMock WithFaction(UnitFactions faction)
         {
             unit.Setup(u => u.Faction).Returns(faction);
+            return this;
+        }
+
+        public CharacterUnitMock Selectable()
+        {
+            unit.Setup(u => u.Selectable).Returns(new Mock<ISelectable>().Object);
             return this;
         }
 

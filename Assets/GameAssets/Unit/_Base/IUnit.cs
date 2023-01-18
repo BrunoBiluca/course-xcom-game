@@ -1,4 +1,5 @@
-﻿using UnityFoundation.Code.UnityAdapter;
+﻿using UnityFoundation.Code;
+using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
@@ -17,5 +18,6 @@ namespace GameAssets
         string Name { get; }
         ITransform Transform { get; }
         UnitFactions Faction { get; }
+        ISelectable Selectable { get { return null; } }
     }
 }

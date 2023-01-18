@@ -68,7 +68,7 @@ namespace GameAssets
             );
 
             var unitSelection = FindObjectOfType<UnitSelectionMono>();
-            unitSelection.Setup(worldCursor);
+            unitSelection.Setup(worldCursor, new GridSelector(GridManager));
 
             unitSelection.OnUnitUnselected += () => GridManager.ResetValidation();
 

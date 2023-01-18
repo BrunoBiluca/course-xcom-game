@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets

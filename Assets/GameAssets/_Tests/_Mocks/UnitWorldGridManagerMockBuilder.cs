@@ -1,16 +1,30 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code.Grid;
+using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests
 {
-    public sealed class UnitWorldGridManagerMockBuilder : BilucaBuilder<IUnitWorldGridManager>
+    public sealed class UnitWorldGridManagerMockBuilder : FakeBuilder<IUnitWorldGridManager>
     {
         private readonly List<IUnit> units = new();
 
         public UnitWorldGridManagerMockBuilder WithUnit(UnitFactions faction, Vector3 position)
         {
             units.Add(new CharacterUnitMock()
+                .WithPosition(position)
+                .WithFaction(faction)
+                .Build()
+            );
+            return this;
+        }
+        public UnitWorldGridManagerMockBuilder WithSelectableUnit(
+            UnitFactions faction, 
+            Vector3 position
+        )
+        {
+            units.Add(new CharacterUnitMock()
+                .Selectable()
                 .WithPosition(position)
                 .WithFaction(faction)
                 .Build()

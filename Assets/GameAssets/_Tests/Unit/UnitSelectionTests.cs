@@ -45,7 +45,7 @@ namespace GameAssets.Tests
 
             unitSelection.Select(Vector3.one);
 
-            Assert.IsFalse(testCase.GetSelectableUnit().State);
+            Assert.IsFalse(testCase.GetSelectableUnit().IsSelected);
             Assert.IsFalse(unitSelection.Select(Vector3.zero).IsPresent);
         }
 

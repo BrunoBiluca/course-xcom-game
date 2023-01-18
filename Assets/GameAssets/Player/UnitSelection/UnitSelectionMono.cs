@@ -13,8 +13,7 @@ namespace GameAssets
         : MonoBehaviour, IActorSelector<IAPActor>, IBilucaLoggable
     {
         private IWorldCursor worldCursor;
-
-        private RaycastSelector unitSelection;
+        private ISelector selector;
 
         public TrooperUnit CurrentUnit { get; private set; }
         public IAPActor CurrentUnitActor { get; private set; }
@@ -23,37 +22,28 @@ namespace GameAssets
         public event Action OnUnitSelected;
         public event Action OnUnitUnselected;
 
-        public void Setup(IWorldCursor worldCursor)
+        public void Setup(IWorldCursor worldCursor, ISelector selector)
         {
             this.worldCursor = worldCursor;
             worldCursor.OnClick += TrySelectUnit;
-        }
 
-        public void Start()
-        {
-            int unitLayer = LayerMask.GetMask("Unit");
-            var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
-            unitSelection = new RaycastSelector(raycastHandler)
-                .SetLayers(unitLayer);
+            this.selector = selector;
         }
 
         private void TrySelectUnit()
         {
-            if(!worldCursor.ScreenPosition.IsPresentAndGet(out Vector2 pos))
+            if(!worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos))
                 return;
 
-            // TODO: remover essa relação com a classe TrooperUnit
-            // a relação deve ser apenas com IAPActor
-            unitSelection.Select<TrooperUnit>(pos)
+            selector.Select<SelectableObject>(pos)
                 .Some(SelectUnit)
                 .OrElse(UnselectUnit);
         }
 
-        private void SelectUnit(TrooperUnit unit)
+        private void SelectUnit(SelectableObject obj)
         {
+            var unit = obj.SelectedReference as TrooperUnit;
             Logger?.Log("Unit", unit.name, "was selected");
-
-            UnselectUnit();
 
             CurrentUnitActor = unit.Actor;
             CurrentUnit = unit;
@@ -65,7 +55,7 @@ namespace GameAssets
             if(CurrentUnitActor != null)
             {
                 Logger?.Log("Unit was deselected");
-                CurrentUnit.SetSelected(false);
+                selector.Unselect();
                 CurrentUnitActor = null;
                 CurrentUnit = null;
             }
