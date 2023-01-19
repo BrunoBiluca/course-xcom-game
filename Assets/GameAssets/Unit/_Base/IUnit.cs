@@ -16,6 +16,7 @@ namespace GameAssets
     public interface IUnit
     {
         string Name { get; }
+        bool IsBlockable { get { return true; } }
         ITransform Transform { get; }
         UnitFactions Faction { get; }
         ISelectable Selectable { get { return null; } }

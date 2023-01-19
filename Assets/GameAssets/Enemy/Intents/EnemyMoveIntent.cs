@@ -28,7 +28,7 @@ namespace GameAssets
 
         public IAction Create()
         {
-            return new StepMoveUnitAction(
+            return new StepMovementAction(
                 unit, gridManager, position, AsyncProcessor.I
             ) {
                 Logger = UnityDebug.I

@@ -23,3 +23,5 @@ MonoBehaviour:
     <ShootRange>k__BackingField: 3
     <GrenadeRange>k__BackingField: 2
     <MeleeRange>k__BackingField: 1
+    <MeleeDamage>k__BackingField: 2
+    <InteractRange>k__BackingField: 1

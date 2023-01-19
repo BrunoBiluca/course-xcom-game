@@ -16,10 +16,10 @@ namespace GameAssets
         public event Action OnInstallerFinish;
 
         [Header("Config")]
-        [SerializeField] private LevelSetupConfig levelSetupConfig;
+        [SerializeField] private LevelSetupConfigSO levelSetupConfig;
 
         [Header("UI")]
-        [SerializeField] private APUnitActionSelectionView unitActionSelectionView;
+        [SerializeField] private UnitActionsView unitActionSelectionView;
         [SerializeField] private ActionPointsView actionPointsView;
         [SerializeField] private TurnSystemView turnSystemView;
         [SerializeField] private WorldGridView worldGridView;

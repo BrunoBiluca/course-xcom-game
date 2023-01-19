@@ -19,13 +19,23 @@ namespace GameAssets
 
         public UnitWorldGridValidator WhereIsNotEmpty()
         {
-            gridValidations.Add(new NotEmptyCellGridValidation<UnitValue>());
+            gridValidations.Add(
+                new AndValidation<UnitValue>(
+                    new NotEmptyCellGridValidation<UnitValue>(),
+                    new UnitTypeGridValidation(u => u.IsBlockable)
+                )
+            );
             return this;
         }
 
         public UnitWorldGridValidator WhereIsEmpty()
         {
-            gridValidations.Add(new EmptyCellGridValidation<UnitValue>());
+            gridValidations.Add(
+                new OrValidation<UnitValue>(
+                    new EmptyCellGridValidation<UnitValue>(),
+                    new UnitTypeGridValidation(u => !u.IsBlockable)
+                )
+            );
             return this;
         }
 
@@ -45,6 +55,12 @@ namespace GameAssets
         public UnitWorldGridValidator WhereUnit(Func<IUnit, bool> unitValidator)
         {
             gridValidations.Add(new UnitTypeGridValidation(unitValidator));
+            return this;
+        }
+
+        public UnitWorldGridValidator WhereUnitIs<T>() where T : IUnit
+        {
+            gridValidations.Add(new UnitTypeGridValidation(u => u is T));
             return this;
         }
 

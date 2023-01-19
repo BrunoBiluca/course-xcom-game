@@ -11,7 +11,7 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class StepMoveUnitAction : IAction, IBilucaLoggable
+    public class StepMovementAction : IAction, IBilucaLoggable
     {
         private readonly ICharacterUnit unit;
         private readonly UnitWorldGridManager gridManager;
@@ -22,7 +22,7 @@ namespace GameAssets
 
         public IBilucaLogger Logger { get; set; }
 
-        public StepMoveUnitAction(
+        public StepMovementAction(
             ICharacterUnit unit,
             UnitWorldGridManager gridManager,
             Vector3 position,

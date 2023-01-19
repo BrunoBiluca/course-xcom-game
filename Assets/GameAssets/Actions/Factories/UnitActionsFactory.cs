@@ -40,18 +40,34 @@ namespace GameAssets
                 UnitActionsEnum.SHOOT => InstantiateShoot(),
                 UnitActionsEnum.GRENADE => InstantiateGrenadeThrow(),
                 UnitActionsEnum.MELEE => InstantiateMelee(),
+                UnitActionsEnum.INTERACT => InstantiateInteract(),
                 _ => throw new NotImplementedException(),
             };
+        }
+
+        private GridUnitAction InstantiateInteract()
+        {
+            return new GridUnitAction(
+                gridManager,
+                new InteractIntent(unitSelection, gridManager, worldCursor){
+                    ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.INTERACT)
+                },
+                UnitWorldGridManager.GridState.Interact,
+                new InRangeValidationIntent(unitSelection, c => c.InteractRange),
+                new InteractableValidation()
+            );
         }
 
         private GridUnitAction InstantiateMelee()
         {
             return new GridUnitAction(
                 gridManager,
-                new MeleeAttackIntent(gridManager, unitSelection, worldCursor),
+                new MeleeAttackIntent(gridManager, unitSelection, worldCursor) {
+                    ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.MELEE)
+                },
                 UnitWorldGridManager.GridState.Attack,
                 new DirectDamageValidationIntent(
-                    unitSelection, 
+                    unitSelection,
                     DamageableLayerManager.I,
                     c => c.MeleeRange
                 )
@@ -86,7 +102,7 @@ namespace GameAssets
                 },
                 UnitWorldGridManager.GridState.Attack,
                 new DirectDamageValidationIntent(
-                    unitSelection, 
+                    unitSelection,
                     DamageableLayerManager.I,
                     c => c.ShootRange
                 )

@@ -17,10 +17,7 @@ namespace GameAssets.Tests
 
         public AIUnitMockBuilder()
         {
-            UnitConfig = new UnitConfigBuilder() {
-                ShootRange = 1,
-                MovementRange = 1
-            }.Build();
+            UnitConfig = new UnitConfig(null, "", 0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
 
         public void OnActionFinishedWas(bool state)

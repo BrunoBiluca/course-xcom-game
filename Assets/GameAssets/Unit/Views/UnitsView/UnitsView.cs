@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityFoundation.Code;
+using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.UI.Components;
 
 namespace GameAssets

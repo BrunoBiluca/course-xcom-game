@@ -19155,7 +19155,7 @@ GameObject:
   m_Component:
   - component: {fileID: 120949492101004234}
   m_Layer: 0
-  m_Name: create_destroyed
+  m_Name: crate_destroyed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

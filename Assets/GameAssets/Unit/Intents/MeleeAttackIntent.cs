@@ -34,8 +34,9 @@ namespace GameAssets
             if(units[0] is not ICharacterUnit unit)
                 return null;
 
+            var attacker = unitSelection.CurrentUnit;
             return new MeleeAttackAction(
-                new MeleeAttackAction.Settings(4),
+                new MeleeAttackAction.Settings(attacker.UnitConfig.MeleeDamage),
                 unitSelection.CurrentUnit,
                 unit
             );

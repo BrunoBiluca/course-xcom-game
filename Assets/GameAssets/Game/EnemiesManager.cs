@@ -11,7 +11,7 @@ namespace GameAssets
 {
     public class EnemiesManager : BilucaMono, IBilucaLoggable
     {
-        private LevelSetupConfig levelSetupConfig;
+        private LevelSetupConfigSO levelSetupConfig;
         private UnitWorldGridManager gridManager;
         private IEnemyActionIntentFactory enemyActionIntentFactory;
         private ITurnSystem turnSystem;
@@ -22,7 +22,7 @@ namespace GameAssets
         public event Action OnEnemiesDied;
 
         public void Setup(
-            LevelSetupConfig levelSetupConfig,
+            LevelSetupConfigSO levelSetupConfig,
             UnitWorldGridManager gridManager,
             ITurnSystem turnSystem,
             IEnemyActionIntentFactory enemyActionIntentFactory

@@ -30,7 +30,7 @@ namespace GameAssets
             //return new MoveUnitAction(
             //    unitSelection.CurrentUnit, AsyncProcessor.I, worldCursor, gridManager
             //);
-            return new StepMoveUnitAction(
+            return new StepMovementAction(
                 unitSelection.CurrentUnit,
                 gridManager,
                 worldCursor.WorldPosition.Get(),

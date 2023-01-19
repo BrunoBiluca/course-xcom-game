@@ -6,6 +6,7 @@ namespace GameAssets
         SPIN,
         SHOOT,
         GRENADE,
-        MELEE
+        MELEE,
+        INTERACT
     }
 }

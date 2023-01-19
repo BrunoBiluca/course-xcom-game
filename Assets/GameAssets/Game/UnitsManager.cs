@@ -9,7 +9,7 @@ namespace GameAssets
 {
     public class UnitsManager : MonoBehaviour, IUnitsManager
     {
-        private LevelSetupConfig levelSetupConfig;
+        private LevelSetupConfigSO levelSetupConfig;
         private UnitGridWorldCursor worldCursor;
         private UnitWorldGridManager gridManager;
         private IActorSelector<IAPActor> actorSelector;
@@ -21,7 +21,7 @@ namespace GameAssets
         public event Action OnAllUnitsDied;
 
         public void Setup(
-            LevelSetupConfig levelSetupConfig,
+            LevelSetupConfigSO levelSetupConfig,
             UnitGridWorldCursor worldCursor,
             UnitWorldGridManager gridManager,
             ITurnSystem turnSystem,

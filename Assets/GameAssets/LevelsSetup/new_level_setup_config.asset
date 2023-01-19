@@ -9,45 +9,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4120fee09903df54aa415166f0ac3160, type: 3}
-  m_Name: test_level_setup_config
+  m_Script: {fileID: 11500000, guid: 618a6a05a8bcdcc49a5ca786c533ec53, type: 3}
+  m_Name: new_level_setup_config
   m_EditorClassIdentifier: 
-  <GridConfig>k__BackingField:
-    Width: 10
-    Depth: 10
-    CellSize: 2
   Units:
   - prefab: {fileID: 4091461879376266685, guid: 243636264dacba948a499d52bb5fc52b,
       type: 3}
     UnitTemplate: {fileID: 11400000, guid: 735f8967deaa7b942bc940083a056c17, type: 2}
     Position:
-      X: 2
-      Z: 2
+      X: 1
+      Z: 1
   - prefab: {fileID: 4091461879376266685, guid: 243636264dacba948a499d52bb5fc52b,
       type: 3}
     UnitTemplate: {fileID: 11400000, guid: ed8a2bc1fd3b06c4c80a13571023b2f8, type: 2}
     Position:
-      X: 3
-      Z: 6
+      X: 1
+      Z: 3
   Enemies:
   - EnemyPrefab: {fileID: 4091461879376266685, guid: 2a6e14109f353f042a9a2b291c637e6b,
       type: 3}
     UnitTemplate: {fileID: 11400000, guid: 9e411d85c61834641817985068ab343c, type: 2}
     Position:
+      X: 6
+      Z: 6
+  - EnemyPrefab: {fileID: 4091461879376266685, guid: 2a6e14109f353f042a9a2b291c637e6b,
+      type: 3}
+    UnitTemplate: {fileID: 11400000, guid: 9e411d85c61834641817985068ab343c, type: 2}
+    Position:
       X: 7
-      Z: 7
+      Z: 6
   - EnemyPrefab: {fileID: 4091461879376266685, guid: 2a6e14109f353f042a9a2b291c637e6b,
       type: 3}
     UnitTemplate: {fileID: 11400000, guid: 9e411d85c61834641817985068ab343c, type: 2}
     Position:
       X: 8
-      Z: 7
-  - EnemyPrefab: {fileID: 4091461879376266685, guid: 2a6e14109f353f042a9a2b291c637e6b,
-      type: 3}
-    UnitTemplate: {fileID: 11400000, guid: 9e411d85c61834641817985068ab343c, type: 2}
-    Position:
-      X: 6
-      Z: 7
+      Z: 6
   actionPointsConfig:
     Costs:
       m_keys:
@@ -56,4 +52,5 @@ MonoBehaviour:
       - SHOOT
       - GRENADE
       - MELEE
-      m_values: 0100000002000000010000000300000002000000
+      - INTERACT
+      m_values: 010000000200000001000000030000000200000001000000

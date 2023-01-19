@@ -21,7 +21,9 @@ namespace GameAssets
             int shootRange,
             int grenadeRange,
             int meleeRange,
-            int initialHealth
+            int initialHealth,
+            int interactRange,
+            int meleeDamage
         )
         {
             Portrait = portrait;
@@ -33,6 +35,8 @@ namespace GameAssets
             GrenadeRange = grenadeRange;
             MeleeRange = meleeRange;
             InitialHealth = initialHealth;
+            InteractRange = interactRange;
+            MeleeDamage = meleeDamage;
         }
 
         [field: SerializeField] public Sprite Portrait { get; private set; }
@@ -44,23 +48,7 @@ namespace GameAssets
         [field: SerializeField] public int ShootRange { get; private set; }
         [field: SerializeField] public int GrenadeRange { get; private set; }
         [field: SerializeField] public int MeleeRange { get; private set; }
-    }
-
-    public class UnitConfigBuilder
-    {
-        public Sprite Portrait { get; set; }
-        public string Name { get; set; }
-        public int InitialHealth { get; private set; }
-        public int MovementRange { get; set; }
-        public uint MaxActionPoints { get; set; }
-        public int ShootDamage { get; private set; }
-        public int ShootRange { get; set; }
-        public int GrenadeRange { get; set; }
-        public int MeleeRange { get; set; }
-
-        public UnitConfig Build()
-        {
-            return new UnitConfig(null, null, MovementRange, MaxActionPoints, ShootDamage, ShootRange, 0, 0, InitialHealth);
-        }
+        [field: SerializeField] public int MeleeDamage { get; private set; }
+        [field: SerializeField] public int InteractRange { get; private set; }
     }
 }
