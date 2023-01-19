@@ -56,6 +56,7 @@ namespace GameAssets.Tests
                 });
             unit.Setup(u => u.AnimatorController).Returns(AnimatorController.Object);
 
+            unit.Setup(u => u.IsBlockable).Returns(true);
             unit.Setup(u => u.Damageable).Returns(Damageable.Object);
             unit.Setup((u) => u.Transform.Position).Returns(startPosition);
             unit.Setup((u) => u.Transform.IsValid).Returns(true);

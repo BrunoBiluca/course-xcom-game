@@ -5,11 +5,11 @@ using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests
 {
-    public sealed class UnitWorldGridManagerMockBuilder : FakeBuilder<IUnitWorldGridManager>
+    public sealed class UnitWorldGridManagerFakeBuilder : FakeBuilder<IUnitWorldGridManager>
     {
         private readonly List<IUnit> units = new();
 
-        public UnitWorldGridManagerMockBuilder WithUnit(UnitFactions faction, Vector3 position)
+        public UnitWorldGridManagerFakeBuilder WithUnit(UnitFactions faction, Vector3 position)
         {
             units.Add(new CharacterUnitMock()
                 .WithPosition(position)
@@ -18,7 +18,7 @@ namespace GameAssets.Tests
             );
             return this;
         }
-        public UnitWorldGridManagerMockBuilder WithSelectableUnit(
+        public UnitWorldGridManagerFakeBuilder WithSelectableUnit(
             UnitFactions faction, 
             Vector3 position
         )

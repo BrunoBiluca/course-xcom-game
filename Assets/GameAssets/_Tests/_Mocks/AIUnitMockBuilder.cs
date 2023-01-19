@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using System;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.ResourceManagement;
@@ -15,11 +16,6 @@ namespace GameAssets.Tests
 
         private EventTest takeActionEvent;
 
-        public AIUnitMockBuilder()
-        {
-            UnitConfig = new UnitConfig(null, "", 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        }
-
         public void OnActionFinishedWas(bool state)
         {
             Assert.That(takeActionEvent.WasTriggered, Is.EqualTo(state));
@@ -30,6 +26,12 @@ namespace GameAssets.Tests
             Assert.That(takeActionEvent.TriggerCount, Is.EqualTo(calledTimes));
         }
 
+        public AIUnitMockBuilder With(UnitConfig unitConfig)
+        {
+            UnitConfig = unitConfig;
+            return this;
+        }
+
         protected override Mock<IAIUnit> OnBuild()
         {
             var actor = new APActor(new FiniteResourceManager(InitialAP, true));
@@ -38,6 +40,8 @@ namespace GameAssets.Tests
                 actor, nameof(actor.OnActionFinished)
             );
             AddToObjects(actor);
+
+            UnitConfig ??= new UnitConfig(null, "", 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
             var enemy = new Mock<IAIUnit>();
             enemy.Setup(e => e.UnitConfig).Returns(UnitConfig);

@@ -13,17 +13,17 @@ namespace GameAssets
     public class UnitConfig
     {
         public UnitConfig(
-            Sprite portrait,
-            string name,
-            int movementRange,
-            uint maxActionPoints,
-            int shootDamage,
-            int shootRange,
-            int grenadeRange,
-            int meleeRange,
-            int initialHealth,
-            int interactRange,
-            int meleeDamage
+            Sprite portrait = null,
+            string name = "",
+            int movementRange = 0,
+            uint maxActionPoints = 0,
+            int shootDamage = 0,
+            int shootRange = 0,
+            int grenadeRange = 0,
+            int meleeRange = 0,
+            int initialHealth = 0,
+            int interactRange = 0,
+            int meleeDamage = 0
         )
         {
             Portrait = portrait;

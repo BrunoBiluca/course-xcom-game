@@ -10,7 +10,7 @@ namespace GameAssets.Tests
         [Test]
         public void Should_not_select_any_unit_when_grid_is_empty()
         {
-            var gridManager = new UnitWorldGridManagerMockBuilder().Build();
+            var gridManager = new UnitWorldGridManagerFakeBuilder().Build();
             var selector = new GridSelector(gridManager);
 
             var selected = selector.Select(Vector3.zero);
@@ -22,7 +22,7 @@ namespace GameAssets.Tests
         [Test]
         public void Should_not_select_unit_when_unit_is_in_another_cell_position()
         {
-            var gridManager = new UnitWorldGridManagerMockBuilder()
+            var gridManager = new UnitWorldGridManagerFakeBuilder()
                 .WithUnit(UnitFactions.Player, Vector3.forward)
                 .Build();
             var selector = new GridSelector(gridManager);
@@ -36,7 +36,7 @@ namespace GameAssets.Tests
         [Test]
         public void Should_select_unit_when_it_is_in_cell_position()
         {
-            var gridManager = new UnitWorldGridManagerMockBuilder()
+            var gridManager = new UnitWorldGridManagerFakeBuilder()
                 .WithSelectableUnit(UnitFactions.Player, Vector3.forward)
                 .Build();
             var selector = new GridSelector(gridManager);

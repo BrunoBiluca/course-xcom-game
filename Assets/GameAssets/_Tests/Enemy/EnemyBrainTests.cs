@@ -14,7 +14,7 @@ namespace GameAssets.Tests
         [Test]
         public void Should_not_execute_any_action_given_unit_has_no_action_points()
         {
-            var gridManagerMock = new UnitWorldGridManagerMockBuilder();
+            var gridManagerMock = new UnitWorldGridManagerFakeBuilder();
             var enemyMock = new AIUnitMockBuilder();
             var intentsFactory = new Mock<IEnemyActionIntentFactory>();
 
@@ -33,14 +33,14 @@ namespace GameAssets.Tests
         public void Should_shoot_when_unit_is_in_shooting_range()
         {
             var targetPosition = Vector3.one;
-            var gridManagerMock = new UnitWorldGridManagerMockBuilder()
+            var gridManagerMock = new UnitWorldGridManagerFakeBuilder()
                 .WithUnit(UnitFactions.Player, targetPosition);
             var enemyMock = new AIUnitMockBuilder() { InitialAP = 1 };
             var factoryMockBuilder = new EnemyIntentFactoryMockBuilder();
 
-            var enemyUnit = enemyMock.Build();
+            var unit = enemyMock.With(new UnitConfig(movementRange: 1, shootRange: 1)).Build();
             var enemyBrain = new EnemyBrain(
-                enemyUnit,
+                unit,
                 factoryMockBuilder.Build(),
                 gridManagerMock.Build()
             );
@@ -51,7 +51,7 @@ namespace GameAssets.Tests
 
             factoryMockBuilder.Mock.Verify(
                 f => f.IntentShoot(
-                    It.Is<ICharacterUnit>(u => u == enemyUnit),
+                    It.Is<ICharacterUnit>(u => u == unit),
                     It.Is<Vector3>(p => p == targetPosition)
                 ),
                 Times.Once()
@@ -63,14 +63,14 @@ namespace GameAssets.Tests
         {
             var targetPosition = new Vector3(2, 0, 2);
 
-            var gridManagerMock = new UnitWorldGridManagerMockBuilder()
+            var gridManagerMock = new UnitWorldGridManagerFakeBuilder()
                 .WithUnit(UnitFactions.Player, targetPosition);
 
             var enemyMock = new AIUnitMockBuilder() { InitialAP = 1 };
 
             var factoryMockBuilder = new EnemyIntentFactoryMockBuilder();
 
-            var unit = enemyMock.Build();
+            var unit = enemyMock.With(new UnitConfig(movementRange: 1)).Build();
             var enemyBrain = new EnemyBrain(
                 unit,
                 factoryMockBuilder.Build(),
@@ -97,7 +97,7 @@ namespace GameAssets.Tests
             var enemyPosition = new Vector3(1, 0, 0);
             var initialPosition = Vector3.zero;
 
-            var gridManagerMock = new UnitWorldGridManagerMockBuilder()
+            var gridManagerMock = new UnitWorldGridManagerFakeBuilder()
                 .WithUnit(UnitFactions.Player, targetPosition)
                 .WithUnit(UnitFactions.Enemy, enemyPosition);
 
@@ -105,13 +105,9 @@ namespace GameAssets.Tests
 
             var factoryMockBuilder = new EnemyIntentFactoryMockBuilder();
 
-            var unit = enemyMock.Build();
+            var unit = enemyMock.With(new UnitConfig(movementRange: 1)).Build();
             var gridManager = gridManagerMock.Build();
-            var enemyBrain = new EnemyBrain(
-                unit,
-                factoryMockBuilder.Build(),
-                gridManager
-            );
+            var enemyBrain = new EnemyBrain(unit, factoryMockBuilder.Build(), gridManager);
 
             var intent = enemyBrain.ChooseIntent();
 

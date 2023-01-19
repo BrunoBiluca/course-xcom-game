@@ -25,10 +25,12 @@ namespace GameAssets
             switch(intent)
             {
                 case EnemyIntents.SHOOT:
-                    context.ChosenIntent = Optional<IAPIntent>.Some(intentsFactory.IntentShoot(unit, context.TargetPosition));
+                    context.ChosenIntent = Optional<IAPIntent>
+                        .Some(intentsFactory.IntentShoot(unit, context.TargetPosition));
                     break;
                 case EnemyIntents.MOVE:
-                    context.ChosenIntent = Optional<IAPIntent>.Some(intentsFactory.IntentMove(unit, context.TargetPosition));
+                    context.ChosenIntent = Optional<IAPIntent>
+                        .Some(intentsFactory.IntentMove(unit, context.TargetPosition));
                     break;
                 default:
                     break;
