@@ -810,7 +810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57754dc762ee1fc4c85b37fbc90b5534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  option: {fileID: 11400000, guid: 9eec915222a3e1f4090a4e4d6ddf8787, type: 2}
+  option: {fileID: 0}
   label: {fileID: 6097032943731689165}
   slider: {fileID: 323967773608989088}
   labelPath: background.text

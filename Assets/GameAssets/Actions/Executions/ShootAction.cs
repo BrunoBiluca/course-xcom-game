@@ -36,13 +36,11 @@ namespace GameAssets
         {
             var cellValue = gridManager.GetValueIfCellIsAvailable(position);
 
-            if(cellValue == default)
-            {
-                OnCantExecuteAction?.Invoke();
-                return;
-            }
-
-            if(cellValue.Units[0] is not ICharacterUnit shootedUnit)
+            if(
+                cellValue == default 
+                || cellValue.Units.IsEmpty() 
+                || cellValue.Units[0] is not ICharacterUnit shootedUnit
+            )
             {
                 OnCantExecuteAction?.Invoke();
                 return;

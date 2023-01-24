@@ -52,7 +52,7 @@ namespace GameAssets
             units = new List<ICharacterUnit>();
             foreach(var unitSetup in levelSetupConfig.Units)
             {
-                var unit = Instantiate(unitSetup.prefab).GetComponent<TrooperUnit>();
+                var unit = Instantiate(unitSetup.prefab).GetComponent<PlayerUnit>();
                 unit.Setup(unitSetup.UnitTemplate.UnitConfig, worldCursor);
 
                 unit.Transform.Position = gridManager.Grid

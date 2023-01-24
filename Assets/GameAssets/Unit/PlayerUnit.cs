@@ -1,17 +1,15 @@
-using System;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
-using UnityFoundation.Code.Extensions;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
 using UnityFoundation.ResourceManagement;
+using UnityFoundation.SettingsSystem;
 using UnityFoundation.UI.Components;
-using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class TrooperUnit : BilucaMono, ICharacterUnit
+    public class PlayerUnit : BilucaMono, ICharacterUnit
     {
         public UnitConfig UnitConfig { get; private set; }
 
@@ -24,8 +22,6 @@ namespace GameAssets
 
         public IAnimatorController AnimatorController { get; private set; }
         public INavegationAgent TransformNav { get; private set; }
-
-        public bool IsSelected { get; private set; }
 
         public string Name => UnitConfig.Name;
 
@@ -41,6 +37,7 @@ namespace GameAssets
         public APActor unitActionsManager;
 
         private UnitGridWorldCursor worldCursor;
+        private SoundEffectsControllerMono soundController;
 
         protected override void OnAwake()
         {
@@ -51,6 +48,7 @@ namespace GameAssets
 
             AnimatorController = GetComponent<UnitAnimatorController>();
             HealthSystem = gameObject.GetComponent<HealthSystemMono>();
+            HealthSystem.OnDied += HandleOnDied;
 
             ProjectileStart = projectileStart.transform.Decorate();
             RightShoulder = rightShoulderRef.transform.Decorate();
@@ -65,6 +63,8 @@ namespace GameAssets
             healthController.AddHealthBar(transform.FindComponent<IHealthBar>("health_bar"));
 
             GetComponent<SelectionMarkMono>().Setup(Selectable);
+
+            soundController = GetComponentInChildren<SoundEffectsControllerMono>();
         }
 
         public void Setup(
@@ -84,6 +84,13 @@ namespace GameAssets
 
             Actor.OnCantExecuteAction += InvokeCantExecuteAction;
             Obj.OnObjectDestroyed += () => Actor.OnCantExecuteAction -= InvokeCantExecuteAction;
+        }
+
+        private void HandleOnDied()
+        {
+            soundController.transform.parent = null;
+            soundController.Play();
+            soundController.DestroyAfterPlay();
         }
 
         private void SubscribeExecuteActionEvent()

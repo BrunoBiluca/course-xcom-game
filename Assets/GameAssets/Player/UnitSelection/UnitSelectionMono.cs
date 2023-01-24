@@ -15,7 +15,7 @@ namespace GameAssets
         private IWorldCursor worldCursor;
         private ISelector selector;
 
-        public TrooperUnit CurrentUnit { get; private set; }
+        public PlayerUnit CurrentUnit { get; private set; }
         public IAPActor CurrentUnitActor { get; private set; }
         public IBilucaLogger Logger { get; set; }
 
@@ -42,7 +42,7 @@ namespace GameAssets
 
         private void SelectUnit(SelectableObject obj)
         {
-            var unit = obj.SelectedReference as TrooperUnit;
+            var unit = obj.SelectedReference as PlayerUnit;
             Logger?.Log("Unit", unit.name, "was selected");
 
             CurrentUnitActor = unit.Actor;

@@ -257,7 +257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 4130104452631377429, guid: da912e75d65b6904db41a5fa343b864c,
     type: 3}
-  explosionPrefab: {fileID: 1651363388222792, guid: a32d87b33cadfed4b83eeaa564eb7724,
+  explosionPrefab: {fileID: 1651363388222792, guid: 5b5c322075d696447800067df093a5a9,
     type: 3}
 --- !u!114 &69300422
 MonoBehaviour:
@@ -2067,6 +2067,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 504975130857870669, guid: 7530f374a7325c84f91ab94a67822c9f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 504975131295895264, guid: 7530f374a7325c84f91ab94a67822c9f,
         type: 3}
       propertyPath: m_Name
@@ -2207,6 +2212,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860743428357571648, guid: 7530f374a7325c84f91ab94a67822c9f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6886026649912519644, guid: 7530f374a7325c84f91ab94a67822c9f,
         type: 3}

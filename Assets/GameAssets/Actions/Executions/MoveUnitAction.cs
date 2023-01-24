@@ -8,7 +8,7 @@ namespace GameAssets
 {
     public class MoveUnitAction : IAction
     {
-        private readonly TrooperUnit unit;
+        private readonly PlayerUnit unit;
         private readonly IAsyncProcessor asyncProcessor;
         private readonly IWorldCursor worldCursor;
         private readonly UnitWorldGridManager gridManager;
@@ -19,7 +19,7 @@ namespace GameAssets
         public bool ExecuteImmediatly => false;
 
         public MoveUnitAction(
-            TrooperUnit unit,
+            PlayerUnit unit,
             IAsyncProcessor asyncProcessor,
             IWorldCursor worldCursor,
             UnitWorldGridManager gridManager
