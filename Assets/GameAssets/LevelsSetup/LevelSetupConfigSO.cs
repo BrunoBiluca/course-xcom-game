@@ -5,8 +5,6 @@ using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
-
-
     [CreateAssetMenu(menuName = "Xcom Game/Level Setup", fileName = "new_level_setup_config")]
     public class LevelSetupConfigSO : ScriptableObject
     {
@@ -17,6 +15,9 @@ namespace GameAssets
         public EnemySetupConfig[] Enemies;
 
         [SerializeField] public ActionPointsConfig actionPointsConfig;
+
+        [field: SerializeField] 
+        public AudioClip BackgroundMusic { get; private set; }
 
 
         [Serializable]
