@@ -90,8 +90,8 @@ namespace GameAssets
             actionPointsView.Setup(unitSelection);
 
             var selectableVisibility = new SelectableVisibilityHandler(
-                new GameObjectDecorator(actionPointsView.gameObject),
-                new GameObjectDecorator(unitActionSelectionView.gameObject)
+                actionPointsView.gameObject.Decorate(),
+                unitActionSelectionView.gameObject.Decorate()
             ) {
                 Logger = binder.GetReference<IBilucaLogger>()
             };

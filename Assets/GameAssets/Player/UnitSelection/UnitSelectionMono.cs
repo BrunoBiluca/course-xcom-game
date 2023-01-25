@@ -33,8 +33,11 @@ namespace GameAssets
         private void TrySelectUnit()
         {
             if(!worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos))
+            {
+                UnselectUnit();
                 return;
-
+            }
+                
             selector.Select<SelectableObject>(pos)
                 .Some(SelectUnit)
                 .OrElse(UnselectUnit);
@@ -43,6 +46,11 @@ namespace GameAssets
         private void SelectUnit(SelectableObject obj)
         {
             var unit = obj.SelectedReference as PlayerUnit;
+
+            if(CurrentUnit == unit)
+                return;
+
+            UnselectUnit();
             Logger?.Log("Unit", unit.name, "was selected");
 
             CurrentUnitActor = unit.Actor;
@@ -55,7 +63,6 @@ namespace GameAssets
             if(CurrentUnitActor != null)
             {
                 Logger?.Log("Unit was deselected");
-                selector.Unselect();
                 CurrentUnitActor = null;
                 CurrentUnit = null;
             }

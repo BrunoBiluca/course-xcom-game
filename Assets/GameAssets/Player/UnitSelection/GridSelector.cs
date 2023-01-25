@@ -18,13 +18,19 @@ namespace GameAssets
 
         public Optional<ISelectable> Select(Vector3 position)
         {
-            Unselect();
-
             var units = gridManager.GetUnitsInRange(position, 0);
 
-            if(!units.IsEmpty())
-                selector.Select(units[0].Selectable);
+            if(units.IsEmpty())
+            {
+                Unselect();
+                return CurrentUnit;
+            }
+                
+            var selectable = units[0].Selectable;
+            if(CurrentUnit != selectable)
+                Unselect();
 
+            selector.Select(selectable);
             return CurrentUnit;
         }
 

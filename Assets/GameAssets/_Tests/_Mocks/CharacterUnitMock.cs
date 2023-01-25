@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.HealthSystem;
+using UnityFoundation.SettingsSystem;
 using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests
@@ -60,6 +61,12 @@ namespace GameAssets.Tests
             unit.Setup(u => u.Damageable).Returns(Damageable.Object);
             unit.Setup((u) => u.Transform.Position).Returns(startPosition);
             unit.Setup((u) => u.Transform.IsValid).Returns(true);
+
+            unit
+                .Setup(u => u.SoundEffectsController)
+                .Returns(new Mock<ISoundEffectsController>().Object);
+
+            unit.Setup(u => u.SoundEffects).Returns(new SoundEffects());
 
             return unit;
         }

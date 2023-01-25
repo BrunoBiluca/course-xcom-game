@@ -61,13 +61,13 @@ namespace GameAssets
 
         public void UnselectAction()
         {
+            unitActorSelector.CurrentUnitActor?.UnsetAction();
+            OnActionUnselected?.Invoke();
+
             if(!CurrentAction.IsPresentAndGet(out IAPIntent action)) return;
 
             Logger?.Log("Action", CurrentAction.Get().GetType().ToString(), "was deselected");
             CurrentAction = Optional<IAPIntent>.None();
-
-            unitActorSelector.CurrentUnitActor?.UnsetAction();
-            OnActionUnselected?.Invoke();
         }
     }
 }

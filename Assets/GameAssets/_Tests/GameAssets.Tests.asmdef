@@ -9,7 +9,8 @@
         "UnityFoundation.TestUtility",
         "UnityFoundation.ResourceManagement",
         "UnityFoundation.HealthSystem",
-        "UnityFoundation.ActorSystem"
+        "UnityFoundation.ActorSystem",
+        "UnityFoundation.SettingsSystem"
     ],
     "includePlatforms": [
         "Editor"
