@@ -1,6 +1,7 @@
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
+using UnityFoundation.SettingsSystem;
 
 namespace GameAssets
 {
@@ -15,8 +16,10 @@ namespace GameAssets
         UnitConfig UnitConfig { get; }
         ITransform RightShoulder { get; }
         IAnimatorController AnimatorController { get; }
+        ISoundEffectsController SoundEffectsController { get; }
         ITransform ProjectileStart { get; }
         INavegationAgent TransformNav { get; }
         IHealthSystem HealthSystem { get; }
+        SoundEffects SoundEffects { get; }
     }
 }

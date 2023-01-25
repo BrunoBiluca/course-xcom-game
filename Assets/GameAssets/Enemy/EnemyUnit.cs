@@ -6,6 +6,7 @@ using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
 using UnityFoundation.Physics3D;
 using UnityFoundation.ResourceManagement;
+using UnityFoundation.SettingsSystem;
 using UnityFoundation.UI.Components;
 
 namespace GameAssets
@@ -36,6 +37,10 @@ namespace GameAssets
         public INavegationAgent TransformNav { get; private set; }
 
         public UnitFactions Faction => UnitFactions.Enemy;
+
+        public ISoundEffectsController SoundEffectsController => throw new System.NotImplementedException();
+
+        public SoundEffects SoundEffects => throw new System.NotImplementedException();
 
         private EnemyBrain brain;
 

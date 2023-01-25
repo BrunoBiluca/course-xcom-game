@@ -25,3 +25,8 @@ MonoBehaviour:
     <MeleeRange>k__BackingField: 1
     <MeleeDamage>k__BackingField: 2
     <InteractRange>k__BackingField: 1
+  <SoundEffects>k__BackingField:
+    <Melee>k__BackingField: {fileID: 8300000, guid: fed2b464c01fea24885a85755ffdd30b,
+      type: 3}
+    <Died>k__BackingField: {fileID: 8300000, guid: c34078e97df9aaf48ba12247fc6793d7,
+      type: 3}

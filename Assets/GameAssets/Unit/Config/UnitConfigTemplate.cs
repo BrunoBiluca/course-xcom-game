@@ -7,6 +7,15 @@ namespace GameAssets
     public class UnitConfigTemplate : ScriptableObject
     {
         [field: SerializeField] public UnitConfig UnitConfig { get; private set; }
+
+        [field: SerializeField] public SoundEffects SoundEffects { get; private set; }
+    }
+
+    [Serializable]
+    public class SoundEffects
+    {
+        [field: SerializeField] public AudioClip Melee { get; private set; }
+        [field: SerializeField] public AudioClip Died { get; private set; }
     }
 
     [Serializable]

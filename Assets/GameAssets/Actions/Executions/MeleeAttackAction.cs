@@ -1,5 +1,6 @@
 using System;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
@@ -41,6 +42,7 @@ namespace GameAssets
             if(eventName != "damage")
                 return;
 
+            attacker.SoundEffectsController.Play(attacker.SoundEffects.Melee);
             target.Damageable.Damage(Config.Damage);
             attacker.AnimatorController.Play(new MeleeAttackAnimation(false));
 

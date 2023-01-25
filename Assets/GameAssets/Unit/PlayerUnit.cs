@@ -34,6 +34,9 @@ namespace GameAssets
 
         public ISelectable Selectable { get; private set; }
 
+        public ISoundEffectsController SoundEffectsController => soundController;
+        public SoundEffects SoundEffects { get; private set; }
+
         public APActor unitActionsManager;
 
         private UnitGridWorldCursor worldCursor;
@@ -69,9 +72,11 @@ namespace GameAssets
 
         public void Setup(
             UnitConfig unitConfigTemplate,
+            SoundEffects soundEffects,
             UnitGridWorldCursor worldCursor
         )
         {
+            SoundEffects = soundEffects;
             this.worldCursor = worldCursor;
 
             UnitConfig = unitConfigTemplate;
@@ -89,7 +94,7 @@ namespace GameAssets
         private void HandleOnDied()
         {
             soundController.transform.parent = null;
-            soundController.Play();
+            soundController.Play(SoundEffects.Died);
             soundController.DestroyAfterPlay();
         }
 
