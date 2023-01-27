@@ -2,40 +2,63 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
+using UnityFoundation.Code;
+using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.TurnSystem;
 
 namespace GameAssets
 {
-    public class UnitsManager : MonoBehaviour, IUnitsManager
+    public class UnitsManager
+        : MonoBehaviour
+        , IUnitsManager
+        , IBilucaLoggable
+        , IDependencySetup<UnitsManager.Params>
     {
+        public class Params
+        {
+            public LevelSetupConfigSO LevelSetupConfig { get; private set; }
+            public UnitGridWorldCursor WorldCursor { get; private set; }
+            public UnitWorldGridManager GridManager { get; private set; }
+            public ITurnSystem TurnSystem { get; private set; }
+            public IActorSelector<IAPActor> ActorSelector { get; private set; }
+
+            public Params(LevelSetupConfigSO levelSetupConfig, UnitGridWorldCursor worldCursor, UnitWorldGridManager gridManager, ITurnSystem turnSystem, IActorSelector<IAPActor> actorSelector)
+            {
+                LevelSetupConfig = levelSetupConfig;
+                WorldCursor = worldCursor;
+                GridManager = gridManager;
+                TurnSystem = turnSystem;
+                ActorSelector = actorSelector;
+            }
+        }
+
         private LevelSetupConfigSO levelSetupConfig;
         private UnitGridWorldCursor worldCursor;
         private UnitWorldGridManager gridManager;
         private IActorSelector<IAPActor> actorSelector;
-
+        private ITurnSystem turnSystem;
         private List<ICharacterUnit> units;
 
         public int CurrentUnitsCount => units.Count;
 
+        public IBilucaLogger Logger { get; set; }
+
         public event Action OnAllUnitsDied;
 
-        public void Setup(
-            LevelSetupConfigSO levelSetupConfig,
-            UnitGridWorldCursor worldCursor,
-            UnitWorldGridManager gridManager,
-            ITurnSystem turnSystem,
-            IActorSelector<IAPActor> actorSelector
-        )
+        public void Setup(Params parameters)
         {
-            this.levelSetupConfig = levelSetupConfig;
-            this.worldCursor = worldCursor;
-            this.gridManager = gridManager;
+            levelSetupConfig = parameters.LevelSetupConfig;
+            worldCursor = parameters.WorldCursor;
+            gridManager = parameters.GridManager;
+            actorSelector = parameters.ActorSelector;
+            turnSystem = parameters.TurnSystem;
+        }
 
-            this.actorSelector = actorSelector;
-
-            turnSystem.OnPlayerTurnEnded += RefillUnitActions;
+        public void InstantiateUnits()
+        {
             SetupUnits();
+            turnSystem.OnPlayerTurnEnded += RefillUnitActions;
         }
 
         private void RefillUnitActions()
@@ -49,6 +72,8 @@ namespace GameAssets
 
         public void SetupUnits()
         {
+            Debug.Log("sadfsadfsadfsad");
+            Logger?.LogHighlight("Instantiating units");
             units = new List<ICharacterUnit>();
             foreach(var unitSetup in levelSetupConfig.Units)
             {

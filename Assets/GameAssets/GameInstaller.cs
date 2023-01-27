@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.UnityAdapter;
@@ -15,30 +17,11 @@ namespace GameAssets
     {
         public event Action OnInstallerFinish;
 
-        [Header("Config")]
-        [SerializeField] private LevelSetupConfigSO levelSetupConfig;
-
-        [Header("UI")]
-        [SerializeField] private UnitActionsView unitActionSelectionView;
-        [SerializeField] private ActionPointsView actionPointsView;
-        [SerializeField] private TurnSystemView turnSystemView;
-        [SerializeField] private WorldGridView worldGridView;
-        [SerializeField] private UnitsView unitsView;
-
-        [Header("Grid")]
-        [SerializeField] private UnitGridWorldCursor worldCursor;
-
-        [Header("Managers")]
-        [SerializeField] private GameManager gameManager;
-        [SerializeField] private UnitSelectionMono unitSelection;
-        [SerializeField] private UnitsManager unitsManager;
-        [SerializeField] private EnemiesManager enemiesManager;
-        [SerializeField] private ProjectileFactory projectileFactory;
-        [SerializeField] private GrenadeProjectileFactory grenadeFactory;
-
         [SerializeField] private GameBinder binder;
 
         public UnitWorldGridManager GridManager { get; private set; }
+
+        public IDependencyContainer Container { get; private set; }
 
         protected override void OnAwake()
         {
@@ -49,93 +32,42 @@ namespace GameAssets
         {
             Debug.Log("Start GameInstaller");
 
-            foreach(var obj in FindObjectsOfType<MonoBehaviour>().OfType<IBilucaLoggable>())
-            {
-                obj.Logger = binder.GetReference<IBilucaLogger>();
-            }
+            Container = binder.Container;
+            Container.RegisterAction<IBilucaLoggable>(b => b.Logger = UnityDebug.I);
 
-            var grid = binder.GetReference<UnitWorldGridXZ>();
-            GridManager = new UnitWorldGridManager(grid.Grid);
-
-            var raycastHandler = new RaycastHandler(new CameraDecorator(Camera.main));
-            worldCursor.Setup(raycastHandler, grid.Grid, GridManager);
-
-            worldGridView.Setup(
-                new WorldGridView.Params() {
-                    gridManager = GridManager,
-                    worldCursor = worldCursor
-                }
-            );
-
-            var unitSelection = FindObjectOfType<UnitSelectionMono>();
-            unitSelection.Setup(worldCursor, new GridSelector(GridManager));
-
-            unitSelection.OnUnitUnselected += () => GridManager.ResetValidation();
-
-            var unitActionsFactory = new UnitActionsFactory(
-                unitSelection,
-                worldCursor,
-                GridManager,
-                projectileFactory,
-                grenadeFactory,
-                levelSetupConfig.actionPointsConfig
-            );
-
-            var actionSelection = new APUnitActionSelection(unitSelection);
-
-            actionSelection.OnActionUnselected += () => GridManager.ResetValidation();
-
-            unitActionSelectionView.Setup(actionSelection, unitActionsFactory);
-
-            actionPointsView.Setup(unitSelection);
+            Container.Setup(FindObjectOfType<WorldGridView>());
+            Container.Setup(FindObjectOfType<UnitsView>());
 
             var selectableVisibility = new SelectableVisibilityHandler(
-                actionPointsView.gameObject.Decorate(),
-                unitActionSelectionView.gameObject.Decorate()
-            ) {
-                Logger = binder.GetReference<IBilucaLogger>()
-            };
+                Container.Resolve<UnitActionsView>().gameObject.Decorate(),
+                Container.Resolve<ActionPointsView>().gameObject.Decorate()
+            );
             selectableVisibility.Hide();
 
-            unitSelection.OnUnitSelected += () => selectableVisibility.Show();
-            unitSelection.OnUnitUnselected += () => selectableVisibility.Hide();
+            FindObjectOfType<TurnSystemView>().Setup(Container.Resolve<ITurnSystem>());
 
-            var turnSystem = new TurnSystem() { Logger = binder.GetReference<IBilucaLogger>() };
+            GridManager = Container.Resolve<UnitWorldGridManager>();
+            // Events
+            var unitSelection = Container.Resolve<UnitSelectionMono>();
+            unitSelection.OnUnitUnselected += () => GridManager.ResetValidation();
+            unitSelection.OnUnitSelected += selectableVisibility.Show;
+            unitSelection.OnUnitUnselected += selectableVisibility.Hide;
+            Container
+                .Resolve<IActionSelector<IAPIntent>>()
+                .OnActionUnselected += () => GridManager.ResetValidation();
 
-            unitsManager.Setup(
-                levelSetupConfig, worldCursor, GridManager, turnSystem, unitSelection
-            );
-
-            var enemyIntentFactory = new EnemyActionIntentFactory(GridManager, projectileFactory);
-
-            enemiesManager.Logger = binder.GetReference<IBilucaLogger>();
-            enemiesManager.Setup(
-                levelSetupConfig,
-                GridManager,
-                turnSystem,
-                enemyIntentFactory
-            );
-
-            turnSystemView.Setup(turnSystem);
-
+            // Add units
             foreach(var unit in FindObjectsOfType<MonoBehaviour>().OfType<IUnit>())
             {
                 GridManager.Add(unit);
             }
 
-            gameManager.Setup(unitsManager, enemiesManager);
-
-            unitsView.Setup(unitsManager);
-
             OnInstallerFinish?.Invoke();
+
+            Container.Resolve<EnemiesManager>().InstantiateUnits();
+            Container.Resolve<UnitsManager>().InstantiateUnits();
+            Container.Resolve<GameManager>().StartGame();
             Debug.Log("Finish GameInstaller");
-        }
-
-        public void Update()
-        {
-            if(GridManager == null) return;
-
-            GridManager.Update();
         }
 
         public PrettyObject BePretty()

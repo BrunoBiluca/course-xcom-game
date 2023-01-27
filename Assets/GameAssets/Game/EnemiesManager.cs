@@ -9,7 +9,12 @@ using UnityFoundation.TurnSystem;
 
 namespace GameAssets
 {
-    public class EnemiesManager : BilucaMono, IBilucaLoggable
+    public class EnemiesManager
+        : BilucaMono
+        , IBilucaLoggable
+        , IDependencySetup<
+            LevelSetupConfigSO, UnitWorldGridManager, ITurnSystem, IEnemyActionIntentFactory
+        >
     {
         private LevelSetupConfigSO levelSetupConfig;
         private UnitWorldGridManager gridManager;
@@ -31,10 +36,7 @@ namespace GameAssets
             this.levelSetupConfig = levelSetupConfig;
             this.gridManager = gridManager;
             this.enemyActionIntentFactory = enemyActionIntentFactory;
-
             this.turnSystem = turnSystem;
-            turnSystem.OnEnemyTurnStarted += EnemyStartTurn;
-            SetupEnemies();
         }
 
         private void EnemyStartTurn()
@@ -66,6 +68,7 @@ namespace GameAssets
 
         public void SetupEnemies()
         {
+            Logger?.LogHighlight("Instantiating enemy units");
             enemies = new List<EnemyUnit>();
             var count = 1;
             foreach(var enemy in levelSetupConfig.Enemies)
@@ -96,6 +99,12 @@ namespace GameAssets
             enemies.Remove(enemy);
             if(enemies.IsEmpty())
                 OnEnemiesDied?.Invoke();
+        }
+
+        public void InstantiateUnits()
+        {
+            turnSystem.OnEnemyTurnStarted += EnemyStartTurn;
+            SetupEnemies();
         }
     }
 }

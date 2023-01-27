@@ -320,19 +320,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DestroyOnLoad>k__BackingField: 1
-  levelSetupConfig: {fileID: 11400000, guid: b92efe38f6983bc44b82ef6e0dd1b5ac, type: 2}
-  unitActionSelectionView: {fileID: 504975131240873009}
-  actionPointsView: {fileID: 1765026147}
-  turnSystemView: {fileID: 1798808450}
-  worldGridView: {fileID: 499808064}
-  unitsView: {fileID: 542949623}
-  worldCursor: {fileID: 621982789}
-  gameManager: {fileID: 69300422}
-  unitSelection: {fileID: 69300418}
-  unitsManager: {fileID: 69300414}
-  enemiesManager: {fileID: 69300416}
-  projectileFactory: {fileID: 69300420}
-  grenadeFactory: {fileID: 69300421}
   binder: {fileID: 103762352}
 --- !u!114 &103762352
 MonoBehaviour:
@@ -346,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6518b4f77bd37b14b91daf8b0f1abf51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelSetupConfig: {fileID: 11400000, guid: b92efe38f6983bc44b82ef6e0dd1b5ac, type: 2}
 --- !u!114 &103762353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1864,18 +1852,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1603023078}
   m_CullTransparentMesh: 1
---- !u!114 &1765026147 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 504975130857870668, guid: 7530f374a7325c84f91ab94a67822c9f,
-    type: 3}
-  m_PrefabInstance: {fileID: 504975131240873007}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 129d9f470418f11478c331c6ce343508, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1798808445 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4131339574026429863, guid: 99bcab912bb2c984ab803ad667e8b786,
@@ -2304,18 +2280,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7530f374a7325c84f91ab94a67822c9f, type: 3}
---- !u!114 &504975131240873009 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5678512723418274149, guid: 7530f374a7325c84f91ab94a67822c9f,
-    type: 3}
-  m_PrefabInstance: {fileID: 504975131240873007}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e2331ad0a360a14f9bb4114d73d1e2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3382425284994175314
 MonoBehaviour:
   m_ObjectHideFlags: 0

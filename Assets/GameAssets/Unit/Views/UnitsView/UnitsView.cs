@@ -7,7 +7,7 @@ using UnityFoundation.UI.Components;
 
 namespace GameAssets
 {
-    public class UnitsView : MonoBehaviour
+    public class UnitsView : MonoBehaviour, IDependencySetup<UnitsManager>
     {
         [SerializeField] private Transform unitsViewHolder;
         [SerializeField] private GameObject unitViewPrefab;

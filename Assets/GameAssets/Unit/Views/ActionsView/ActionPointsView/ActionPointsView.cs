@@ -8,7 +8,9 @@ using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {
-    public class ActionPointsView : MonoBehaviour
+    public class ActionPointsView
+        : MonoBehaviour
+        , IDependencySetup<IActorSelector<IAPActor>>
     {
         private IActorSelector<IAPActor> actorSelector;
         private TextMeshProUGUI text;

@@ -14,7 +14,7 @@ namespace UnityFoundation.CharacterSystem.ActorSystem.Tests
             isUnitSelected = true;
             return this;
         }
-        public APUnitActionSelection Build()
+        public ActionSelector Build()
         {
             var unitActorSelector = new Mock<IActorSelector<IAPActor>>();
 
@@ -28,7 +28,7 @@ namespace UnityFoundation.CharacterSystem.ActorSystem.Tests
                     .Setup(s => s.CurrentUnitActor).Returns(actor.Object);
             }
 
-            return new APUnitActionSelection(unitActorSelector.Object);
+            return new ActionSelector(unitActorSelector.Object);
         }
     }
 

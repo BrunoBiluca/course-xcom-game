@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
@@ -13,15 +14,6 @@ namespace GameAssets
         public SelectableVisibilityHandler(params IGameObject[] gameObjects)
         {
             this.gameObjects = gameObjects;
-        }
-
-        public SelectableVisibilityHandler(
-            ISelectable selectable,
-            params IGameObject[] gameObjects
-        ) : this(gameObjects)
-        {
-            selectable.OnSelected += Show;
-            selectable.OnUnselected += Hide;
         }
 
         public void Show()

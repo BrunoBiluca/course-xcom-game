@@ -8,7 +8,7 @@ namespace GameAssets
 {
     public class ThrowGrenadeAction : IAction
     {
-        private readonly UnitWorldGridManager gridManager;
+        private readonly IUnitWorldGridManager gridManager;
         private readonly Vector3 startPos;
         private readonly Vector3 targetPos;
         private readonly IProjectileFactory projectileFactory;
@@ -26,7 +26,7 @@ namespace GameAssets
         }
 
         public ThrowGrenadeAction(
-            UnitWorldGridManager gridManager,
+            IUnitWorldGridManager gridManager,
             Vector3 startPos,
             Vector3 targetPos,
             IProjectileFactory projectileFactory

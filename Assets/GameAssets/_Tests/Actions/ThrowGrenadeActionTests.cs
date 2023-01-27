@@ -15,13 +15,13 @@ namespace GameAssets.Tests
         [Test]
         [TestCaseSource(nameof(BuildGridWithUnits))]
         public void Should_damage_when_unit_is_in_explosion_range(
-            UnitWorldGridManagerBuilder gridManagerBuilder,
+            UnitWorldGridManagerFakeBuilder gridManagerBuilder,
             Vector3 explosionPosition,
             int explosionRange,
             int expectedDamagedUnits
         )
         {
-            var gridManager = gridManagerBuilder.Build();
+            var gridManager = gridManagerBuilder.FilledWithUnits().Build();
 
             var projectileFactoryMock = new ProjectileFactoryMock();
             projectileFactoryMock.Build();
@@ -50,13 +50,13 @@ namespace GameAssets.Tests
 
         private static IEnumerable<TestCaseData> BuildGridWithUnits()
         {
-            yield return new TestCaseData(new UnitWorldGridManagerBuilder(), Vector3.one, 0, 1)
+            yield return new TestCaseData(new UnitWorldGridManagerFakeBuilder(), Vector3.one, 0, 1)
                 .SetName("when unit is in the certer of explosion");
 
-            yield return new TestCaseData(new UnitWorldGridManagerBuilder(), Vector3.one, 1, 9)
+            yield return new TestCaseData(new UnitWorldGridManagerFakeBuilder(), Vector3.one, 1, 9)
                 .SetName("when units are in explosion range");
 
-            yield return new TestCaseData(new UnitWorldGridManagerBuilder(), Vector3.zero, 1, 4)
+            yield return new TestCaseData(new UnitWorldGridManagerFakeBuilder(), Vector3.zero, 1, 4)
                 .SetName("when explosion was in the corner");
         }
     }

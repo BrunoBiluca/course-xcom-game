@@ -10,7 +10,10 @@ namespace GameAssets
 {
 
     public sealed class UnitSelectionMono
-        : MonoBehaviour, IActorSelector<IAPActor>, IBilucaLoggable
+        : MonoBehaviour, 
+        IActorSelector<IAPActor>, 
+        IDependencySetup<IWorldCursor, ISelector>,
+        IBilucaLoggable
     {
         private IWorldCursor worldCursor;
         private ISelector selector;

@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class UnitGridWorldCursor : GridWorldCursor<UnitValue>
+    public class UnitGridWorldCursor 
+        : GridWorldCursor<UnitValue>, 
+        IDependencySetup<IRaycastHandler, UnitWorldGridManager>
     {
         private UnitWorldGridManager gridManager;
 
@@ -14,11 +17,10 @@ namespace GameAssets
 
         public void Setup(
             IRaycastHandler raycastHandler, 
-            IWorldGridXZ<UnitValue> worldGrid,
             UnitWorldGridManager gridManager
         )
         {
-            Setup(raycastHandler, worldGrid);
+            Setup(raycastHandler, gridManager.Grid);
             this.gridManager = gridManager;
 
             OnSecondaryClick += HandleSecondaryClick;

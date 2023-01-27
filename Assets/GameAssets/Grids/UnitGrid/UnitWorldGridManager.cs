@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
 
 namespace GameAssets
@@ -20,9 +21,13 @@ namespace GameAssets
 
         public GridState State { get; set; }
 
-        public UnitWorldGridManager(IWorldGridXZ<UnitValue> worldGrid) : base(worldGrid)
+        public UnitWorldGridManager(
+            UnitWorldGridXZ worldGrid, IAsyncProcessor updateProcessor)
+            : base(worldGrid.Grid)
         {
             Units = new List<IUnit>();
+
+            updateProcessor.ExecuteEveryFrame(Update);
         }
 
         public void Add(IUnit unit)

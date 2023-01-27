@@ -9,7 +9,10 @@ using static log4net.Appender.ColoredConsoleAppender;
 
 namespace GameAssets
 {
-    public class UnitActionsView : MonoBehaviour, IBilucaLoggable
+    public class UnitActionsView
+        : MonoBehaviour,
+        IBilucaLoggable,
+        IDependencySetup<IActionSelector<IAPIntent>, UnitActionsFactory>
     {
         [SerializeField] private GameObject actionSelectorPrefab;
         private UnitActionsEnum? currentAction;
