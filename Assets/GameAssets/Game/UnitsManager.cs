@@ -53,6 +53,8 @@ namespace GameAssets
             gridManager = parameters.GridManager;
             actorSelector = parameters.ActorSelector;
             turnSystem = parameters.TurnSystem;
+
+            units = new List<ICharacterUnit>();
         }
 
         public void InstantiateUnits()
@@ -74,7 +76,6 @@ namespace GameAssets
         {
             Debug.Log("sadfsadfsadfsad");
             Logger?.LogHighlight("Instantiating units");
-            units = new List<ICharacterUnit>();
             foreach(var unitSetup in levelSetupConfig.Units)
             {
                 var unit = Instantiate(unitSetup.prefab).GetComponent<PlayerUnit>();

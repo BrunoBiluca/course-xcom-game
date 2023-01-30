@@ -5,7 +5,6 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-
     public sealed class UnitActionsFactory
     {
         private readonly UnitSelectionMono unitSelection;
@@ -48,50 +47,64 @@ namespace GameAssets
         private GridUnitAction InstantiateInteract()
         {
             return new GridUnitAction(
-                gridManager,
-                new InteractIntent(unitSelection, gridManager, worldCursor){
+                new InteractIntent(unitSelection, gridManager, worldCursor) {
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.INTERACT)
                 },
                 UnitWorldGridManager.GridState.Interact,
-                new InRangeValidationIntent(unitSelection, c => c.InteractRange),
-                new InteractableValidation()
+                gridManager.Validator()
+                    .WithRange(
+                        unitSelection.CurrentUnit.Transform.Position,
+                        unitSelection.CurrentUnit.UnitConfig.InteractRange
+                    )
+                    .WhereUnitIs<IInteractableUnit>()
             );
         }
 
         private GridUnitAction InstantiateMelee()
         {
             return new GridUnitAction(
-                gridManager,
                 new MeleeAttackIntent(gridManager, unitSelection, worldCursor) {
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.MELEE)
                 },
                 UnitWorldGridManager.GridState.Attack,
-                new DirectDamageValidationIntent(
-                    unitSelection,
-                    DamageableLayerManager.I,
-                    c => c.MeleeRange
-                )
+                gridManager.Validator()
+                    .WithRange(
+                        unitSelection.CurrentUnit.Transform.Position,
+                        unitSelection.CurrentUnit.UnitConfig.MeleeRange
+                    )
+                    .WhereUnit((unit) => {
+                        if(unit is not ICharacterUnit characterUnit)
+                            return false;
+
+                        return DamageableLayerManager.I
+                            .LayerCanDamage(
+                                unitSelection.CurrentUnit.Damageable.Layer,
+                                characterUnit.Damageable.Layer
+                            );
+                    })
             );
         }
 
         private GridUnitAction InstantiateGrenadeThrow()
         {
             return new GridUnitAction(
-                gridManager,
                 new ThrowGrenadeIntent(
                     gridManager, unitSelection, worldCursor, grenadeFactory
                 ) {
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.GRENADE)
                 },
                 UnitWorldGridManager.GridState.Attack,
-                new InRangeValidationIntent(unitSelection, c => c.GrenadeRange)
+                gridManager.Validator()
+                    .WithRange(
+                        unitSelection.CurrentUnit.transform.position,
+                        unitSelection.CurrentUnit.UnitConfig.GrenadeRange
+                    )
             );
         }
 
         private GridUnitAction InstantiateShoot()
         {
             return new GridUnitAction(
-                gridManager,
                 new ShootActionIntent(
                     unitSelection,
                     worldCursor,
@@ -101,36 +114,48 @@ namespace GameAssets
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.SHOOT)
                 },
                 UnitWorldGridManager.GridState.Attack,
-                new DirectDamageValidationIntent(
-                    unitSelection,
-                    DamageableLayerManager.I,
-                    c => c.ShootRange
-                )
+                gridManager.Validator()
+                    .WithRange(
+                        unitSelection.CurrentUnit.Transform.Position,
+                        unitSelection.CurrentUnit.UnitConfig.ShootRange
+                    )
+                    .WhereUnit((unit) => {
+                        if(unit is not ICharacterUnit characterUnit)
+                            return false;
+
+                        return DamageableLayerManager.I
+                            .LayerCanDamage(
+                                unitSelection.CurrentUnit.Damageable.Layer,
+                                characterUnit.Damageable.Layer
+                            );
+                    })
             );
         }
 
         private GridUnitAction InstantiateMove()
         {
             return new GridUnitAction(
-                gridManager,
                 new MoveActionIntent(unitSelection, worldCursor, gridManager) {
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.MOVE)
                 },
                 UnitWorldGridManager.GridState.None,
-                new IsEmptyValidationIntent(),
-                new InRangeValidationIntent(unitSelection, (c) => c.MovementRange)
+                gridManager.Validator()
+                    .WhereIsEmpty()
+                    .WithRange(
+                        unitSelection.CurrentUnit.transform.position,
+                        unitSelection.CurrentUnit.UnitConfig.MovementRange
+                    )
             );
         }
 
         private GridUnitAction InstantiateSpin()
         {
             return new GridUnitAction(
-                gridManager,
                 new SpinActionIntent(unitSelection) {
                     ActionPointsCost = actionPointsConfig.GetCost(UnitActionsEnum.SPIN)
                 },
                 UnitWorldGridManager.GridState.None,
-                new NoValidationIntent()
+                gridManager.Validator()
             );
         }
     }
