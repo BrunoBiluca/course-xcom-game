@@ -11,30 +11,28 @@ namespace GameAssets
     {
         private readonly ICharacterUnit unit;
         private readonly Vector3 position;
-        private readonly UnitWorldGridManager gridManager;
-        private readonly ProjectileFactory projectileFactory;
-
-        public bool ExecuteImmediatly => false;
+        private readonly IUnitWorldGridManager gridManager;
+        private readonly IProjectileFactory projectileFactory;
 
         public event Action OnCantExecuteAction;
         public event Action OnFinishAction;
 
         public ShootAction(
+            IUnitWorldGridManager gridManager,
             ICharacterUnit unit,
             Vector3 position,
-            UnitWorldGridManager gridManager,
-            ProjectileFactory projectileFactory
+            IProjectileFactory projectileFactory
         )
         {
+            this.gridManager = gridManager;
             this.unit = unit;
             this.position = position;
-            this.gridManager = gridManager;
             this.projectileFactory = projectileFactory;
         }
 
         public void Execute()
         {
-            var cellValue = gridManager.GetValueIfCellIsAvailable(position);
+            var cellValue = gridManager.Grid.GetValue(position);
 
             if(
                 cellValue == default 

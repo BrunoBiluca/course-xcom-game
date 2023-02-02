@@ -16,11 +16,9 @@ namespace GameAssets
         public void Setup(UnitsManager unitsManager)
         {
             this.unitsManager = unitsManager;
-
-            CreateView();
         }
 
-        private void CreateView()
+        public void Display()
         {
             foreach(var unit in unitsManager.GetAllUnits())
             {

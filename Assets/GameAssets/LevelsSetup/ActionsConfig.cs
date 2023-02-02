@@ -5,20 +5,25 @@ using UnityFoundation.Code;
 namespace GameAssets
 {
     [Serializable]
-    public class ActionPointsDictionary : SerializableDictionary<string, int> { }
+    public class ActionsDictionary : SerializableDictionary<string, int> { }
 
     [Serializable]
-    public class ActionPointsConfig
+    public class ActionsConfig
     {
-        [SerializeField] private ActionPointsDictionary Costs;
-        public ActionPointsConfig()
+        [SerializeField] private ActionsDictionary Costs;
+        public ActionsConfig()
         {
-            Costs = new ActionPointsDictionary();
+            Costs = new ActionsDictionary();
 
             foreach(var action in Enum.GetValues(typeof(UnitActionsEnum)))
             {
                 Costs.Add(action.ToString(), 0);
             }
+        }
+
+        public void AddCost(UnitActionsEnum actionEnum, int amount)
+        {
+            Costs[actionEnum.ToString()] = amount;
         }
 
         public int GetCost(UnitActionsEnum actionEnum)

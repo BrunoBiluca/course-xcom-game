@@ -8,18 +8,16 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-
     public sealed class UnitSelectionMono
-        : MonoBehaviour, 
-        IActorSelector<IAPActor>, 
+        : MonoBehaviour,
+        IActorSelector<ICharacterUnit>,
         IDependencySetup<IWorldCursor, ISelector>,
         IBilucaLoggable
     {
         private IWorldCursor worldCursor;
         private ISelector selector;
 
-        public PlayerUnit CurrentUnit { get; private set; }
-        public IAPActor CurrentUnitActor { get; private set; }
+        public ICharacterUnit CurrentUnit { get; private set; }
         public IBilucaLogger Logger { get; set; }
 
         public event Action OnUnitSelected;
@@ -40,7 +38,7 @@ namespace GameAssets
                 UnselectUnit();
                 return;
             }
-                
+
             selector.Select<SelectableObject>(pos)
                 .Some(SelectUnit)
                 .OrElse(UnselectUnit);
@@ -48,25 +46,24 @@ namespace GameAssets
 
         private void SelectUnit(SelectableObject obj)
         {
-            var unit = obj.SelectedReference as PlayerUnit;
+            var unit = obj.SelectedReference as ICharacterUnit;
 
             if(CurrentUnit == unit)
                 return;
 
             UnselectUnit();
-            Logger?.Log("Unit", unit.name, "was selected");
+            Logger?.Log("Unit", unit.Name, "was selected");
 
-            CurrentUnitActor = unit.Actor;
             CurrentUnit = unit;
             OnUnitSelected?.Invoke();
         }
 
         public void UnselectUnit()
         {
-            if(CurrentUnitActor != null)
+            if(CurrentUnit != null)
             {
                 Logger?.Log("Unit was deselected");
-                CurrentUnitActor = null;
+                selector.Unselect();
                 CurrentUnit = null;
             }
             OnUnitUnselected?.Invoke();

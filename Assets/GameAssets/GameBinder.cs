@@ -11,6 +11,12 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
+    public enum ProjectileFactories
+    {
+        Shoot,
+        Grenade
+    }
+
     public class GameBinder : MonoBehaviour
     {
         public event Action OnBinderFinish;
@@ -31,15 +37,17 @@ namespace GameAssets
 
             var binder = new DependencyBinder();
 
+            binder.RegisterModule(new ActionsModule());
+            binder.RegisterModule(new PlayerUnitIntentsModule());
+
             // Always create new instance
             binder.Register<ISelector, GridSelector>();
             binder.Register<IRaycastHandler, RaycastHandler>();
-            binder.Register<UnitActionsFactory>();
             binder.Register<IEnemyActionIntentFactory, EnemyActionIntentFactory>();
 
             // Constants or Singletons
             binder.Register(levelSetupConfig);
-            binder.Register(levelSetupConfig.actionPointsConfig);
+            binder.Register(levelSetupConfig.actionsConfig);
 
             binder.Register(GameManager.I);
             binder.Register<IAsyncProcessor>(AsyncProcessor.I);
@@ -50,7 +58,7 @@ namespace GameAssets
             binder.Register(cursor);
 
             var unitSelector = FindObjectOfType<UnitSelectionMono>();
-            binder.Register<IActorSelector<IAPActor>>(unitSelector);
+            binder.Register<IActorSelector<ICharacterUnit>>(unitSelector);
             binder.Register(unitSelector);
 
             binder.Register(FindObjectOfType<UnitActionsView>());
@@ -59,16 +67,28 @@ namespace GameAssets
             binder.Register(FindObjectOfType<UnitsManager>());
             binder.Register(FindObjectOfType<EnemiesManager>());
 
+            binder.Register(FindObjectOfType<WorldGridView>());
+            binder.Register(FindObjectOfType<UnitsView>());
+
             UnitWorldGridXZ grid = FindObjectOfType<UnitWorldGridXZ>();
             binder.Register(grid);
             binder.Register(grid.Grid);
 
-            binder.Register(FindObjectOfType<ProjectileFactory>());
-            binder.Register(FindObjectOfType<GrenadeProjectileFactory>());
+            binder.Register<IProjectileFactory>(
+                FindObjectOfType<ProjectileFactory>(), 
+                ProjectileFactories.Shoot
+            );
+            binder.Register<IProjectileFactory>(
+                FindObjectOfType<GrenadeProjectileFactory>(), 
+                ProjectileFactories.Grenade
+            );
 
             binder.RegisterSingleton<ITurnSystem, TurnSystem>();
+            binder.RegisterSingleton<IActorSelector<IAPActor>, CharacterActorSelector>();
             binder.RegisterSingleton<IActionSelector<IAPIntent>, ActionSelector>();
             binder.RegisterSingleton<IUnitWorldGridManager, UnitWorldGridManager>();
+
+            binder.Register(UnityDebug.I);
 
             Container = binder.Build();
 

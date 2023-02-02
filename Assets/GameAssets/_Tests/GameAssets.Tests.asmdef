@@ -10,7 +10,8 @@
         "UnityFoundation.ResourceManagement",
         "UnityFoundation.HealthSystem",
         "UnityFoundation.ActorSystem",
-        "UnityFoundation.SettingsSystem"
+        "UnityFoundation.SettingsSystem",
+        "UnityFoundation.WorldCursors"
     ],
     "includePlatforms": [
         "Editor"

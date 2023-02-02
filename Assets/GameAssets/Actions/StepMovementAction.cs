@@ -14,7 +14,7 @@ namespace GameAssets
     public class StepMovementAction : IAction, IBilucaLoggable
     {
         private readonly ICharacterUnit unit;
-        private readonly UnitWorldGridManager gridManager;
+        private readonly IUnitWorldGridManager gridManager;
         private readonly Vector3 position;
         private readonly IAsyncProcessor asyncProcessor;
         private List<Int2> path;
@@ -23,10 +23,10 @@ namespace GameAssets
         public IBilucaLogger Logger { get; set; }
 
         public StepMovementAction(
+            IUnitWorldGridManager gridManager,
+            IAsyncProcessor asyncProcessor,
             ICharacterUnit unit,
-            UnitWorldGridManager gridManager,
-            Vector3 position,
-            IAsyncProcessor asyncProcessor
+            Vector3 position
         )
         {
             this.unit = unit;

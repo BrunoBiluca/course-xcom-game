@@ -18,7 +18,7 @@ namespace GameAssets
         public event Action OnFinishAction;
 
         public MeleeAttackAction(
-            Settings config, 
+            Settings config,
             ICharacterUnit attacker,
             ICharacterUnit target
         )
@@ -47,6 +47,7 @@ namespace GameAssets
             attacker.AnimatorController.Play(new MeleeAttackAnimation(false));
 
             attacker.AnimatorController.OnEventTriggered -= CalculateDamage;
+            OnFinishAction?.Invoke();
         }
 
         public struct Settings

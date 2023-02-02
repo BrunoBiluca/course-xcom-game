@@ -25,7 +25,7 @@ namespace UnityFoundation.CharacterSystem.ActorSystem.Tests
                     .Setup(a => a.ActionPoints)
                     .Returns(new FiniteResourceManager(initialActionPoints, true));
                 unitActorSelector
-                    .Setup(s => s.CurrentUnitActor).Returns(actor.Object);
+                    .Setup(s => s.CurrentUnit).Returns(actor.Object);
             }
 
             return new ActionSelector(unitActorSelector.Object);

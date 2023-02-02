@@ -1,8 +1,10 @@
 ﻿using Moq;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
+using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests
@@ -66,6 +68,16 @@ namespace GameAssets.Tests
             gridManager.Update();
 
             return gridManager;
+        }
+
+        public UnitWorldGridManagerFakeBuilder WithInteractableUnit()
+        {
+            var mock = new Mock<IInteractableUnit>();
+            var transform = new Mock<ITransform>();
+            transform.Setup(t => t.IsValid).Returns(true);
+            mock.Setup(m => m.Transform).Returns(transform.Object);
+            units.Add(mock.Object);
+            return this;
         }
     }
 }

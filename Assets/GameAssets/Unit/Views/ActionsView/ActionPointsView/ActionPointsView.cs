@@ -28,9 +28,9 @@ namespace GameAssets
         public void Update()
         {
             if(actorSelector == null) return;
-            if(actorSelector.CurrentUnitActor == null) return;
+            if(actorSelector.CurrentUnit == null) return;
 
-            var actor = actorSelector.CurrentUnitActor;
+            var actor = actorSelector.CurrentUnit;
             text.text = $"Action Points: {actor.ActionPoints.CurrentAmount}";
         }
     }

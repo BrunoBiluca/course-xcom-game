@@ -14,10 +14,7 @@ namespace GameAssets
         [NonReorderable]
         public EnemySetupConfig[] Enemies;
 
-        [SerializeField] public ActionPointsConfig actionPointsConfig;
-
-        [field: SerializeField] 
-        public AudioClip BackgroundMusic { get; private set; }
+        [SerializeField] public ActionsConfig actionsConfig;
 
 
         [Serializable]

@@ -6,19 +6,24 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class WorldGridView : BilucaMono, IDependencySetup<UnitWorldGridManager, IWorldCursor>
+    public class WorldGridView
+        : BilucaMono
+        , IDependencySetup<IUnitWorldGridManager, IWorldCursor>
     {
         [SerializeField] private GameObject cellPrefab;
 
-        private UnitWorldGridManager gridManager;
+        private IUnitWorldGridManager gridManager;
         private IWorldCursor worldCursor;
         private WorldGridXZ<GridViewValue> grid;
 
-        public void Setup(UnitWorldGridManager gridManager, IWorldCursor worldCursor)
+        public void Setup(IUnitWorldGridManager gridManager, IWorldCursor worldCursor)
         {
             this.gridManager = gridManager;
             this.worldCursor = worldCursor;
+        }
 
+        public void Display()
+        {
             transform.position = gridManager.Grid.InitialPosition;
             grid = new WorldGridXZ<GridViewValue>(
                 gridManager.Grid.InitialPosition,
@@ -26,7 +31,7 @@ namespace GameAssets
                 gridManager.Grid.Depth,
                 gridManager.Grid.CellSize
             );
-            Display();
+            CreateWorldView();
         }
 
         public void Update()
@@ -66,7 +71,7 @@ namespace GameAssets
             });
         }
 
-        public void Display()
+        public void CreateWorldView()
         {
             TransformUtils.RemoveChildObjects(transform);
 

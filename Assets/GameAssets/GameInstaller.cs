@@ -35,9 +35,6 @@ namespace GameAssets
             Container = binder.Container;
             Container.RegisterAction<IBilucaLoggable>(b => b.Logger = UnityDebug.I);
 
-            Container.Setup(FindObjectOfType<WorldGridView>());
-            Container.Setup(FindObjectOfType<UnitsView>());
-
             var selectableVisibility = new SelectableVisibilityHandler(
                 Container.Resolve<UnitActionsView>().gameObject.Decorate(),
                 Container.Resolve<ActionPointsView>().gameObject.Decorate()
@@ -52,6 +49,7 @@ namespace GameAssets
             unitSelection.OnUnitUnselected += () => GridManager.ResetValidation();
             unitSelection.OnUnitSelected += selectableVisibility.Show;
             unitSelection.OnUnitUnselected += selectableVisibility.Hide;
+
             Container
                 .Resolve<IActionSelector<IAPIntent>>()
                 .OnActionUnselected += () => GridManager.ResetValidation();
@@ -62,10 +60,15 @@ namespace GameAssets
                 GridManager.Add(unit);
             }
 
+            Container.Resolve<ITurnSystem>()
+                .OnPlayerTurnEnded += () => unitSelection.UnselectUnit();
+
             OnInstallerFinish?.Invoke();
 
+            Container.Resolve<WorldGridView>().Display();
             Container.Resolve<EnemiesManager>().InstantiateUnits();
             Container.Resolve<UnitsManager>().InstantiateUnits();
+            Container.Resolve<UnitsView>().Display();
             Container.Resolve<GameManager>().StartGame();
             Debug.Log("Finish GameInstaller");
         }

@@ -30,7 +30,7 @@ namespace GameAssets
 
         public void SetAction(IAPIntent action)
         {
-            var currentActor = unitActorSelector.CurrentUnitActor;
+            var currentActor = unitActorSelector.CurrentUnit;
             if(currentActor == null)
                 throw new ActorIsNotSelected();
 
@@ -38,6 +38,7 @@ namespace GameAssets
                 throw new NoAPAvaiable();
 
             CurrentAction = Optional<IAPIntent>.Some(action);
+            Logger?.Log("Action", action.GetType().ToString(), "was selected");
             OnActionSelected?.Invoke(action);
 
             currentActor.OnCantExecuteAction -= CantExecuteActionHandle;
@@ -47,8 +48,6 @@ namespace GameAssets
             currentActor.OnActionFinished += UnselectAction;
 
             currentActor.Set(action);
-
-            Logger?.Log("Action", CurrentAction.Get().GetType().ToString(), "was selected");
         }
 
         private void CantExecuteActionHandle()
@@ -61,7 +60,7 @@ namespace GameAssets
 
         public void UnselectAction()
         {
-            unitActorSelector.CurrentUnitActor?.UnsetAction();
+            unitActorSelector.CurrentUnit?.UnsetAction();
             OnActionUnselected?.Invoke();
 
             if(!CurrentAction.IsPresentAndGet(out IAPIntent action)) return;

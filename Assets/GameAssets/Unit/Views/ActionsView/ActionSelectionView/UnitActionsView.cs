@@ -12,13 +12,13 @@ namespace GameAssets
     public class UnitActionsView
         : MonoBehaviour,
         IBilucaLoggable,
-        IDependencySetup<IActionSelector<IAPIntent>, UnitActionsFactory>
+        IDependencySetup<IActionSelector<IAPIntent>, UnitIntentsFactory>
     {
         [SerializeField] private GameObject actionSelectorPrefab;
         private UnitActionsEnum? currentAction;
 
         private IActionSelector<IAPIntent> actionSelector;
-        private UnitActionsFactory factory;
+        private UnitIntentsFactory factory;
         private List<UnitActionSelector> buttons;
 
         public IBilucaLogger Logger { get; set; }
@@ -38,7 +38,7 @@ namespace GameAssets
 
         public void Setup(
             IActionSelector<IAPIntent> actionSelector,
-            UnitActionsFactory factory
+            UnitIntentsFactory factory
         )
         {
             this.factory = factory;
@@ -58,9 +58,9 @@ namespace GameAssets
 
             try
             {
-                var unitAction = factory.Get(actionType);
-                actionSelector.SetAction(unitAction.Intent);
-                unitAction.ApplyValidation();
+                var unitIntent = factory.Get(actionType);
+                actionSelector.SetAction(unitIntent);
+                unitIntent.GridValidation();
                 SelectAction(actionType);
             }
             catch(InvalidOperationException ex)

@@ -5,22 +5,22 @@ using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 
-public class EnemyActionIntentFactory : IEnemyActionIntentFactory
+public class EnemyActionIntentFactory : IEnemyActionIntentFactory, IContainerProvide
 {
     private readonly UnitWorldGridManager gridManager;
-    private readonly ProjectileFactory projectileFactory;
+
+    public IDependencyContainer Container { private get; set; }
 
     public EnemyActionIntentFactory(
-        UnitWorldGridManager gridManager,
-        ProjectileFactory projectileFactory
+        UnitWorldGridManager gridManager
     )
     {
         this.gridManager = gridManager;
-        this.projectileFactory = projectileFactory;
     }
 
     public IAPIntent IntentShoot(ICharacterUnit unit, Vector3 position)
     {
+        var projectileFactory = Container.Resolve<IProjectileFactory>(ProjectileFactories.Shoot);
         return new EnemyShootIntent(unit, position, gridManager, projectileFactory);
     }
 

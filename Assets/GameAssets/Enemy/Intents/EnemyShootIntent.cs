@@ -9,7 +9,7 @@ namespace GameAssets
         private readonly ICharacterUnit unit;
         private readonly Vector3 position;
         private readonly UnitWorldGridManager gridManager;
-        private readonly ProjectileFactory projectileFactory;
+        private readonly IProjectileFactory projectileFactory;
 
         public int ActionPointsCost { get; set; } = 1;
 
@@ -19,7 +19,7 @@ namespace GameAssets
             ICharacterUnit unit,
             Vector3 position,
             UnitWorldGridManager gridManager,
-            ProjectileFactory projectileFactory
+            IProjectileFactory projectileFactory
         )
         {
             this.unit = unit;
@@ -30,7 +30,7 @@ namespace GameAssets
 
         public IAction Create()
         {
-            return new ShootAction(unit, position, gridManager, projectileFactory);
+            return new ShootAction(gridManager, unit, position, projectileFactory);
         }
     }
 }
