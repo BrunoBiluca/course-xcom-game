@@ -17,7 +17,7 @@ namespace GameAssets
         private readonly IUnitWorldGridManager gridManager;
         private readonly Vector3 position;
         private readonly IAsyncProcessor asyncProcessor;
-        private List<Int2> path;
+        private GridPath path;
         private int step;
 
         public IBilucaLogger Logger { get; set; }
@@ -41,9 +41,12 @@ namespace GameAssets
         public void Execute()
         {
             Logger?.LogHighlight(unit.Name, "is moving towards", position.ToString());
-            EvaluatePath();
 
-            if(CanMoveToDestination())
+            var unitCell = gridManager.Grid.GetCell(unit.Transform.Position);
+            var targetCell = gridManager.Grid.GetCell(position);
+            path = new GridPathFinding(gridManager.Grid).Evaluate(unitCell, targetCell);
+
+            if(path.Steps == 0)
             {
                 Logger?.LogHighlight(unit.Name, "can't move to", position.ToString());
                 OnCantExecuteAction?.Invoke();
@@ -52,48 +55,11 @@ namespace GameAssets
 
             StartMovement();
         }
-        private void EvaluatePath()
-        {
-            var pathFinding = BuildPathFindingGrid();
-
-            var unitCell = gridManager.Grid.GetCell(unit.Transform.Position);
-
-            var targetCell = gridManager.Grid.GetCell(position);
-
-            path = pathFinding.FindPath(
-                new Int2(unitCell.Position.X, unitCell.Position.Z),
-                new Int2(targetCell.Position.X, targetCell.Position.Z)
-            ).ToList();
-        }
-
-        private bool CanMoveToDestination()
-        {
-            return path.Count == 1;
-        }
-
-        private PathFinding BuildPathFindingGrid()
-        {
-            var gridSize = new PathFinding.GridSize(
-                gridManager.Grid.Width,
-                gridManager.Grid.Depth
-            );
-            var pathFinding = new PathFinding(gridSize);
-
-            gridManager.Validator().WhereIsNotEmpty().Apply(UnitWorldGridManager.GridState.None);
-
-            foreach(var cell in gridManager.GetAllAvailableCells())
-            {
-                pathFinding.AddBlocked(new Int2(cell.Position.X, cell.Position.Z));
-            }
-
-            gridManager.ResetValidation();
-            return pathFinding;
-        }
 
         private void StartMovement()
         {
             Logger?.LogHighlight(unit.Name, "Start movement with path", string.Join("\n", path));
-            step = 1;
+            step = 0;
 
             unit.AnimatorController.Play(new WalkingAnimation(true));
             unit.TransformNav.OnReachDestination += ReachDestination;
@@ -104,14 +70,16 @@ namespace GameAssets
 
         private void Move()
         {
-            if(step == path.Count)
+            if(step == path.Steps + 1)
             {
                 FinishMovement();
                 return;
             }
 
             var nextPosition = gridManager.Grid
-                .GetCellCenterPosition(new GridCellPositionXZ(path[step].X, path[step].Y));
+                .GetCellCenterPosition(
+                    new GridCellPositionXZ(path.Positions[step].X, path.Positions[step].Y)
+                );
             unit.TransformNav.SetDestination(nextPosition);
         }
 

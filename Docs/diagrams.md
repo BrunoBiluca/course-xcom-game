@@ -7,13 +7,41 @@ Cada diagrama descrito nesse documento deve exibir apenas as interfaces, classes
 
 Summary
 
+- [Validação do Grid](#validação-do-grid)
 - [Sistema de criação de intenções e ações](#sistema-de-criação-de-intenções-e-ações)
 - [Grid manager validation system](#grid-manager-validation-system)
   - [Novo sistema de validação do grid dependendo a intenção que a unidade quer desempenhar](#novo-sistema-de-validação-do-grid-dependendo-a-intenção-que-a-unidade-quer-desempenhar)
-- [Diagramas de sistemas antigos](#diagramas-de-sistemas-antigos)
-  - [Antigo sistema de validação do grid dependendo das intenções tomadas](#antigo-sistema-de-validação-do-grid-dependendo-das-intenções-tomadas)
+
+# Validação do Grid
+
+```mermaid
+classDiagram
+
+class IUnitWorldGridManager {
+    <<interface>>
+    Validator()
+    ResetValidation()
+}
+
+class WorldGridView {
+    Display()
+    Update()
+}
+
+WorldGridView ..> IUnitWorldGridManager : update
+
+class IGridIntent {
+    <<interface>>
+    GridValidation()
+}
+IGridIntent ..> IUnitWorldGridManager : call Validator()
+
+UnitActionsFactory --> IGridIntent : instantiate
+```
 
 # Sistema de criação de intenções e ações
+
+Instanciação de intenções quando um ator é selecionado e então uma intenção é associada.
 
 ```mermaid
 classDiagram
@@ -27,11 +55,12 @@ class UnitActionsFactory {
 
 class IAPActor {
     <<interface>>
-}
+    event Action OnCantExecuteAction;
+    event Action OnActionFinished;
 
-class IAction {
-    <<interface>>
-    + void Execute()
+    void Execute();
+    void Set(TIntent action);
+    void UnsetAction();
 }
 
 class IIntent {
@@ -44,54 +73,56 @@ class IAPIntent {
     <<interface>>
     - ActionPointsCost
 }
+IAPIntent --> IIntent : extends
 
-subgraph one
-    class UnitSelectionMono
-    class IUnitWorldGridManager
-    class IWorldCursor
-    class IProjectileFactory
-end
+class IGridIntent {
+    <<interface>>
+}
+IGridIntent --> IAPIntent : extends
 
-class DependencyContainer
 
-class UnitIntent
+class InteractIntent
+InteractIntent --> IGridIntent : implements
 
-UnitIntent --> IAPIntent : implements
+class MoveIntent
+InteractIntent --> IGridIntent : implements
 
-IIntent <-- IAPIntent : extends
+class ShootIntent
+ShootIntent --> IGridIntent : implements
 
-class StepMovementAction
-StepMovementAction ..> UnitSelectionMono
-StepMovementAction ..> IUnitWorldGridManager
-StepMovementAction ..> IWorldCursor
+class SpinIntent
+SpinIntent --> IGridIntent : implements
 
-class SpinUnitAction
-SpinUnitAction ..> UnitSelectionMono
+class ThrowGrenadeIntent
+ThrowGrenadeIntent --> IGridIntent : implements
 
-class ShootAction
-ShootAction ..> UnitSelectionMono
-ShootAction ..> IUnitWorldGridManager
-ShootAction ..> IWorldCursor
-ShootAction ..> IProjectileFactory
-
-class ThrowGrenadeAction
-ThrowGrenadeAction ..> UnitSelectionMono
-ThrowGrenadeAction ..> IUnitWorldGridManager
-ThrowGrenadeAction ..> IWorldCursor
-ThrowGrenadeAction ..> IProjectileFactory
-
-class MeleeAttackAction
-MeleeAttackAction ..> UnitSelectionMono
-MeleeAttackAction ..> IUnitWorldGridManager
-MeleeAttackAction ..> IWorldCursor
-
-class InteractAction
-InteractAction ..> UnitSelectionMono
-InteractAction ..> IUnitWorldGridManager
-InteractAction ..> IWorldCursor
+class MeleeAttackIntent
+MeleeAttackIntent --> IGridIntent : implements
 
 UnitActionsView --> UnitActionsFactory : call Get(UnitActionsEnum action)
-IAPActor --> UnitIntent : call Create()
+UnitActionsView <-- UnitActionsFactory : IIntent instance
+UnitActionsView --> IAPActor : call Set(IIntent)
+
+UnitActionsFactory --> MoveIntent : instantiate(UnitActionsEnum)
+UnitActionsFactory --> SpinIntent : instantiate(UnitActionsEnum)
+UnitActionsFactory --> ShootIntent : instantiate(UnitActionsEnum)
+UnitActionsFactory --> ThrowGrenadeIntent : instantiate(UnitActionsEnum)
+UnitActionsFactory --> MeleeAttackIntent : instantiate(UnitActionsEnum)
+UnitActionsFactory --> InteractIntent : instantiate(UnitActionsEnum)
+
+```
+
+Instanciação da ação que será executada pelo Ator. Quando o ator já está selecionado e uma intenção foi atribuida a ele, então é criada uma ação que será a execução da intenção selecionada pelo jogador para aquele ator.
+
+```mermaid
+classDiagram
+
+class StepMovementAction
+class SpinUnitAction
+class ShootAction
+class ThrowGrenadeAction
+class MeleeAttackAction
+class InteractAction
 
 StepMovementAction --> IAction : implements
 SpinUnitAction --> IAction : implements
@@ -100,17 +131,22 @@ ThrowGrenadeAction --> IAction : implements
 MeleeAttackAction --> IAction : implements
 InteractAction --> IAction : implements
 
-UnitActionsFactory --> UnitIntent : instantiate(UnitActionsEnum)
-UnitActionsFactory ..> DependencyContainer : depends
+IAPActor --> InteractIntent : call Create()
+IAPActor --> MoveIntent : call Create()
+IAPActor --> ShootIntent : call Create()
+IAPActor --> SpinIntent : call Create()
+IAPActor --> ThrowGrenadeIntent : call Create()
+IAPActor --> MeleeAttackIntent : call Create()
 
-UnitIntent --> StepMovementAction : instantiate
-UnitIntent --> SpinUnitAction : instantiate
-UnitIntent --> ShootAction : instantiate
-UnitIntent --> ThrowGrenadeAction : instantiate
-UnitIntent --> MeleeAttackAction : instantiate
-UnitIntent --> InteractAction : instantiate
+MoveIntent --> StepMovementAction : instantiate(DependencyContainer)
+SpinIntent --> SpinUnitAction : instantiate(DependencyContainer)
+ShootIntent --> ShootAction : instantiate(DependencyContainer)
+ThrowGrenadeIntent --> ThrowGrenadeAction : instantiate(DependencyContainer)
+MeleeAttackIntent --> MeleeAttackAction : instantiate(DependencyContainer)
+InteractIntent --> InteractAction : instantiate(DependencyContainer)
 
 ```
+
 
 ---
 
@@ -129,7 +165,6 @@ class UnitWorldGridValidator {
     + UnitWorldGridValidator WithRange()
     + UnitWorldGridValidator WhereIsUnit()
     + UnitWorldGridValidator WhereUnit()
-    + UnitWorldGridValidator Apply()
     + UnitWorldGridValidator Apply()
 }
 
@@ -162,96 +197,6 @@ UnitActionsFactory --> GridUnitAction : instantiate(UnitWorldGridValidator)
 UnitActionsFactory --> UnitWorldGridValidator : build
 
 UnitWorldGridValidator <|-- GridUnitAction : Apply
-
-UnitWorldGridValidator --> WorldGridManager : ApplyValidator(IGridValidation[])
-UnitWorldGridManager --> UnitWorldGridValidator : instantiate
-UnitWorldGridValidator --> IGridValidation : instantiate
-
-UnitActionsFactory ..> UnitWorldGridManager
-
-```
-
-# Diagramas de sistemas antigos
-
----
-
-Antigo sistema de validação do grid dependendo das intenções tomadas
----
-
-```mermaid
-classDiagram
-direction RL
-
-class UnitWorldGridValidator {
-    + UnitWorldGridValidator WhereIsNotEmpty()
-    + UnitWorldGridValidator WhereIsEmpty()
-    + UnitWorldGridValidator WithRange()
-    + UnitWorldGridValidator WhereIsUnit()
-    + UnitWorldGridValidator WhereUnit()
-    + UnitWorldGridValidator Apply()
-    + UnitWorldGridValidator Apply()
-}
-
-class WorldGridManager~T~{
-    IWorldGridXZ~T~ Grid
-    + WorldGridManager<T> ApplyValidator(params IGridValidation~T~[] gridValidations)
-    + void ResetValidation()
-}
-
-class UnitWorldGridManager {
-    UnitWorldGridValidator Validator()
-}
-
-WorldGridManager~T~ <|-- UnitWorldGridManager : implements
-
-class IGridValidation~CellValue~ {
-    <<interface>>
-    + bool IsAvailable(GridCellXZ<CellValue> cell)
-}
-
-class IGridValidationIntent {
-    <<interface>>
-    + void Validate(ref UnitWorldGridValidator validator)
-}
-
-class GridUnitAction {
-    + ApplyValidation()
-}
-
-class UnitActionsFactory
-
-GridUnitAction ..> IGridValidationIntent
-
-IGridValidationIntent --|> InteractableValidation
-IGridValidationIntent --|> DirectDamageValidationIntent
-IGridValidationIntent --|> InRangeValidationIntent
-IGridValidationIntent --|> IsEmptyValidationIntent
-IGridValidationIntent --|> NoValidationIntent
-IGridValidationIntent --|> UnitInRangeValidationIntent
-
-UnitActionsFactory --> InteractableValidation : instantiate
-UnitActionsFactory --> DirectDamageValidationIntent : instantiate
-UnitActionsFactory --> InRangeValidationIntent : instantiate
-UnitActionsFactory --> IsEmptyValidationIntent : instantiate
-UnitActionsFactory --> NoValidationIntent : instantiate
-UnitActionsFactory --> UnitInRangeValidationIntent : instantiate
-UnitActionsFactory --> GridUnitAction : instantiate
-
-UnitWorldGridValidator <|-- InteractableValidation : build
-UnitWorldGridValidator <|-- DirectDamageValidationIntent : build
-UnitWorldGridValidator <|-- InRangeValidationIntent : build
-UnitWorldGridValidator <|-- IsEmptyValidationIntent : build
-UnitWorldGridValidator <|-- NoValidationIntent : build
-UnitWorldGridValidator <|-- UnitInRangeValidationIntent : build
-
-UnitWorldGridValidator <|-- GridUnitAction : Apply
-
-GridUnitAction --> InteractableValidation : inject(UnitWorldGridValidator)
-GridUnitAction --> DirectDamageValidationIntent : inject(UnitWorldGridValidator)
-GridUnitAction --> InRangeValidationIntent : inject(UnitWorldGridValidator)
-GridUnitAction --> IsEmptyValidationIntent : inject(UnitWorldGridValidator)
-GridUnitAction --> NoValidationIntent : inject(UnitWorldGridValidator)
-GridUnitAction --> UnitInRangeValidationIntent : inject(UnitWorldGridValidator)
 
 UnitWorldGridValidator --> WorldGridManager : ApplyValidator(IGridValidation[])
 UnitWorldGridManager --> UnitWorldGridValidator : instantiate

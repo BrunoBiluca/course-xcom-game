@@ -46,6 +46,13 @@ namespace GameAssets
             return this;
         }
 
+        public UnitWorldGridValidator WithDirectRange(Vector3 position, int range)
+        {
+            var currCell = gridManager.Grid.GetCell(position);
+            gridValidations.Add(new UnitDirectRangeValidation(gridManager.Grid, currCell, range));
+            return this;
+        }
+
         public UnitWorldGridValidator WhereIsUnit()
         {
             gridValidations.Add(new UnitTypeGridValidation());

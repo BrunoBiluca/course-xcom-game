@@ -40,7 +40,7 @@ namespace GameAssets
             var character = selector.CurrentUnit;
             gridManager.Validator()
                 .WhereIsEmpty()
-                .WithRange(character.Transform.Position, character.UnitConfig.MovementRange)
+                .WithDirectRange(character.Transform.Position, character.UnitConfig.MovementRange)
                 .Apply();
         }
     }

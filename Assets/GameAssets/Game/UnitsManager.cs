@@ -74,7 +74,6 @@ namespace GameAssets
 
         public void SetupUnits()
         {
-            Debug.Log("sadfsadfsadfsad");
             Logger?.LogHighlight("Instantiating units");
             foreach(var unitSetup in levelSetupConfig.Units)
             {
