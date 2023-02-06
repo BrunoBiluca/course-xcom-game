@@ -663,7 +663,7 @@ GameObject:
   - component: {fileID: 1463225691917538485}
   - component: {fileID: 1516138505846896045}
   m_Layer: 7
-  m_Name: trooper_mesh
+  m_Name: unit_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

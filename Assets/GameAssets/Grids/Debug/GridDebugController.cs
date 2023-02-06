@@ -1,13 +1,15 @@
+using UnityEngine;
 using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
     public class GridDebugController : WorldGridDebug<UnitValue>
     {
+        [SerializeField] private UnitWorldGridXZ grid;
+
         public void Start()
         {
-            GameInstaller.I.OnInstallerFinish 
-                += () => Setup(GameInstaller.I.GridManager.Grid);
+            Setup(grid.Grid);
         }
     }
 }

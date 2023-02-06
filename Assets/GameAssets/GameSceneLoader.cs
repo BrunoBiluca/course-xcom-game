@@ -47,19 +47,27 @@ namespace GameAssets
             foreach(var sceneName in config.ScenesToLoad)
             {
                 var scene = SceneManager.GetSceneByName(sceneName);
-                if(scene.isLoaded)
-                {
-                    Debug.Log($"{scene.name} isa already loaded.");
-                    continue;
-                }
-
-                var operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-                while(!operation.isDone)
-                    yield return null;
+                if(scene != null)
+                    yield return LoadSceneFromHierarchy(scene);
+                else
+                    yield return LoadSceneAdditive(sceneName);
 
                 Debug.Log($"{scene.name} was loaded.");
             }
             areScenesLoaded = true;
+        }
+
+        private IEnumerator LoadSceneFromHierarchy(Scene scene)
+        {
+            while(!scene.isLoaded)
+                yield return null;
+        }
+
+        private IEnumerator LoadSceneAdditive(string sceneName)
+        {
+            var operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            while(!operation.isDone)
+                yield return null;
         }
 
         private IEnumerator Unload()

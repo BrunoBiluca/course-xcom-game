@@ -59,7 +59,13 @@ namespace GameAssets
 
         public void InstantiateUnits()
         {
-            SetupUnits();
+            //SetupUnits();
+
+            foreach(var playerUnits in FindObjectsOfType<PlayerUnit>())
+            {
+                SetupPlayerUnit(playerUnits);
+            }
+
             turnSystem.OnPlayerTurnEnded += RefillUnitActions;
         }
 
@@ -78,25 +84,25 @@ namespace GameAssets
             foreach(var unitSetup in levelSetupConfig.Units)
             {
                 var unit = Instantiate(unitSetup.prefab).GetComponent<PlayerUnit>();
-                unit.Setup(
-                    unitSetup.UnitTemplate.UnitConfig,
-                    unitSetup.UnitTemplate.SoundEffects,
-                    worldCursor
-                );
+                var unitPosition = new GridCellPositionXZ(unitSetup.Position.X, unitSetup.Position.Z);
+                unit.Transform.Position = gridManager.Grid.GetCellCenterPosition(unitPosition);
+                unit.Setup(unitSetup.UnitTemplate.UnitConfig, unitSetup.UnitTemplate.SoundEffects);
 
-                unit.Transform.Position = gridManager.Grid
-                    .GetCellCenterPosition(
-                        new GridCellPositionXZ(unitSetup.Position.X, unitSetup.Position.Z)
-                    );
-
-                unit.Obj.OnObjectDestroyed += () => {
-                    units.Remove(unit);
-                    HandleUnitDetroy();
-                };
-
-                gridManager.Add(unit);
-                units.Add(unit);
+                SetupPlayerUnit(unit);
             }
+        }
+
+        private void SetupPlayerUnit(PlayerUnit unit)
+        {
+            unit.SetWorldCursor(worldCursor);
+
+            unit.Obj.OnObjectDestroyed += () => {
+                units.Remove(unit);
+                HandleUnitDetroy();
+            };
+
+            gridManager.Add(unit);
+            units.Add(unit);
         }
 
         private void HandleUnitDetroy()

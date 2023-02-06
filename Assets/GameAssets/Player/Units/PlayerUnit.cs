@@ -11,6 +11,8 @@ namespace GameAssets
 {
     public class PlayerUnit : BilucaMono, ICharacterUnit
     {
+        [SerializeField] private UnitConfigTemplate unitConfigTemplate;
+
         public UnitConfig UnitConfig { get; private set; }
 
         [SerializeField] private GameObject projectileStart;
@@ -58,6 +60,11 @@ namespace GameAssets
 
             Selectable = new SelectableObject(this);
             Selectable.OnSelectedStateChange += SubscribeExecuteActionEvent;
+
+            if(unitConfigTemplate != null)
+            {
+                Setup(unitConfigTemplate.UnitConfig, unitConfigTemplate.SoundEffects);
+            }
         }
 
         public void Start()
@@ -70,14 +77,17 @@ namespace GameAssets
             soundController = GetComponentInChildren<SoundEffectsControllerMono>();
         }
 
+        public void SetWorldCursor(UnitGridWorldCursor worldCursor)
+        {
+            this.worldCursor = worldCursor;
+        }
+
         public void Setup(
             UnitConfig unitConfigTemplate,
-            SoundEffects soundEffects,
-            UnitGridWorldCursor worldCursor
+            SoundEffects soundEffects
         )
         {
             SoundEffects = soundEffects;
-            this.worldCursor = worldCursor;
 
             UnitConfig = unitConfigTemplate;
 

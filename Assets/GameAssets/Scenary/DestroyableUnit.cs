@@ -8,13 +8,15 @@ namespace GameAssets
     {
         [SerializeField] private GameObject destroyedObjPrefab;
 
-        public string Name => Transform.Name;
+        public string Name { get; private set; }
 
         public UnitFactions Faction => UnitFactions.Furniture;
 
         protected override void OnAwake()
         {
             Obj.OnObjectDestroyed += OnDestroyed;
+
+            Name = Transform.Name;
         }
 
         private void OnDestroyed()

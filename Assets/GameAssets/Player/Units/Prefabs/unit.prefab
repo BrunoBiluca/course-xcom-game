@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 7620177036547219306}
   - component: {fileID: -5921231343407477628}
   m_Layer: 7
-  m_Name: trooper
+  m_Name: unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
