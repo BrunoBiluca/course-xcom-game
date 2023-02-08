@@ -18,6 +18,7 @@ MonoBehaviour:
     <Name>k__BackingField: Sprinter
     <InitialHealth>k__BackingField: 6
     <MovementRange>k__BackingField: 4
+    <MovementSpeed>k__BackingField: 2
     <MaxActionPoints>k__BackingField: 9
     <ShootDamage>k__BackingField: 2
     <ShootRange>k__BackingField: 3

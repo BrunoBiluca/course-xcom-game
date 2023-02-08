@@ -5,7 +5,7 @@ using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {
-    // TODO: esse cara é importante de ter testes, vai ser utilizado em qualquer sistema que deve se selecionar uma action de um actor
+    // TODO: esse cara ? importante de ter testes, vai ser utilizado em qualquer sistema que deve se selecionar uma action de um actor
     public sealed class ActionSelector
         : IActionSelector<IAPIntent>, IBilucaLoggable
     {

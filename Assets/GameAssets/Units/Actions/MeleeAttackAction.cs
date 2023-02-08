@@ -37,9 +37,9 @@ namespace GameAssets
             attacker.AnimatorController.OnEventTriggered += CalculateDamage;
         }
 
-        private void CalculateDamage(string eventName)
+        private void CalculateDamage(UnitAnimationEvents eventName)
         {
-            if(eventName != "damage")
+            if(!Equals(eventName, UnitAnimationEvents.MELEE))
                 return;
 
             attacker.SoundEffectsController.Play(attacker.SoundEffects.Melee);

@@ -7,8 +7,8 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public class UnitGridWorldCursor 
-        : GridWorldCursor<UnitValue>, 
+    public class UnitGridWorldCursor
+        : GridWorldCursor<UnitValue>,
         IDependencySetup<IRaycastHandler, UnitWorldGridManager>
     {
         private UnitWorldGridManager gridManager;
@@ -16,13 +16,18 @@ namespace GameAssets
         public event Action OnAvaiableCellSecondaryClicked;
 
         public void Setup(
-            IRaycastHandler raycastHandler, 
+            IRaycastHandler raycastHandler,
             UnitWorldGridManager gridManager
         )
         {
             Setup(raycastHandler, gridManager.Grid);
             this.gridManager = gridManager;
+        }
 
+        public override void Enable()
+        {
+            base.Enable();
+            OnSecondaryClick -= HandleSecondaryClick;
             OnSecondaryClick += HandleSecondaryClick;
         }
 

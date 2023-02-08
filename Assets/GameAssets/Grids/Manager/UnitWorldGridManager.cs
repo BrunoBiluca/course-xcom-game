@@ -7,7 +7,7 @@ using UnityFoundation.Code.Grid;
 namespace GameAssets
 {
     // TODO: essa classe deve ser severamente refatorada
-    // separar as responsabilidades de validação do gerenciamento do grid
+    // separar as responsabilidades de valida??o do gerenciamento do grid
     public class UnitWorldGridManager : WorldGridManager<UnitValue>, IUnitWorldGridManager
     {
         public enum GridState

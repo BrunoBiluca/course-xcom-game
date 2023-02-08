@@ -75,7 +75,7 @@ namespace GameAssets
             binder.Register(grid.Grid);
 
             binder.Register<IProjectileFactory>(
-                FindObjectOfType<ProjectileFactory>(), 
+                FindObjectOfType<TransformProjectileFactory>(), 
                 ProjectileFactories.Shoot
             );
             binder.Register<IProjectileFactory>(

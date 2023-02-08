@@ -22,7 +22,7 @@ namespace GameAssets
 
         public ITransform RightShoulder { get; private set; }
 
-        public IAnimatorController AnimatorController { get; private set; }
+        public ICharacterAnimatorController AnimatorController { get; private set; }
         public INavegationAgent TransformNav { get; private set; }
 
         public string Name => UnitConfig.Name;
@@ -46,10 +46,7 @@ namespace GameAssets
 
         protected override void OnAwake()
         {
-            TransformNav = new TransformNavegationAgent(Transform) {
-                Speed = 10f,
-                StoppingDistance = 0.1f
-            };
+            TransformNav = new TransformNavegationAgent(Transform) { StoppingDistance = 0.1f };
 
             AnimatorController = GetComponent<UnitAnimatorController>();
             HealthSystem = gameObject.GetComponent<HealthSystemMono>();
@@ -91,6 +88,7 @@ namespace GameAssets
 
             UnitConfig = unitConfigTemplate;
 
+            TransformNav.Speed = unitConfigTemplate.MovementSpeed;
             HealthSystem.Setup(UnitConfig.InitialHealth);
 
             unitActionsManager = new APActor(

@@ -1,13 +1,13 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
-using UnityFoundation.HealthSystem;
-using UnityFoundation.WorldCursors;
+using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {
-    public class ShootAction : IAction
+    public class ShootAction : IAction, IBilucaLoggable
     {
         private readonly ICharacterUnit unit;
         private readonly Vector3 position;
@@ -16,6 +16,10 @@ namespace GameAssets
 
         public event Action OnCantExecuteAction;
         public event Action OnFinishAction;
+
+        private IDamageableUnit targetUnit;
+
+        public IBilucaLogger Logger { get; set; }
 
         public ShootAction(
             IUnitWorldGridManager gridManager,
@@ -32,52 +36,74 @@ namespace GameAssets
 
         public void Execute()
         {
+            Logger?.LogHighlight("Executing", nameof(ShootAction));
             var cellValue = gridManager.Grid.GetValue(position);
 
             if(
-                cellValue == default 
-                || cellValue.Units.IsEmpty() 
-                || cellValue.Units[0] is not ICharacterUnit shootedUnit
+                cellValue == default
+                || cellValue.Units.IsEmpty()
+                || cellValue.Units[0] is not IDamageableUnit damageableUnit
             )
             {
                 OnCantExecuteAction?.Invoke();
                 return;
             }
 
-            unit.Transform.LookAt(shootedUnit.Transform.Position);
+            targetUnit = damageableUnit;
+            unit.Transform.LookAt(targetUnit.Transform.Position);
 
             if(unit.RightShoulder != null)
             {
-                CameraManager.I.ShowActionCamera(
-                    unit.RightShoulder.Position, shootedUnit.Transform.Position
-                );
+                VisibilityHandlerSingleton.I.Hide();
+                CameraManager.I
+                    .ShowActionCamera(
+                        unit.RightShoulder.Position,
+                        targetUnit.Transform.Position
+                    );
+                AsyncProcessor.I.ProcessAsync(PlayShootAnimation, 1f);
+                return;
             }
 
-            // TODO: existe uma ordem nessas execuções
-            // primeiro fazemos a animação
-            // segundo instanciamos o projectile (depois que a animação envia o evento de trigger)
-            // terceiro efetuamos o cálculo do dano (depois que o projectile chega no destino)
+            PlayShootAnimation();
+        }
 
+        private void PlayShootAnimation()
+        {
+            unit.AnimatorController.OnEventTriggered += HandleCharacterShotAnimationEvent;
             unit.AnimatorController.Play(new ShootAnimation());
+        }
 
-            // TOOD: esse projectile deveria ser invocado quando um evento de
-            // animação da animação de shoot é ativado, para ai então criar o projectile
-            // shootAnimation.OnTrigger += Instantiate
+        private void HandleCharacterShotAnimationEvent(UnitAnimationEvents obj)
+        {
+            Logger?.Log("Handle character shot animation event");
+            if(!Equals(obj, UnitAnimationEvents.SHOT))
+                return;
+
             var proj = projectileFactory.Create(
                 unit.ProjectileStart.Position,
-                shootedUnit.Transform.Position
+                targetUnit.Transform.Position
             );
 
-            proj.OnReachTarget += () => {
-                shootedUnit.Damageable.Damage(unit.UnitConfig.ShootDamage, unit.Damageable.Layer);
+            proj.OnReachTarget += HandleProjectileReachTarget;
+        }
 
-                if(unit.RightShoulder != null)
-                {
-                    CameraManager.I.HideActionCamera(1f);
-                }
+        private void HandleProjectileReachTarget()
+        {
+            targetUnit.Damageable.Damage(
+                unit.UnitConfig.ShootDamage,
+                unit.Damageable.Layer
+            );
 
-                OnFinishAction?.Invoke();
-            };
+            VisibilityHandlerSingleton.I.Show();
+            if(unit.RightShoulder != null)
+            {
+                CameraManager.I.HideActionCamera(1f);
+            }
+
+            unit.AnimatorController.OnEventTriggered -= HandleCharacterShotAnimationEvent;
+
+            Logger?.LogHighlight("Finish", nameof(ShootAction));
+            OnFinishAction?.Invoke();
         }
     }
 }

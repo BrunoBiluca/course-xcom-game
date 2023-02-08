@@ -132,14 +132,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 69300415}
+  - component: {fileID: 69300417}
   - component: {fileID: 69300422}
   - component: {fileID: 69300414}
   - component: {fileID: 69300416}
   - component: {fileID: 69300418}
   - component: {fileID: 69300419}
-  - component: {fileID: 69300420}
-  - component: {fileID: 69300421}
-  - component: {fileID: 69300417}
+  - component: {fileID: 69300424}
+  - component: {fileID: 69300423}
+  - component: {fileID: 69300425}
   m_Layer: 0
   m_Name: managers
   m_TagString: Untagged
@@ -228,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DestroyOnLoad>k__BackingField: 1
   config: {fileID: 11400000, guid: 7d4192a87cb2d1a48af99fbe09e437df, type: 2}
---- !u!114 &69300420
+--- !u!114 &69300422
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,13 +238,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 69300413}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be4db0b9ec5474249b3bc02fc90970c8, type: 3}
+  m_Script: {fileID: 11500000, guid: e0a9fb2d553b8f44d8276b633ba63d49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 5358504725475216788, guid: 2e4972afb59f2524d9d976de1346f7e6,
-    type: 3}
-  explosionPrefab: {fileID: 0}
---- !u!114 &69300421
+  <DestroyOnLoad>k__BackingField: 1
+  gameOverMenu: {fileID: 299596981}
+--- !u!114 &69300423
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -259,7 +259,8 @@ MonoBehaviour:
     type: 3}
   explosionPrefab: {fileID: 1651363388222792, guid: 5b5c322075d696447800067df093a5a9,
     type: 3}
---- !u!114 &69300422
+  projectileSpeed: 3
+--- !u!114 &69300424
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -268,11 +269,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 69300413}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0a9fb2d553b8f44d8276b633ba63d49, type: 3}
+  m_Script: {fileID: 11500000, guid: 955b1303be528f243a7e9ec731bea075, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 5358504725475216788, guid: 2e4972afb59f2524d9d976de1346f7e6,
+    type: 3}
+  explosionPrefab: {fileID: 5655728157585977300, guid: 247c4cdf21c48ac4d9e68d8eaeab66d3,
+    type: 3}
+  projectileSpeed: 10
+--- !u!114 &69300425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 69300413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c64d9d277f0685f4e9e5d00ef7591a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <DestroyOnLoad>k__BackingField: 1
-  gameOverMenu: {fileID: 299596981}
 --- !u!1 &103762349
 GameObject:
   m_ObjectHideFlags: 0

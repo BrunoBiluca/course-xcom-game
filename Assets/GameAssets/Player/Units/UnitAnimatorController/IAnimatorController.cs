@@ -9,4 +9,11 @@ namespace GameAssets
 
         void Play(IAnimationHandler animHandler);
     }
+
+    public interface IAnimatorController<T> : IAnimationEventHandler<T>
+    {
+        event Action<T> OnEventTriggered;
+
+        void Play(IAnimationHandler animHandler);
+    }
 }

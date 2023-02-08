@@ -4,7 +4,7 @@ namespace GameAssets
 {
     public class ShootAnimation : IAnimationHandler
     {
-        private readonly string animParam = "shoot";
+        private readonly string animParam = "shot";
 
         public void Handle(IAnimator animator)
         {

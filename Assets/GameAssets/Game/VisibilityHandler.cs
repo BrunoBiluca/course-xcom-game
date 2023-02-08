@@ -1,19 +1,28 @@
-using System;
-using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 
 namespace GameAssets
 {
-    public class SelectableVisibilityHandler : IBilucaLoggable
+    public class VisibilityHandler : IBilucaLoggable, IVisibilityHandler
     {
         public IBilucaLogger Logger { get; set; }
 
-        private readonly IGameObject[] gameObjects;
+        private readonly List<IGameObject> gameObjects = new();
 
-        public SelectableVisibilityHandler(params IGameObject[] gameObjects)
+        public VisibilityHandler()
         {
-            this.gameObjects = gameObjects;
+        }
+
+        public VisibilityHandler(params IGameObject[] gameObjects)
+        {
+            this.gameObjects = gameObjects.ToList();
+        }
+
+        public void Add(IGameObject gameObject)
+        {
+            gameObjects.Add(gameObject);
         }
 
         public void Show()

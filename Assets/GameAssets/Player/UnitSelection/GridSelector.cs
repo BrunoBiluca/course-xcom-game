@@ -3,7 +3,6 @@ using UnityFoundation.Code;
 
 namespace GameAssets
 {
-
     public sealed class GridSelector : ISelector
     {
         private readonly IUnitWorldGridManager gridManager;

@@ -11,7 +11,7 @@ namespace GameAssets.Tests
     public class CharacterUnitMock : MockBuilder<ICharacterUnit>
     {
         public Mock<IDamageable> Damageable { get; private set; }
-        public Mock<IAnimatorController> AnimatorController { get; private set; }
+        public Mock<ICharacterAnimatorController> AnimatorController { get; private set; }
 
         public bool WasDamaged { get; private set; } = false;
 
@@ -49,10 +49,10 @@ namespace GameAssets.Tests
                 .Setup(d => d.Damage(It.IsAny<float>(), null))
                 .Callback(() => WasDamaged = true);
 
-            AnimatorController ??= new Mock<IAnimatorController>();
+            AnimatorController ??= new Mock<ICharacterAnimatorController>();
             AnimatorController
-                .Setup(a => a.AnimationEventHandler(It.IsAny<string>()))
-                .Callback<string>(name => {
+                .Setup(a => a.AnimationEventHandler(It.IsAny<UnitAnimationEvents>()))
+                .Callback<UnitAnimationEvents>(name => {
                     AnimatorController.Raise(mock => mock.OnEventTriggered += null, name);
                 });
             unit.Setup(u => u.AnimatorController).Returns(AnimatorController.Object);

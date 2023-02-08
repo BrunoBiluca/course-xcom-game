@@ -39,7 +39,7 @@ namespace GameAssets
                 return;
             }
 
-            // TODO: implementar uma factory de animações
+            // TODO: implementar uma factory de anima??es
             unit.AnimatorController.Play(new WalkingAnimation(true));
 
             worldCursor.WorldPosition.IsPresentAndGet(out Vector3 pos);

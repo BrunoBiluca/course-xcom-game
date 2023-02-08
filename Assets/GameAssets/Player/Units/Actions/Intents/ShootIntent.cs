@@ -10,6 +10,7 @@ namespace GameAssets
     {
         private readonly IActorSelector<ICharacterUnit> selector;
         private readonly IWorldCursor worldCursor;
+        private readonly IUnitWorldGridManager gridManager;
 
         public GridState GridState => GridState.None;
 
@@ -29,6 +30,7 @@ namespace GameAssets
             ActionPointsCost = config.GetCost(UnitActionsEnum.SHOOT);
             this.selector = selector;
             this.worldCursor = worldCursor;
+            this.gridManager = gridManager;
         }
 
         public IAction Create()
@@ -44,13 +46,12 @@ namespace GameAssets
 
         public void GridValidation()
         {
-            var gridManager = Container.Resolve<IUnitWorldGridManager>();
             var character = selector.CurrentUnit;
             gridManager
                 .Validator()
                 .WithRange(character.Transform.Position, character.UnitConfig.ShootRange)
                 .WhereUnit((unit) => {
-                    if(unit is not ICharacterUnit characterUnit)
+                    if(unit is not IDamageableUnit characterUnit)
                         return false;
 
                     return DamageableLayerManager.I

@@ -22,7 +22,7 @@ namespace GameAssets.Tests
 
             action.Execute();
 
-            attacker.AnimatorController.Object.AnimationEventHandler("damage");
+            attacker.AnimatorController.Object.AnimationEventHandler(UnitAnimationEvents.MELEE);
 
             Assert.That(target.WasDamaged, Is.True);
         }

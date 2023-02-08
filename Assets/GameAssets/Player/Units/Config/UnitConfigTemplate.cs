@@ -32,7 +32,8 @@ namespace GameAssets
             int meleeRange = 0,
             int initialHealth = 0,
             int interactRange = 0,
-            int meleeDamage = 0
+            int meleeDamage = 0,
+            int movementSpeed = 0
         )
         {
             Portrait = portrait;
@@ -46,12 +47,14 @@ namespace GameAssets
             InitialHealth = initialHealth;
             InteractRange = interactRange;
             MeleeDamage = meleeDamage;
+            MovementSpeed = movementSpeed;
         }
 
         [field: SerializeField] public Sprite Portrait { get; private set; }
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public int InitialHealth { get; private set; }
         [field: SerializeField] public int MovementRange { get; private set; }
+        [field: SerializeField] public int MovementSpeed { get; private set; }
         [field: SerializeField] public uint MaxActionPoints { get; private set; }
         [field: SerializeField] public int ShootDamage { get; private set; }
         [field: SerializeField] public int ShootRange { get; private set; }

@@ -20,6 +20,7 @@ namespace GameAssets
 
         public void Display()
         {
+            gameObject.SetActive(true);
             foreach(var unit in unitsManager.GetAllUnits())
             {
                 var view = Instantiate(unitViewPrefab, unitsViewHolder).transform;

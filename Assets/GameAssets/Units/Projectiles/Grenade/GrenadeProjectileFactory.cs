@@ -2,9 +2,7 @@ using UnityFoundation.Code;
 
 namespace GameAssets
 {
-
-    public class GrenadeProjectileFactory : BaseProjectileFactory<GrenadeProjectile>
+    public class GrenadeProjectileFactory : ProjectileFactory<GrenadeProjectile>
     {
-        protected override float ProjectileSpeed() => 5f;
     }
 }

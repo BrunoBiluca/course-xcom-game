@@ -10,6 +10,7 @@ using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.TurnSystem;
+using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
@@ -35,20 +36,20 @@ namespace GameAssets
             Container = binder.Container;
             Container.RegisterAction<IBilucaLoggable>(b => b.Logger = UnityDebug.I);
 
-            var selectableVisibility = new SelectableVisibilityHandler(
-                Container.Resolve<UnitActionsView>().gameObject.Decorate(),
-                Container.Resolve<ActionPointsView>().gameObject.Decorate()
-            );
-            selectableVisibility.Hide();
+            var turnSystemView = FindObjectOfType<TurnSystemView>();
+            turnSystemView.Setup(Container.Resolve<ITurnSystem>());
 
-            FindObjectOfType<TurnSystemView>().Setup(Container.Resolve<ITurnSystem>());
+            var visibilityHandler = FindObjectOfType<VisibilityHandlerSingleton>();
+            visibilityHandler.Add(Container.Resolve<UnitActionsView>().gameObject.Decorate());
+            visibilityHandler.Add(Container.Resolve<ActionPointsView>().gameObject.Decorate());
+            visibilityHandler.Hide();
 
             GridManager = Container.Resolve<UnitWorldGridManager>();
             // Events
             var unitSelection = Container.Resolve<UnitSelectionMono>();
             unitSelection.OnUnitUnselected += () => GridManager.ResetValidation();
-            unitSelection.OnUnitSelected += selectableVisibility.Show;
-            unitSelection.OnUnitUnselected += selectableVisibility.Hide;
+            unitSelection.OnUnitSelected += visibilityHandler.Show;
+            unitSelection.OnUnitUnselected += visibilityHandler.Hide;
 
             Container
                 .Resolve<IActionSelector<IAPIntent>>()
@@ -65,6 +66,7 @@ namespace GameAssets
 
             OnInstallerFinish?.Invoke();
 
+            Container.Resolve<IWorldCursor>().Enable();
             Container.Resolve<WorldGridView>().Display();
             Container.Resolve<EnemiesManager>().InstantiateUnits();
             Container.Resolve<UnitsManager>().InstantiateUnits();
