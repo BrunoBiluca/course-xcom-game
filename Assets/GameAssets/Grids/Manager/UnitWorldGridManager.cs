@@ -12,9 +12,10 @@ namespace GameAssets
     {
         public enum GridState
         {
-            None,
+            Movement,
             Attack,
-            Interact
+            Interact,
+            None
         }
 
         public List<IUnit> Units { get; private set; }
@@ -26,6 +27,7 @@ namespace GameAssets
             : base(worldGrid.Grid)
         {
             Units = new List<IUnit>();
+            State = GridState.None;
 
             updateProcessor.ExecuteEveryFrame(Update);
         }

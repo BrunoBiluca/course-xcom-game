@@ -37,16 +37,27 @@ namespace GameAssets
         public void Update()
         {
             if(grid == null) return;
-            UpdateCells();
+
+            DisableAllCells();
+
+            if(gridManager.State != UnitWorldGridManager.GridState.None)
+                UpdateAllCells();
+
+            UpdateWorldPositionCell();
         }
 
-        private void UpdateCells()
+        private void UpdateWorldPositionCell()
         {
-            foreach(var c in grid.Cells)
-            {
-                c.Value.DisableCellRef();
-            }
+            worldCursor.WorldPosition.Some(pos => {
+                grid.TryUpdateValue(pos, view => {
+                    view.EnableCellRef();
+                    view.SetColor(Color.green);
+                });
+            });
+        }
 
+        private void UpdateAllCells()
+        {
             foreach(var c in gridManager.GetAllAvailableCells())
             {
                 var gridValue = grid.Cells[c.Position.X, c.Position.Z].Value;
@@ -54,7 +65,7 @@ namespace GameAssets
 
                 switch(gridManager.State)
                 {
-                    case UnitWorldGridManager.GridState.None:
+                    case UnitWorldGridManager.GridState.Movement:
                         gridValue.SetColor(Color.white);
                         break;
                     case UnitWorldGridManager.GridState.Attack:
@@ -65,10 +76,14 @@ namespace GameAssets
                         break;
                 }
             }
+        }
 
-            worldCursor.WorldPosition.Some(pos => {
-                grid.TryUpdateValue(pos, view => view.SetColor(Color.green));
-            });
+        private void DisableAllCells()
+        {
+            foreach(var c in grid.Cells)
+            {
+                c.Value.DisableCellRef();
+            }
         }
 
         public void CreateWorldView()

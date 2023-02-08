@@ -73,7 +73,7 @@ namespace GameAssets
 
         public void Apply()
         {
-            Apply(UnitWorldGridManager.GridState.None);
+            Apply(UnitWorldGridManager.GridState.Movement);
         }
 
         public void Apply(UnitWorldGridManager.GridState state)

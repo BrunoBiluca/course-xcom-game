@@ -12,7 +12,7 @@ namespace GameAssets
         private readonly IWorldCursor worldCursor;
         private readonly IUnitWorldGridManager gridManager;
 
-        public GridState GridState => GridState.None;
+        public GridState GridState => GridState.Movement;
 
         public int ActionPointsCost { get; set; }
 

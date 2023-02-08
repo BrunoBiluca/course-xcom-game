@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
@@ -51,22 +52,13 @@ namespace GameAssets
             }
 
             targetUnit = damageableUnit;
-            unit.Transform.LookAt(new Vector3(
-                targetUnit.Transform.Position.x,
-                0f,
-                targetUnit.Transform.Position.z
-            ));
 
-            if(unit.RightShoulder != null)
-            {
-                VisibilityHandlerSingleton.I.Hide();
-                CameraManager.I
-                    .ShowActionCamera(unit.RightShoulder.Position, targetUnit.Transform.Position);
-                AsyncProcessor.I.ProcessAsync(PlayShootAnimation, 1f);
-                return;
-            }
-
-            PlayShootAnimation();
+            new ActionDecorator(this)
+                .LookAtTarget(
+                    unit, 
+                    targetUnit.Transform, 
+                    PlayShootAnimation
+                );
         }
 
         private void PlayShootAnimation()

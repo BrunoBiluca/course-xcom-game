@@ -1,7 +1,5 @@
 using System;
-using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
-using UnityFoundation.Code;
 
 namespace GameAssets
 {
@@ -28,18 +26,12 @@ namespace GameAssets
 
         public void Execute()
         {
-            var targetPos = target.Transform.Position;
-            attacker.Transform.LookAt(new Vector3(targetPos.x, 0f, targetPos.z));
-
-            if(attacker.RightShoulder != null)
-            {
-                VisibilityHandlerSingleton.I.Hide();
-                CameraManager.I.ShowActionCamera(attacker.RightShoulder.Position, targetPos);
-                AsyncProcessor.I.ProcessAsync(PlayMeleeAnimation, 1f);
-                return;
-            }
-
-            PlayMeleeAnimation();
+            new ActionDecorator(this)
+                .LookAtTarget(
+                    attacker, 
+                    target.Transform, 
+                    PlayMeleeAnimation
+            );
         }
 
         private void PlayMeleeAnimation()
@@ -55,8 +47,6 @@ namespace GameAssets
 
             attacker.SoundEffectsController.Play(attacker.SoundEffects.Melee);
             target.Damageable.Damage(Config.Damage);
-
-            CameraManager.I.HideActionCamera(1f);
 
             attacker.AnimatorController.OnEventTriggered -= CalculateDamage;
             OnFinishAction?.Invoke();

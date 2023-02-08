@@ -6,7 +6,7 @@ namespace GameAssets
 {
     public sealed class SpinIntent : IGridIntent, IContainerProvide
     {
-        public GridState GridState => GridState.None;
+        public GridState GridState => GridState.Movement;
 
         public int ActionPointsCost { get; set; }
 
