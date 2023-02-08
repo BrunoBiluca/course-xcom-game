@@ -28,7 +28,8 @@ namespace GameAssets
             healthSystem.SetDamageableLayer(damageableLayer);
 
             healthSystem.OnTakeDamageAmount += (amount) => {
-                DamagePopup.Create(amount.ToString(), Transform.Position + Vector3.up);
+                var popup = DamagePopup.Create(amount.ToString(), Transform.Position);
+                popup.SetFontSize(2f);
             };
             healthSystem.OnDied += () => Destroy(gameObject);
 

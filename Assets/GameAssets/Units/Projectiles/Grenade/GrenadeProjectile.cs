@@ -22,19 +22,28 @@ namespace GameAssets
         {
             this.config = config;
             projectile = config.Transform;
-            startPos = projectile.Position;
-            midPoint = (config.Transform.Position + config.TargetPos) / 2f;
-            midPoint.y = 2f;
-            endPos = config.TargetPos;
+            ArcTrajectory(config);
 
             reachedTarget = false;
             interpolateAmount = 0f;
         }
 
+        private void ArcTrajectory(IProjectile.Settings config)
+        {
+            startPos = projectile.Position;
+            midPoint = (config.Transform.Position + config.TargetPos) / 2f;
+            midPoint.y = 2f;
+            endPos = config.TargetPos;
+        }
+
         public void Update(float interpolateTime = 1)
         {
             if(reachedTarget) return;
+            UpdatePosition(interpolateTime);
+        }
 
+        private void UpdatePosition(float interpolateTime)
+        {
             interpolateAmount += interpolateTime * config.Speed;
             projectile.Position = LinearInterpolation.Quadratic(
                 startPos,
