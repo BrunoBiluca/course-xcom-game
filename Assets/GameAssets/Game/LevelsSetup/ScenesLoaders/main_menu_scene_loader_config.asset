@@ -15,6 +15,6 @@ MonoBehaviour:
   <Config>k__BackingField:
     <ExecuteOnAwake>k__BackingField: 0
     <ScenesToLoad>k__BackingField:
-    - master_gameplay
+    - gameplay
     <ScenesToUnLoad>k__BackingField:
     - main_menu
