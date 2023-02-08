@@ -14,7 +14,8 @@ namespace GameAssets
     public enum ProjectileFactories
     {
         Shoot,
-        Grenade
+        Grenade,
+        Meteor
     }
 
     public class GameBinder : MonoBehaviour
@@ -76,12 +77,16 @@ namespace GameAssets
             binder.Register(grid.Grid);
 
             binder.Register<IProjectileFactory>(
-                FindObjectOfType<TransformProjectileFactory>(), 
+                FindObjectOfType<TransformProjectileFactory>(),
                 ProjectileFactories.Shoot
             );
             binder.Register<IProjectileFactory>(
-                FindObjectOfType<GrenadeProjectileFactory>(), 
+                FindObjectOfType<GrenadeProjectileFactory>(),
                 ProjectileFactories.Grenade
+            );
+            binder.Register<IProjectileFactory>(
+                FindObjectOfType<MeteorProjectileFactory>(),
+                ProjectileFactories.Meteor
             );
 
             binder.RegisterSingleton<ITurnSystem, TurnSystem>();

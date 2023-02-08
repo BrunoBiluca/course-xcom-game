@@ -23,6 +23,7 @@ namespace GameAssets
             binder.Register<ShootAction>();
 
             binder.Register<ThrowGrenadeAction>();
+            binder.Register<MeteorAttackAction>();
         }
     }
 }

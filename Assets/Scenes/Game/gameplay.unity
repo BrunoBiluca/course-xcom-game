@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 69300424}
   - component: {fileID: 69300423}
   - component: {fileID: 69300425}
+  - component: {fileID: 69300426}
   m_Layer: 0
   m_Name: managers
   m_TagString: Untagged
@@ -290,6 +291,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DestroyOnLoad>k__BackingField: 1
+--- !u!114 &69300426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 69300413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16c4c7c1bd537474fa20cd140b653839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1593574840045950, guid: 45ae8ce3527dfcf46933282f370e9275,
+    type: 3}
+  explosionPrefab: {fileID: 0}
+  projectileSpeed: 1
 --- !u!1 &103762349
 GameObject:
   m_ObjectHideFlags: 0

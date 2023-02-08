@@ -5,7 +5,7 @@ using static GameAssets.UnitWorldGridManager;
 
 namespace GameAssets
 {
-    public sealed class ThrowGrenadeIntent : IGridIntent, IContainerProvide
+    public sealed class AreaAttackIntent : IGridIntent, IContainerProvide
     {
         private readonly ICharacterSelector selector;
         private readonly IWorldCursor worldCursor;
@@ -17,7 +17,7 @@ namespace GameAssets
 
         public IDependencyContainer Container { private get; set; }
 
-        public ThrowGrenadeIntent(
+        public AreaAttackIntent(
             ActionsConfig config,
             ICharacterSelector selector,
             IWorldCursor worldCursor,
@@ -35,14 +35,24 @@ namespace GameAssets
             var character = selector.CurrentUnit;
             var position = worldCursor.WorldPosition.Get();
 
-            return Container.Resolve<ThrowGrenadeAction>(
-                new ThrowGrenadeAction.Settings() {
+            //return Container.Resolve<ThrowGrenadeAction>(
+            //    new AreaAttackSettings() {
+            //        ExplosionRange = character.UnitConfig.ExplosionRange,
+            //        Damage = character.UnitConfig.GrenadeDamage
+            //    },
+            //    character.ProjectileStart.Position,
+            //    position,
+            //    Container.Resolve<IProjectileFactory>(ProjectileFactories.Grenade)
+            //);
+
+            return Container.Resolve<MeteorAttackAction>(
+                new AreaAttackSettings() {
                     ExplosionRange = character.UnitConfig.ExplosionRange,
                     Damage = character.UnitConfig.GrenadeDamage
                 },
-                character.ProjectileStart.Position,
+                character,
                 position,
-                Container.Resolve<IProjectileFactory>(ProjectileFactories.Grenade)
+                Container.Resolve<IProjectileFactory>(ProjectileFactories.Meteor)
             );
         }
 

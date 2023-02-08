@@ -27,7 +27,7 @@ namespace GameAssets.Tests
             projectileFactoryMock.Build();
 
             var action = new ThrowGrenadeAction(
-                new ThrowGrenadeAction.Settings() { ExplosionRange = explosionRange },
+                new AreaAttackSettings() { ExplosionRange = explosionRange },
                 gridManager,
                 Vector3.zero,
                 explosionPosition,

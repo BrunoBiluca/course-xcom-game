@@ -16,17 +16,10 @@ namespace GameAssets
         public event Action OnCantExecuteAction;
         public event Action OnFinishAction;
 
-        public Settings Config { get; private set; }
-
-        public class Settings
-        {
-            public int Damage { get; set; } = 3;
-
-            public int ExplosionRange { get; set; } = 1;
-        }
+        public AreaAttackSettings Config { get; private set; }
 
         public ThrowGrenadeAction(
-            Settings config,
+            AreaAttackSettings config,
             IUnitWorldGridManager gridManager,
             Vector3 startPos,
             Vector3 targetPos,

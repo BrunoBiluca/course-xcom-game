@@ -49,6 +49,7 @@ namespace GameAssets.Tests
             binder.Register(instance);
 
             binder.Register(new Mock<IProjectileFactory>().Object, ProjectileFactories.Shoot);
+            binder.Register(new Mock<IProjectileFactory>().Object, ProjectileFactories.Meteor);
             binder.Register(new Mock<IProjectileFactory>().Object, ProjectileFactories.Grenade);
 
             var worldCursor = new Mock<IWorldCursor>();

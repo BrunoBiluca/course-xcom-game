@@ -29,7 +29,7 @@ namespace GameAssets
             new ActionDecorator(this)
                 .LookAtTarget(
                     attacker, 
-                    target.Transform, 
+                    target.Transform.Position, 
                     PlayMeleeAnimation
             );
         }

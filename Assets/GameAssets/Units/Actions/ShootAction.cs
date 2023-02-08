@@ -56,7 +56,7 @@ namespace GameAssets
             new ActionDecorator(this)
                 .LookAtTarget(
                     unit, 
-                    targetUnit.Transform, 
+                    targetUnit.Transform.Position, 
                     PlayShootAnimation
                 );
         }

@@ -27,7 +27,7 @@ MonoBehaviour:
     <MeleeDamage>k__BackingField: 3
     <InteractRange>k__BackingField: 1
     <GrenadeDamage>k__BackingField: 5
-    <ExplosionRange>k__BackingField: 2
+    <ExplosionRange>k__BackingField: 1
     <Actions>k__BackingField: 0000000001000000020000000300000004000000
   <SoundEffects>k__BackingField:
     <Melee>k__BackingField: {fileID: 8300000, guid: fed2b464c01fea24885a85755ffdd30b,
