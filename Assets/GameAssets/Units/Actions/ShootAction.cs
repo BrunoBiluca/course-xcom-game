@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
+using static UnityEngine.UI.CanvasScaler;
 
 namespace GameAssets
 {
@@ -50,7 +51,11 @@ namespace GameAssets
             }
 
             targetUnit = damageableUnit;
-            unit.Transform.LookAt(targetUnit.Transform.Position);
+            unit.Transform.LookAt(new Vector3(
+                targetUnit.Transform.Position.x, 
+                0f, 
+                targetUnit.Transform.Position.z
+            ));
 
             if(unit.RightShoulder != null)
             {
