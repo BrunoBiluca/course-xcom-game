@@ -21,7 +21,7 @@ namespace GameAssets
 
         public IAction Create()
         {
-            var selector = Container.Resolve<IActorSelector<ICharacterUnit>>();
+            var selector = Container.Resolve<ICharacterSelector>();
             return Container.Resolve<SpinUnitAction>(selector.CurrentUnit.Transform);
         }
 

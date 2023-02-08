@@ -8,7 +8,7 @@ namespace GameAssets
 {
     public sealed class InteractIntent : IGridIntent, IContainerProvide
     {
-        private readonly IActorSelector<ICharacterUnit> selector;
+        private readonly ICharacterSelector selector;
         private readonly IWorldCursor worldCursor;
         private readonly IUnitWorldGridManager gridManager;
 
@@ -20,7 +20,7 @@ namespace GameAssets
 
         public InteractIntent(
             ActionsConfig config,
-            IActorSelector<ICharacterUnit> selector,
+            ICharacterSelector selector,
             IWorldCursor worldCursor,
             IUnitWorldGridManager gridManager
         )

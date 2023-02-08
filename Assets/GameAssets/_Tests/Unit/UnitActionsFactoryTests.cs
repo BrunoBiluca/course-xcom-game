@@ -62,7 +62,7 @@ namespace GameAssets.Tests
             character.Setup(s => s.UnitConfig).Returns(new UnitConfig(interactRange: 1));
             character.Setup(s => s.Transform).Returns(new Mock<ITransform>().Object);
 
-            var selectorMock = new Mock<IActorSelector<ICharacterUnit>>();
+            var selectorMock = new Mock<ICharacterSelector>();
             selectorMock.Setup(s => s.CurrentUnit).Returns(character.Object);
             binder.Register(selectorMock.Object);
 

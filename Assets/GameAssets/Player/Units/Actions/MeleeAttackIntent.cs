@@ -7,7 +7,7 @@ namespace GameAssets
 {
     public class MeleeAttackIntent : IGridIntent, IContainerProvide
     {
-        private readonly IActorSelector<ICharacterUnit> selector;
+        private readonly ICharacterSelector selector;
         private readonly IUnitWorldGridManager gridManager;
         private readonly IWorldCursor worldCursor;
 
@@ -19,7 +19,7 @@ namespace GameAssets
 
         public MeleeAttackIntent(
             ActionsConfig actionsConfig,
-            IActorSelector<ICharacterUnit> selector,
+            ICharacterSelector selector,
             IUnitWorldGridManager gridManager,
             IWorldCursor worldCursor
         )
@@ -33,27 +33,28 @@ namespace GameAssets
         public IAction Create()
         {
             var cellValue = gridManager.Grid.GetValue(worldCursor.WorldPosition.Get());
-            var targetUnit = cellValue.Units[0] as ICharacterUnit;
+            var targetUnit = cellValue.Units[0] as IDamageableUnit;
             return Container.Resolve<MeleeAttackAction>(selector.CurrentUnit, targetUnit);
         }
 
         public void GridValidation()
         {
-            gridManager.Validator()
-                    .WithRange(
-                        selector.CurrentUnit.Transform.Position,
-                        selector.CurrentUnit.UnitConfig.MeleeRange
-                    )
-                    .WhereUnit((unit) => {
-                        if(unit is not ICharacterUnit characterUnit)
-                            return false;
+            gridManager
+                .Validator()
+                .WithRange(
+                    selector.CurrentUnit.Transform.Position,
+                    selector.CurrentUnit.UnitConfig.MeleeRange
+                )
+                .WhereUnit((unit) => {
+                    if(unit is not IDamageableUnit target)
+                        return false;
 
-                        return DamageableLayerManager.I
-                            .LayerCanDamage(
-                                selector.CurrentUnit.Damageable.Layer,
-                                characterUnit.Damageable.Layer
-                            );
-                    }).Apply(UnitWorldGridManager.GridState.Attack);
+                    return DamageableLayerManager.I
+                        .LayerCanDamage(
+                            selector.CurrentUnit.Damageable.Layer,
+                            target.Damageable.Layer
+                        );
+                }).Apply(UnitWorldGridManager.GridState.Attack);
         }
     }
 }

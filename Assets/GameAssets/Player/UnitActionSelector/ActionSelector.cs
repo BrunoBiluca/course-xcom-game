@@ -28,7 +28,7 @@ namespace GameAssets
             unitActorSelector.OnUnitUnselected += UnselectAction;
         }
 
-        public void SetAction(IAPIntent action)
+        public void SetIntent(IAPIntent action)
         {
             var currentActor = unitActorSelector.CurrentUnit;
             if(currentActor == null)

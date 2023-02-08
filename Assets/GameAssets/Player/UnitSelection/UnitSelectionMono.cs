@@ -8,9 +8,11 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
+    public interface ICharacterSelector : IActorSelector<ICharacterUnit> { }
+
     public sealed class UnitSelectionMono
         : MonoBehaviour,
-        IActorSelector<ICharacterUnit>,
+        ICharacterSelector,
         IDependencySetup<IWorldCursor, ISelector>,
         IBilucaLoggable
     {

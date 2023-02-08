@@ -27,10 +27,12 @@ namespace GameAssets.Tests
             projectileFactoryMock.Build();
 
             var action = new ThrowGrenadeAction(
-                gridManager, Vector3.zero, explosionPosition, projectileFactoryMock.ProjectileFactory
-            ) {
-                Config = new ThrowGrenadeAction.Settings() { ExplosionRange = explosionRange }
-            };
+                new ThrowGrenadeAction.Settings() { ExplosionRange = explosionRange },
+                gridManager,
+                Vector3.zero,
+                explosionPosition,
+                projectileFactoryMock.ProjectileFactory
+            );
 
             var cantExecuteEvent = EventTest.Create(action, nameof(action.OnCantExecuteAction));
             var finishEvent = EventTest.Create(action, nameof(action.OnFinishAction));

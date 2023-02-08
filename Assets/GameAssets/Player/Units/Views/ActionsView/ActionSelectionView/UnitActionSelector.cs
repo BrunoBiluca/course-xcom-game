@@ -9,12 +9,12 @@ namespace GameAssets
     public class UnitActionSelector : MonoBehaviour
     {
         private UnitActionsView selector;
-        private UnitActionsEnum action;
+        public UnitActionsEnum Action { get; private set; }
 
         public void Setup(UnitActionsView selector, UnitActionsEnum action)
         {
             this.selector = selector;
-            this.action = action;
+            this.Action = action;
 
             Create();
         }
@@ -24,17 +24,17 @@ namespace GameAssets
             GetComponent<Button>().onClick.AddListener(Select);
 
             var text = transform.FindComponent<TextMeshProUGUI>("text");
-            text.text = action.ToString();
+            text.text = Action.ToString();
         }
 
         public void Select()
         {
-            selector.Select(action);
+            selector.Select(Action);
         }
 
         public void SetColorIfActive(UnitActionsEnum actionType, Color active, Color inactive)
         {
-            if(action == actionType)
+            if(Action == actionType)
                 SetColor(active);
             else
                 SetColor(inactive);

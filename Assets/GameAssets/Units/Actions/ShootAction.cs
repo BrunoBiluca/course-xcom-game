@@ -52,8 +52,8 @@ namespace GameAssets
 
             targetUnit = damageableUnit;
             unit.Transform.LookAt(new Vector3(
-                targetUnit.Transform.Position.x, 
-                0f, 
+                targetUnit.Transform.Position.x,
+                0f,
                 targetUnit.Transform.Position.z
             ));
 
@@ -61,10 +61,7 @@ namespace GameAssets
             {
                 VisibilityHandlerSingleton.I.Hide();
                 CameraManager.I
-                    .ShowActionCamera(
-                        unit.RightShoulder.Position,
-                        targetUnit.Transform.Position
-                    );
+                    .ShowActionCamera(unit.RightShoulder.Position, targetUnit.Transform.Position);
                 AsyncProcessor.I.ProcessAsync(PlayShootAnimation, 1f);
                 return;
             }

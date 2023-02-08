@@ -20,17 +20,17 @@ PrefabInstance:
     - target: {fileID: 4091461879376266686, guid: 243636264dacba948a499d52bb5fc52b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 32.89
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4091461879376266686, guid: 243636264dacba948a499d52bb5fc52b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.050000012
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4091461879376266686, guid: 243636264dacba948a499d52bb5fc52b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.0393558
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4091461879376266686, guid: 243636264dacba948a499d52bb5fc52b,
         type: 3}
@@ -81,32 +81,12 @@ PrefabInstance:
         type: 3}
       propertyPath: unitConfigTemplate
       value: 
-      objectReference: {fileID: 11400000, guid: 735f8967deaa7b942bc940083a056c17,
+      objectReference: {fileID: 11400000, guid: 54caeddca43bd5f44bfe41e2bb4fc403,
         type: 2}
-    - target: {fileID: 6501156604700445767, guid: 243636264dacba948a499d52bb5fc52b,
-        type: 3}
-      propertyPath: m_BounceIntensity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6932798832525024168, guid: 243636264dacba948a499d52bb5fc52b,
         type: 3}
       propertyPath: m_RootOrder
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6932798832525024168, guid: 243636264dacba948a499d52bb5fc52b,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.62
-      objectReference: {fileID: 0}
-    - target: {fileID: 6932798832525024168, guid: 243636264dacba948a499d52bb5fc52b,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6932798832525024168, guid: 243636264dacba948a499d52bb5fc52b,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.57
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 243636264dacba948a499d52bb5fc52b, type: 3}
@@ -182,6 +162,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: archer_mesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227013295174585326, guid: 90d5afbf7e549e2478188ac34a13dd6d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.043953355
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227013295174585326, guid: 90d5afbf7e549e2478188ac34a13dd6d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.027883772
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90d5afbf7e549e2478188ac34a13dd6d, type: 3}

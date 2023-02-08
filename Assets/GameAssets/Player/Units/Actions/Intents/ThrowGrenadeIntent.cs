@@ -7,7 +7,7 @@ namespace GameAssets
 {
     public sealed class ThrowGrenadeIntent : IGridIntent, IContainerProvide
     {
-        private readonly IActorSelector<ICharacterUnit> selector;
+        private readonly ICharacterSelector selector;
         private readonly IWorldCursor worldCursor;
         private readonly IUnitWorldGridManager gridManager;
 
@@ -19,7 +19,7 @@ namespace GameAssets
 
         public ThrowGrenadeIntent(
             ActionsConfig config,
-            IActorSelector<ICharacterUnit> selector,
+            ICharacterSelector selector,
             IWorldCursor worldCursor,
             IUnitWorldGridManager gridManager
         )
@@ -36,6 +36,10 @@ namespace GameAssets
             var position = worldCursor.WorldPosition.Get();
 
             return Container.Resolve<ThrowGrenadeAction>(
+                new ThrowGrenadeAction.Settings() {
+                    ExplosionRange = character.UnitConfig.ExplosionRange,
+                    Damage = character.UnitConfig.GrenadeDamage
+                },
                 character.ProjectileStart.Position,
                 position,
                 Container.Resolve<IProjectileFactory>(ProjectileFactories.Grenade)

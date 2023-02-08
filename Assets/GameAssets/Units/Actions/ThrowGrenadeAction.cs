@@ -16,7 +16,7 @@ namespace GameAssets
         public event Action OnCantExecuteAction;
         public event Action OnFinishAction;
 
-        public Settings Config { get; set; }
+        public Settings Config { get; private set; }
 
         public class Settings
         {
@@ -26,13 +26,14 @@ namespace GameAssets
         }
 
         public ThrowGrenadeAction(
+            Settings config,
             IUnitWorldGridManager gridManager,
             Vector3 startPos,
             Vector3 targetPos,
             IProjectileFactory projectileFactory
         )
         {
-            Config = new Settings();
+            Config = config;
             this.gridManager = gridManager;
             this.startPos = startPos;
             this.targetPos = targetPos;
@@ -51,8 +52,8 @@ namespace GameAssets
 
             CameraManager.I.ShakeCamera();
 
-            foreach(var character in units.OfType<ICharacterUnit>())
-                character.Damageable.Damage(3, null);
+            foreach(var character in units.OfType<IDamageableUnit>())
+                character.Damageable.Damage(Config.Damage, null);
 
             foreach(var obj in units.OfType<IDestroyableUnit>())
                 obj.Destroy();

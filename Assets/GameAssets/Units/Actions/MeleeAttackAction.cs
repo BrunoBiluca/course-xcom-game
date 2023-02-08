@@ -1,16 +1,14 @@
 using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
-using UnityFoundation.Code.UnityAdapter;
-using UnityFoundation.HealthSystem;
+using UnityFoundation.Code;
 
 namespace GameAssets
 {
     public class MeleeAttackAction : IAction
     {
         private readonly ICharacterUnit attacker;
-        private readonly ICharacterUnit target;
+        private readonly IDamageableUnit target;
 
         public Settings Config { get; private set; }
 
@@ -20,7 +18,7 @@ namespace GameAssets
         public MeleeAttackAction(
             Settings config,
             ICharacterUnit attacker,
-            ICharacterUnit target
+            IDamageableUnit target
         )
         {
             Config = config;
@@ -30,11 +28,24 @@ namespace GameAssets
 
         public void Execute()
         {
-            attacker.Transform.LookAt(target.Transform.Position);
+            var targetPos = target.Transform.Position;
+            attacker.Transform.LookAt(new Vector3(targetPos.x, 0f, targetPos.z));
 
-            attacker.AnimatorController.Play(new MeleeAttackAnimation(true));
+            if(attacker.RightShoulder != null)
+            {
+                VisibilityHandlerSingleton.I.Hide();
+                CameraManager.I.ShowActionCamera(attacker.RightShoulder.Position, targetPos);
+                AsyncProcessor.I.ProcessAsync(PlayMeleeAnimation, 1f);
+                return;
+            }
 
+            PlayMeleeAnimation();
+        }
+
+        private void PlayMeleeAnimation()
+        {
             attacker.AnimatorController.OnEventTriggered += CalculateDamage;
+            attacker.AnimatorController.Play(new MeleeAttackAnimation());
         }
 
         private void CalculateDamage(UnitAnimationEvents eventName)
@@ -44,7 +55,8 @@ namespace GameAssets
 
             attacker.SoundEffectsController.Play(attacker.SoundEffects.Melee);
             target.Damageable.Damage(Config.Damage);
-            attacker.AnimatorController.Play(new MeleeAttackAnimation(false));
+
+            CameraManager.I.HideActionCamera(1f);
 
             attacker.AnimatorController.OnEventTriggered -= CalculateDamage;
             OnFinishAction?.Invoke();

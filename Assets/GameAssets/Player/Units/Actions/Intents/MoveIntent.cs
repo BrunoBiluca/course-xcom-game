@@ -7,7 +7,7 @@ namespace GameAssets
 {
     public sealed class MoveIntent : IGridIntent, IContainerProvide
     {
-        private readonly IActorSelector<ICharacterUnit> selector;
+        private readonly ICharacterSelector selector;
         private readonly IWorldCursor worldCursor;
 
         public int ActionPointsCost { get; set; }
@@ -18,7 +18,7 @@ namespace GameAssets
 
         public MoveIntent(
             ActionsConfig config,
-            IActorSelector<ICharacterUnit> selector,
+            ICharacterSelector selector,
             IWorldCursor worldCursor
         )
         {

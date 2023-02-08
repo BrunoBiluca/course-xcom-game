@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameAssets
@@ -62,5 +64,8 @@ namespace GameAssets
         [field: SerializeField] public int MeleeRange { get; private set; }
         [field: SerializeField] public int MeleeDamage { get; private set; }
         [field: SerializeField] public int InteractRange { get; private set; }
+        [field: SerializeField] public int GrenadeDamage { get; private set; }
+        [field: SerializeField] public int ExplosionRange { get; private set; }
+        [field: SerializeField] public List<UnitActionsEnum> Actions { get; private set; }
     }
 }

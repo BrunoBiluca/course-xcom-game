@@ -58,6 +58,7 @@ namespace GameAssets
             binder.Register(cursor);
 
             var unitSelector = FindObjectOfType<UnitSelectionMono>();
+            binder.Register<ICharacterSelector>(unitSelector);
             binder.Register<IActorSelector<ICharacterUnit>>(unitSelector);
             binder.Register(unitSelector);
 

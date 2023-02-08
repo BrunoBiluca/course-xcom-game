@@ -8,7 +8,7 @@ namespace GameAssets
 {
     public sealed class ShootIntent : IGridIntent, IContainerProvide
     {
-        private readonly IActorSelector<ICharacterUnit> selector;
+        private readonly ICharacterSelector selector;
         private readonly IWorldCursor worldCursor;
         private readonly IUnitWorldGridManager gridManager;
 
@@ -22,7 +22,7 @@ namespace GameAssets
 
         public ShootIntent(
             ActionsConfig config,
-            IActorSelector<ICharacterUnit> selector,
+            ICharacterSelector selector,
             IWorldCursor worldCursor,
             IUnitWorldGridManager gridManager
         )

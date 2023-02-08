@@ -122,6 +122,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: damage_popup_variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4506782724209866262, guid: 44e11419871e2cc4e9ef112f071f84b4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 1212745973446689085, guid: 35a48c009ef7f6a4b9f8d53a1d6cb78f,
+        type: 2}
+    - target: {fileID: 6364774374122971797, guid: 44e11419871e2cc4e9ef112f071f84b4,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 35a48c009ef7f6a4b9f8d53a1d6cb78f,
+        type: 2}
+    - target: {fileID: 6364774374122971797, guid: 44e11419871e2cc4e9ef112f071f84b4,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 1212745973446689085, guid: 35a48c009ef7f6a4b9f8d53a1d6cb78f,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44e11419871e2cc4e9ef112f071f84b4, type: 3}
 --- !u!1 &5707957992725587181 stripped
@@ -142,4 +160,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022fe45fc8dbc5a4bb452ecc55ef4144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <InvertY>k__BackingField: 1

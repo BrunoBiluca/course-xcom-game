@@ -12,18 +12,24 @@ namespace GameAssets
     public class UnitActionsView
         : MonoBehaviour,
         IBilucaLoggable,
-        IDependencySetup<IActionSelector<IAPIntent>, UnitIntentsFactory>
+        IDependencySetup<ICharacterSelector, IActionSelector<IAPIntent>, UnitIntentsFactory>
     {
         [SerializeField] private GameObject actionSelectorPrefab;
         private UnitActionsEnum? currentAction;
 
         private IActionSelector<IAPIntent> actionSelector;
+        private ICharacterSelector selector;
         private UnitIntentsFactory factory;
         private List<UnitActionSelector> buttons;
 
         public IBilucaLogger Logger { get; set; }
 
         public void Awake()
+        {
+            InstantiateButtons();
+        }
+
+        private void InstantiateButtons()
         {
             buttons = new List<UnitActionSelector>();
             foreach(UnitActionsEnum a in Enum.GetValues(typeof(UnitActionsEnum)))
@@ -37,6 +43,7 @@ namespace GameAssets
         }
 
         public void Setup(
+            ICharacterSelector selector,
             IActionSelector<IAPIntent> actionSelector,
             UnitIntentsFactory factory
         )
@@ -44,7 +51,17 @@ namespace GameAssets
             this.factory = factory;
             this.actionSelector = actionSelector;
 
+            this.selector = selector;
+            selector.OnUnitSelected += HandleUnitSelected;
             actionSelector.OnActionUnselected += CleanActions;
+        }
+
+        private void HandleUnitSelected()
+        {
+            foreach(var b in buttons)
+            {
+                b.gameObject.SetActive(selector.CurrentUnit.UnitConfig.Actions.Contains(b.Action));
+            }
         }
 
         public void Select(UnitActionsEnum actionType)
@@ -59,7 +76,7 @@ namespace GameAssets
             try
             {
                 var unitIntent = factory.Get(actionType);
-                actionSelector.SetAction(unitIntent);
+                actionSelector.SetIntent(unitIntent);
                 unitIntent.GridValidation();
                 SelectAction(actionType);
             }
