@@ -103,12 +103,11 @@ namespace GameAssets.Tests
         }
 
         [Test]
-        public void Should_return_intent_for_grenade_action()
+        public void Should_return_intent_for_meteor_intent()
         {
             var factory = container.Resolve<UnitIntentsFactory>();
-            var intent = factory.Get(UnitActionsEnum.GRENADE);
+            var intent = factory.Get(UnitActionsEnum.METEOR);
             AssertIntent(intent, false, GRENADE_COST);
-
         }
 
         [Test]

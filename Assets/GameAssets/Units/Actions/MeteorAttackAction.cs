@@ -15,6 +15,7 @@ namespace GameAssets
         private readonly ICharacterUnit unit;
         private readonly Vector3 targetPosition;
         private readonly IProjectileFactory projectileFactory;
+        private IProjectile proj;
 
         public event Action OnCantExecuteAction;
         public event Action OnFinishAction;
@@ -51,7 +52,9 @@ namespace GameAssets
             if(!Equals(obj, UnitAnimationEvents.SHOT))
                 return;
 
-            var proj = projectileFactory.Create(
+            unit.AnimatorController.OnEventTriggered -= HandleCasting;
+
+            proj = projectileFactory.Create(
                 targetPosition + Vector3.up * 2f,
                 targetPosition.WithY(-0.5f),
                 1.5f
@@ -61,6 +64,8 @@ namespace GameAssets
 
         private void HandleProjectileReachTarget()
         {
+            proj.OnReachTarget -= HandleProjectileReachTarget;
+
             var units = gridManager.GetUnitsInRange(targetPosition, settings.ExplosionRange);
 
             CameraManager.I.ShakeCamera();
