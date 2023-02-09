@@ -7,6 +7,7 @@ namespace GameAssets
         SHOOT,
         GRENADE,
         MELEE,
-        INTERACT
+        INTERACT,
+        METEOR
     }
 }

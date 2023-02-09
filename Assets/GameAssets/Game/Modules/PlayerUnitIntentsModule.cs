@@ -6,7 +6,7 @@ namespace GameAssets
     {
         public void Register(IDependencyBinder binder)
         {
-            binder.Register<IGridIntent, AreaAttackIntent>(UnitActionsEnum.GRENADE);
+            binder.Register<IGridIntent, AreaAttackIntent>(UnitActionsEnum.METEOR);
             binder.Register<IGridIntent, SpinIntent>(UnitActionsEnum.SPIN);
             binder.Register<IGridIntent, ShootIntent>(UnitActionsEnum.SHOOT);
             binder.Register<IGridIntent, InteractIntent>(UnitActionsEnum.INTERACT);

@@ -88,12 +88,6 @@ namespace GameAssets
                 unit.Damageable.Layer
             );
 
-            VisibilityHandlerSingleton.I.Show();
-            if(unit.RightShoulder != null)
-            {
-                CameraManager.I.HideActionCamera(1f);
-            }
-
             unit.AnimatorController.OnEventTriggered -= HandleCharacterShotAnimationEvent;
 
             Logger?.LogHighlight("Finish", nameof(ShootAction));

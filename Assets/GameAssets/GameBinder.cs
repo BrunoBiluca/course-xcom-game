@@ -65,6 +65,7 @@ namespace GameAssets
 
             binder.Register(FindObjectOfType<UnitActionsView>());
             binder.Register(FindObjectOfType<ActionPointsView>());
+            binder.Register(FindObjectOfType<PlayerInputsView>());
 
             binder.Register(FindObjectOfType<UnitsManager>());
             binder.Register(FindObjectOfType<EnemiesManager>());

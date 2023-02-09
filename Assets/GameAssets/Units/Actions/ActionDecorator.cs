@@ -19,12 +19,11 @@ namespace GameAssets
             ICharacterUnit unit, Vector3 target, Action callback
         )
         {
-            action.OnFinishAction += HideActionCamera;
-
             unit.Transform.LookAt(new Vector3(target.x, 0f, target.z));
 
             if(unit.RightShoulder != null)
             {
+                action.OnFinishAction += HideActionCamera;
                 VisibilityHandlerSingleton.I.Hide();
                 CameraManager.I.ShowActionCamera(unit.RightShoulder.Position, target);
                 AsyncProcessor.I.ProcessAsync(callback, 1f);
@@ -37,6 +36,7 @@ namespace GameAssets
         {
             action.OnFinishAction -= HideActionCamera;
             CameraManager.I.HideActionCamera(1f);
+            VisibilityHandlerSingleton.I.Show();
         }
     }
 }
