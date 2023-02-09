@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityFoundation.Code.Extensions;
+using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
@@ -15,5 +16,6 @@ namespace GameAssets
         event Action<T> OnEventTriggered;
 
         void Play(IAnimationHandler animHandler);
+        void PlayCallback(Action<IAnimator> animatorCallback);
     }
 }

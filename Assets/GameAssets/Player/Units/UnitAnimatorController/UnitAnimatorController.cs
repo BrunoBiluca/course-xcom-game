@@ -25,6 +25,11 @@ namespace GameAssets
             animHandler.Handle(animator);
         }
 
+        public void PlayCallback(Action<IAnimator> animatorCallback)
+        {
+            animatorCallback(animator);
+        }
+
         public void AnimationEventHandler(UnitAnimationEvents value)
         {
             OnEventTriggered?.Invoke(value);

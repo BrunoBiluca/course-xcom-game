@@ -42,6 +42,15 @@ namespace GameAssets
 
         private void InstantiateMeteor()
         {
+            unit.AnimatorController.OnEventTriggered += HandleCasting;
+            unit.AnimatorController.PlayCallback(a => a.SetTrigger("cast"));
+        }
+
+        private void HandleCasting(UnitAnimationEvents obj)
+        {
+            if(!Equals(obj, UnitAnimationEvents.SHOT))
+                return;
+
             var proj = projectileFactory.Create(
                 targetPosition + Vector3.up * 2f,
                 targetPosition.WithY(-0.5f),
