@@ -148,10 +148,11 @@ class WorldGridView {
     Update()
 }
 
-GridIntentSelector ..|> IGridIntent : current intent
-GridIntentSelector ..|> UnitWorldGridManager : query
+IIntentSelector~IGridIntent~ ..|> IGridIntent : current intent
+GridIntentQuery ..|> IIntentSelector~IGridIntent~ : current intent
+GridIntentQuery ..|> UnitWorldGridManager : query
 UnitWorldGridManager ..|> IWorldGridXZ : query
-WorldGridView ..|> GridIntentSelector : validations
+WorldGridView ..|> GridIntentQuery : query
 WorldGridView ..|> IWorldGridXZ : grid
 WorldGridView ..|> IWorldCursor : position
 ```
