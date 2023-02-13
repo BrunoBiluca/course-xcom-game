@@ -20,8 +20,6 @@ namespace GameAssets
 
         [SerializeField] private GameBinder binder;
 
-        public UnitWorldGridManager GridManager { get; private set; }
-
         public IDependencyContainer Container { get; private set; }
 
         protected override void OnAwake()
@@ -43,29 +41,25 @@ namespace GameAssets
             unitActionVisibility.Add(Container.Resolve<PlayerInputsView>().gameObject.Decorate());
             unitActionVisibility.Add(turnSystemView.gameObject.Decorate());
             unitActionVisibility.Add(Container.Resolve<UnitsView>().gameObject.Decorate());
-            unitActionVisibility.Add(Container.Resolve<UnitActionsView>().gameObject.Decorate());
+            unitActionVisibility.Add(Container.Resolve<UnitIntentsView>().gameObject.Decorate());
             unitActionVisibility.Add(Container.Resolve<ActionPointsView>().gameObject.Decorate());
 
             var unitSelectVisibility = new VisibilityHandler();
-            unitSelectVisibility.Add(Container.Resolve<UnitActionsView>().gameObject.Decorate());
+            unitSelectVisibility.Add(Container.Resolve<UnitIntentsView>().gameObject.Decorate());
             unitSelectVisibility.Add(Container.Resolve<ActionPointsView>().gameObject.Decorate());
             unitSelectVisibility.Hide();
 
-            GridManager = Container.Resolve<UnitWorldGridManager>();
+            var gridManager = Container.Resolve<UnitWorldGridManager>();
             // Events
             var unitSelection = Container.Resolve<UnitSelectionMono>();
-            unitSelection.OnUnitUnselected += () => GridManager.ResetValidation();
+            unitSelection.OnUnitUnselected += () => gridManager.ResetValidation();
             unitSelection.OnUnitSelected += unitSelectVisibility.Show;
             unitSelection.OnUnitUnselected += unitSelectVisibility.Hide;
-
-            Container
-                .Resolve<IActionSelector<IAPIntent>>()
-                .OnActionUnselected += () => GridManager.ResetValidation();
 
             // Add units
             foreach(var unit in FindObjectsOfType<MonoBehaviour>().OfType<IUnit>())
             {
-                GridManager.Add(unit);
+                gridManager.Add(unit);
             }
 
             Container.Resolve<ITurnSystem>()

@@ -22,10 +22,12 @@ MonoBehaviour:
     <MaxActionPoints>k__BackingField: 99
     <ShootDamage>k__BackingField: 2
     <ShootRange>k__BackingField: 6
-    <GrenadeRange>k__BackingField: 4
     <MeleeRange>k__BackingField: 1
     <MeleeDamage>k__BackingField: 2
     <InteractRange>k__BackingField: 1
+    <AreaAttackRange>k__BackingField: 0
+    <GrenadeDamage>k__BackingField: 0
+    <ExplosionRange>k__BackingField: 0
     <Actions>k__BackingField: 0000000002000000
   <SoundEffects>k__BackingField:
     <Melee>k__BackingField: {fileID: 8300000, guid: fed2b464c01fea24885a85755ffdd30b,

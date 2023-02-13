@@ -6,28 +6,29 @@ using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
+
+    public enum GridIntentType
+    {
+        Movement,
+        Attack,
+        Interact,
+        None
+    }
+
     // TODO: essa classe deve ser severamente refatorada
     // separar as responsabilidades de valida??o do gerenciamento do grid
     public class UnitWorldGridManager : WorldGridManager<UnitValue>, IUnitWorldGridManager
     {
-        public enum GridState
-        {
-            Movement,
-            Attack,
-            Interact,
-            None
-        }
-
         public List<IUnit> Units { get; private set; }
 
-        public GridState State { get; set; }
+        public GridIntentType State { get; set; }
 
         public UnitWorldGridManager(
             UnitWorldGridXZ worldGrid, IAsyncProcessor updateProcessor)
             : base(worldGrid.Grid)
         {
             Units = new List<IUnit>();
-            State = GridState.None;
+            State = GridIntentType.None;
 
             updateProcessor.ExecuteEveryFrame(Update);
         }
@@ -62,9 +63,9 @@ namespace GameAssets
             Grid.TryUpdateValue(newGridPos, (val) => val.Add(unit));
         }
 
-        public UnitWorldGridValidator Validator()
+        public GridValidator Validator()
         {
-            return new UnitWorldGridValidator(this);
+            return new GridValidator(this);
         }
 
         public List<IUnit> GetUnitsInRange(Vector3 center, int range)
@@ -96,7 +97,7 @@ namespace GameAssets
         public override void ResetValidation()
         {
             base.ResetValidation();
-            State = GridState.None;
+            State = GridIntentType.None;
         }
 
         public IEnumerable<Vector3> GetAllAvailableCellsPositions()
@@ -106,7 +107,16 @@ namespace GameAssets
                 yield return new Vector3(c.Position.X, 0, c.Position.Z) * Grid.CellSize;
             }
         }
+
+        public void GetAllAvailableCells(IGridValidation<UnitValue>[] gridValidations)
+        {
+        }
+
+        public override IEnumerable<GridCellXZ<UnitValue>> GetCells(
+            IGridValidation<UnitValue>[] validations
+        )
+        {
+            return base.GetCells(validations);
+        }
     }
-
-
 }

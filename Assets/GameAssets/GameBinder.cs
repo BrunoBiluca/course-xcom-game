@@ -63,7 +63,7 @@ namespace GameAssets
             binder.Register<IActorSelector<ICharacterUnit>>(unitSelector);
             binder.Register(unitSelector);
 
-            binder.Register(FindObjectOfType<UnitActionsView>());
+            binder.Register(FindObjectOfType<UnitIntentsView>());
             binder.Register(FindObjectOfType<ActionPointsView>());
             binder.Register(FindObjectOfType<PlayerInputsView>());
 
@@ -92,7 +92,10 @@ namespace GameAssets
 
             binder.RegisterSingleton<ITurnSystem, TurnSystem>();
             binder.RegisterSingleton<IActorSelector<IAPActor>, CharacterActorSelector>();
-            binder.RegisterSingleton<IActionSelector<IAPIntent>, ActionSelector>();
+
+            binder.RegisterSingleton<IGridIntentSelector, IntentSelector>();
+            binder.Register<IGridIntentQuery, GridIntentQuery>();
+
             binder.RegisterSingleton<IUnitWorldGridManager, UnitWorldGridManager>();
 
             binder.Register(UnityDebug.I);

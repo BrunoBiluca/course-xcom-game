@@ -6,7 +6,7 @@ using UnityFoundation.TestUtility;
 
 namespace GameAssets.Tests
 {
-    public sealed partial class UnitActionSelectionTests
+    public sealed partial class IntentSelectorTests
     {
 
         [Test]
@@ -14,7 +14,7 @@ namespace GameAssets.Tests
         {
             var actionHandler = new UnitActionHandlerBuilder().Build();
 
-            var action = actionHandler.CurrentAction;
+            var action = actionHandler.CurrentIntent;
             Assert.That(action.IsPresent, Is.False);
         }
 
@@ -24,7 +24,7 @@ namespace GameAssets.Tests
             var actionHandler = new UnitActionHandlerBuilder().Build();
 
             Assert.Throws<ActorIsNotSelected>(
-                () => actionHandler.SetIntent(new Mock<IAPIntent>().Object)
+                () => actionHandler.SetIntent(new Mock<IGridIntent>().Object)
             );
         }
 
@@ -36,7 +36,7 @@ namespace GameAssets.Tests
                 .Build();
 
             Assert.Throws<NoAPAvaiable>(
-                () => actionHandler.SetIntent(new Mock<IAPIntent>().Object)
+                () => actionHandler.SetIntent(new Mock<IGridIntent>().Object)
             );
 
         }
@@ -46,12 +46,12 @@ namespace GameAssets.Tests
         {
             var actionHandler = new UnitActionHandlerBuilder().WithCurrentUnitSelected().Build();
 
-            var actionSelected = EventTest<IAPIntent>
-                .Create(actionHandler, nameof(actionHandler.OnActionSelected));
+            var actionSelected = EventTest<IGridIntent>
+                .Create(actionHandler, nameof(actionHandler.OnIntentSelected));
 
-            actionHandler.SetIntent(new Mock<IAPIntent>().Object);
+            actionHandler.SetIntent(new Mock<IGridIntent>().Object);
 
-            var action = actionHandler.CurrentAction;
+            var action = actionHandler.CurrentIntent;
             Assert.That(action.IsPresent, Is.True, "should have action");
             Assert.That(
                 actionSelected.WasTriggered, Is.True, "should execute on action selected once"
@@ -63,14 +63,14 @@ namespace GameAssets.Tests
         {
             var actionHandler = new UnitActionHandlerBuilder().WithCurrentUnitSelected().Build();
 
-            actionHandler.SetIntent(new Mock<IAPIntent>().Object);
+            actionHandler.SetIntent(new Mock<IGridIntent>().Object);
 
             var actionUnselected = EventTest
-                .Create(actionHandler, nameof(actionHandler.OnActionUnselected));
+                .Create(actionHandler, nameof(actionHandler.OnIntentUnselected));
 
-            actionHandler.UnselectAction();
+            actionHandler.UnselectIntent();
 
-            var action = actionHandler.CurrentAction;
+            var action = actionHandler.CurrentIntent;
             Assert.That(action.IsPresent, Is.False, "should not have action");
             Assert.That(
                 actionUnselected.WasTriggered, Is.True, "should execute on action deselected once"

@@ -4,7 +4,7 @@
   - [Diagrama de interfaces](#diagrama-de-interfaces)
   - [Diagrama de implementações](#diagrama-de-implementações)
 - [Validação do grid](#validação-do-grid)
-- [Criação de intenções e ações](#criação-de-intenções-e-ações)
+- [Coloração do WorldGridView](#coloração-do-worldgridview)
 - [Sistema de criação de intenções e ações](#sistema-de-criação-de-intenções-e-ações)
 
 # Unidades do jogo
@@ -133,7 +133,28 @@ IGridIntent ..> IUnitWorldGridManager : call Validator()
 UnitActionsFactory --> IGridIntent : instantiate
 ```
 
-# Criação de intenções e ações
+# Coloração do WorldGridView
+
+```mermaid
+classDiagram
+
+class IGridIntent {
+    <<interface>>
+    GridValidationByCharacter()
+    GridValidationByCursor()
+}
+
+class WorldGridView {
+    Update()
+}
+
+GridIntentSelector ..|> IGridIntent : current intent
+GridIntentSelector ..|> UnitWorldGridManager : query
+UnitWorldGridManager ..|> IWorldGridXZ : query
+WorldGridView ..|> GridIntentSelector : validations
+WorldGridView ..|> IWorldGridXZ : grid
+WorldGridView ..|> IWorldCursor : position
+```
 
 # Sistema de criação de intenções e ações
 

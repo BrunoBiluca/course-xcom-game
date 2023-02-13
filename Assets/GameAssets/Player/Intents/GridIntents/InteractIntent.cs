@@ -1,15 +1,15 @@
 ﻿using System.Linq;
+using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.WorldCursors;
-using static GameAssets.UnitWorldGridManager;
 
 namespace GameAssets
 {
     public sealed class InteractIntent : IGridIntent, IContainerProvide
     {
-        private readonly ICharacterSelector selector;
         private readonly IWorldCursor worldCursor;
+        private readonly ICharacterUnit character;
         private readonly IUnitWorldGridManager gridManager;
 
         public int ActionPointsCost { get; set; }
@@ -17,6 +17,8 @@ namespace GameAssets
         public bool ExecuteImmediatly => false;
 
         public IDependencyContainer Container { private get; set; }
+
+        public GridIntentType IntentType => GridIntentType.Interact;
 
         public InteractIntent(
             ActionsConfig config,
@@ -26,14 +28,14 @@ namespace GameAssets
         )
         {
             ActionPointsCost = config.GetCost(UnitActionsEnum.INTERACT);
-            this.selector = selector;
             this.gridManager = gridManager;
             this.worldCursor = worldCursor;
+
+            character = selector.CurrentUnit;
         }
 
         public IAction Create()
         {
-            var character = selector.CurrentUnit;
             var position = worldCursor.WorldPosition.Get();
             return Container.Resolve<InteractAction>(
                 gridManager
@@ -43,13 +45,18 @@ namespace GameAssets
             );
         }
 
-        public void GridValidation()
+        public GridValidator AffectedValidation(GridValidator validator, Vector3 position)
         {
-            var character = selector.CurrentUnit;
-            gridManager.Validator()
+            return validator
+                .WhereCell(position)
+                .WhereUnitIs<IInteractableUnit>();
+        }
+
+        public GridValidator AvaiableValidation(GridValidator validator)
+        {
+            return validator
                 .WithRange(character.Transform.Position, character.UnitConfig.InteractRange)
-                .WhereUnitIs<IInteractableUnit>()
-                .Apply(GridState.Interact);
+                .WhereUnitIs<IInteractableUnit>();
         }
     }
 }

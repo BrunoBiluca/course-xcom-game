@@ -1,12 +1,13 @@
-﻿using UnityFoundation.CharacterSystem.ActorSystem;
+﻿using UnityEngine;
+using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
-using static GameAssets.UnitWorldGridManager;
+using UnityFoundation.Code.Grid;
 
 namespace GameAssets
 {
     public sealed class SpinIntent : IGridIntent, IContainerProvide
     {
-        public GridState GridState => GridState.Movement;
+        public GridIntentType IntentType => GridIntentType.None;
 
         public int ActionPointsCost { get; set; }
 
@@ -25,8 +26,14 @@ namespace GameAssets
             return Container.Resolve<SpinUnitAction>(selector.CurrentUnit.Transform);
         }
 
-        public void GridValidation()
+        public GridValidator AffectedValidation(GridValidator validator, Vector3 position)
         {
+            return validator;
+        }
+
+        public GridValidator AvaiableValidation(GridValidator validator)
+        {
+            return validator;
         }
     }
 }

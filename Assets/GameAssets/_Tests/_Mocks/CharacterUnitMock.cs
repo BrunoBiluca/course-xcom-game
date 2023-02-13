@@ -42,6 +42,12 @@ namespace GameAssets.Tests
             return this;
         }
 
+        public CharacterUnitMock WithConfig(UnitConfig unitConfig)
+        {
+            unit.Setup(u => u.UnitConfig).Returns(unitConfig);
+            return this;
+        }
+
         protected override Mock<ICharacterUnit> OnBuild()
         {
             Damageable ??= new Mock<IDamageable>();

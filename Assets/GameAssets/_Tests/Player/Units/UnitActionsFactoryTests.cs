@@ -33,6 +33,7 @@ namespace GameAssets.Tests
             actionsConfig.AddCost(UnitActionsEnum.MOVE, MOVE_COST);
             actionsConfig.AddCost(UnitActionsEnum.SPIN, SPIN_COST);
             actionsConfig.AddCost(UnitActionsEnum.GRENADE, GRENADE_COST);
+            actionsConfig.AddCost(UnitActionsEnum.METEOR, GRENADE_COST);
             actionsConfig.AddCost(UnitActionsEnum.SHOOT, SHOOT_COST);
             actionsConfig.AddCost(UnitActionsEnum.INTERACT, INTERACT_COST);
             actionsConfig.AddCost(UnitActionsEnum.MELEE, MELEE_COST);
@@ -43,7 +44,7 @@ namespace GameAssets.Tests
             binder.RegisterModule(new ActionsModule());
 
             var gridManagerBuilder = new UnitWorldGridManagerFakeBuilder();
-            gridManagerBuilder.WithUnit(UnitFactions.Enemy, Vector3.zero).WithInteractableUnit();
+            gridManagerBuilder.AddUnit(UnitFactions.Enemy, Vector3.zero).WithInteractableUnit();
             var instance = (UnitWorldGridManager)gridManagerBuilder.Build();
             binder.Register<IUnitWorldGridManager>(instance);
             binder.Register(instance);

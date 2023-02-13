@@ -34,7 +34,7 @@ namespace GameAssets.Tests
         {
             var targetPosition = Vector3.one;
             var gridManagerMock = new UnitWorldGridManagerFakeBuilder()
-                .WithUnit(UnitFactions.Player, targetPosition);
+                .AddUnit(UnitFactions.Player, targetPosition);
             var enemyMock = new AIUnitMockBuilder() { InitialAP = 1 };
             var factoryMockBuilder = new EnemyIntentFactoryMockBuilder();
 
@@ -64,7 +64,7 @@ namespace GameAssets.Tests
             var targetPosition = new Vector3(2, 0, 2);
 
             var gridManagerMock = new UnitWorldGridManagerFakeBuilder()
-                .WithUnit(UnitFactions.Player, targetPosition);
+                .AddUnit(UnitFactions.Player, targetPosition);
 
             var enemyMock = new AIUnitMockBuilder() { InitialAP = 1 };
 
@@ -98,8 +98,8 @@ namespace GameAssets.Tests
             var initialPosition = Vector3.zero;
 
             var gridManagerMock = new UnitWorldGridManagerFakeBuilder()
-                .WithUnit(UnitFactions.Player, targetPosition)
-                .WithUnit(UnitFactions.Enemy, enemyPosition);
+                .AddUnit(UnitFactions.Player, targetPosition)
+                .AddUnit(UnitFactions.Enemy, enemyPosition);
 
             var enemyMock = new AIUnitMockBuilder() { InitialAP = 1 };
 

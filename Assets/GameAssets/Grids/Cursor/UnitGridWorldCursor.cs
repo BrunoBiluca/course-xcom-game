@@ -9,19 +9,20 @@ namespace GameAssets
 {
     public class UnitGridWorldCursor
         : GridWorldCursor<UnitValue>,
-        IDependencySetup<IRaycastHandler, UnitWorldGridManager>
+        IDependencySetup<IRaycastHandler, IUnitWorldGridManager, IGridIntentQuery>
     {
-        private UnitWorldGridManager gridManager;
+        private IGridIntentQuery intentSelector;
 
         public event Action OnAvaiableCellSecondaryClicked;
 
         public void Setup(
             IRaycastHandler raycastHandler,
-            UnitWorldGridManager gridManager
+            IUnitWorldGridManager gridManager,
+            IGridIntentQuery intentSelector
         )
         {
             Setup(raycastHandler, gridManager.Grid);
-            this.gridManager = gridManager;
+            this.intentSelector = intentSelector;
         }
 
         public override void Enable()
@@ -36,7 +37,7 @@ namespace GameAssets
             if(!WorldPosition.IsPresentAndGet(out Vector3 pos))
                 return;
 
-            if(!gridManager.IsCellAvailable(pos))
+            if(!intentSelector.IsCellAvailable(pos))
                 return;
 
             OnAvaiableCellSecondaryClicked?.Invoke();

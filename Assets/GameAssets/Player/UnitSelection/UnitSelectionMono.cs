@@ -1,15 +1,11 @@
 using System;
 using UnityEngine;
-using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
-using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public interface ICharacterSelector : IActorSelector<ICharacterUnit> { }
-
     public sealed class UnitSelectionMono
         : MonoBehaviour,
         ICharacterSelector,

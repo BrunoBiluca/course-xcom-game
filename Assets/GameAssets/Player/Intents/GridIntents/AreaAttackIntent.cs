@@ -1,15 +1,14 @@
-﻿using UnityFoundation.CharacterSystem.ActorSystem;
+﻿using UnityEngine;
+using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.WorldCursors;
-using static GameAssets.UnitWorldGridManager;
 
 namespace GameAssets
 {
     public sealed class AreaAttackIntent : IGridIntent, IContainerProvide
     {
-        private readonly ICharacterSelector selector;
         private readonly IWorldCursor worldCursor;
-        private readonly IUnitWorldGridManager gridManager;
+        private readonly ICharacterUnit character;
 
         public int ActionPointsCost { get; set; }
 
@@ -17,22 +16,23 @@ namespace GameAssets
 
         public IDependencyContainer Container { private get; set; }
 
+        public GridIntentType IntentType => GridIntentType.Attack;
+
         public AreaAttackIntent(
             ActionsConfig config,
             ICharacterSelector selector,
-            IWorldCursor worldCursor,
-            IUnitWorldGridManager gridManager
+            IWorldCursor worldCursor
         )
         {
-            ActionPointsCost = config.GetCost(UnitActionsEnum.GRENADE);
-            this.selector = selector;
+            //ActionPointsCost = config.GetCost(UnitActionsEnum.GRENADE);
+            ActionPointsCost = config.GetCost(UnitActionsEnum.METEOR);
             this.worldCursor = worldCursor;
-            this.gridManager = gridManager;
+
+            character = selector.CurrentUnit;
         }
 
         public IAction Create()
         {
-            var character = selector.CurrentUnit;
             var position = worldCursor.WorldPosition.Get();
 
             //return Container.Resolve<ThrowGrenadeAction>(
@@ -56,13 +56,18 @@ namespace GameAssets
             );
         }
 
-        public void GridValidation()
+        public GridValidator AvaiableValidation(GridValidator validator)
         {
-            var character = selector.CurrentUnit;
-            gridManager
-                .Validator()
-                .WithRange(character.Transform.Position, character.UnitConfig.GrenadeRange)
-                .Apply(GridState.Attack);
+            return validator
+                .WithRange(character.Transform.Position, character.UnitConfig.AreaAttackRange);
+        }
+
+        public GridValidator AffectedValidation(
+            GridValidator validator,
+            Vector3 position
+        )
+        {
+            return validator.WithRange(position, character.UnitConfig.ExplosionRange);
         }
     }
 }

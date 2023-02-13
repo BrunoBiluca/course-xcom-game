@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityFoundation.Code.Grid;
 
 namespace GameAssets
@@ -7,15 +8,16 @@ namespace GameAssets
     public interface IUnitWorldGridManager
     {
         IWorldGridXZ<UnitValue> Grid { get; }
+        List<IUnit> Units { get; }
+
+        GridIntentType State { get; set; }
         IEnumerable<GridCellXZ<UnitValue>> GetAllAvailableCells();
         IEnumerable<Vector3> GetAllAvailableCellsPositions();
-        List<IUnit> Units { get; }
-        UnitWorldGridManager.GridState State { get; set; }
-
         List<IUnit> GetUnitsInRange(Vector3 center, int range);
-
         bool IsCellAvailable(Vector3 position);
-        UnitWorldGridValidator Validator();
+
+        GridValidator Validator();
         void ResetValidation();
+        IEnumerable<GridCellXZ<UnitValue>> GetCells(IGridValidation<UnitValue>[] validations);
     }
 }

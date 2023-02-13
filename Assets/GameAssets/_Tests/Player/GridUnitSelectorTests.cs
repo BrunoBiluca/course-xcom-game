@@ -23,7 +23,7 @@ namespace GameAssets.Tests
         public void Should_not_select_unit_when_unit_is_in_another_cell_position()
         {
             var gridManager = new UnitWorldGridManagerFakeBuilder()
-                .WithUnit(UnitFactions.Player, Vector3.forward)
+                .AddUnit(UnitFactions.Player, Vector3.forward)
                 .Build();
             var selector = new GridSelector(gridManager);
 

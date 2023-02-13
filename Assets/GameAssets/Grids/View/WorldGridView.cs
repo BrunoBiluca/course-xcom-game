@@ -8,16 +8,21 @@ namespace GameAssets
 {
     public class WorldGridView
         : BilucaMono
-        , IDependencySetup<IUnitWorldGridManager, IWorldCursor>
+        , IDependencySetup<IGridIntentQuery, IUnitWorldGridManager, IWorldCursor>
     {
         [SerializeField] private GameObject cellPrefab;
-
+        private IGridIntentQuery gridIntentQuery;
         private IUnitWorldGridManager gridManager;
         private IWorldCursor worldCursor;
         private WorldGridXZ<GridViewValue> grid;
 
-        public void Setup(IUnitWorldGridManager gridManager, IWorldCursor worldCursor)
+        public void Setup(
+            IGridIntentQuery gridIntentQuery,
+            IUnitWorldGridManager gridManager,
+            IWorldCursor worldCursor
+        )
         {
+            this.gridIntentQuery = gridIntentQuery;
             this.gridManager = gridManager;
             this.worldCursor = worldCursor;
         }
@@ -40,41 +45,47 @@ namespace GameAssets
 
             DisableAllCells();
 
-            if(gridManager.State != UnitWorldGridManager.GridState.None)
-                UpdateAllCells();
+            if(gridIntentQuery.CurrentIntent.IsPresentAndGet(out IGridIntent intent))
+                UpdateAvaiableCells(intent);
 
-            UpdateWorldPositionCell();
+            if(worldCursor.WorldPosition.IsPresentAndGet(out Vector3 position))
+                UpdateCursorCell(position);
         }
 
-        private void UpdateWorldPositionCell()
+        private void UpdateCursorCell(Vector3 position)
         {
-            worldCursor.WorldPosition.Some(pos => {
-                grid.TryUpdateValue(pos, view => {
-                    view.EnableCellRef();
-                    view.SetColor(Color.green);
-                });
+            if(gridIntentQuery.CurrentIntent.IsPresentAndGet(out IGridIntent intent))
+            {
+                if(gridIntentQuery.IsCellAvailable(position))
+                {
+                    UpdateAffectedCells(position, intent);
+                }
+                return;
+            }
+
+            grid.TryUpdateValue(position, view => {
+                view.EnableCellRef();
+                view.SetColor(Color.green);
             });
         }
 
-        private void UpdateAllCells()
+        private void UpdateAffectedCells(Vector3 position, IGridIntent intent)
         {
-            foreach(var c in gridManager.GetAllAvailableCells())
+            foreach(var c in gridIntentQuery.GetAffectedCells(position))
             {
                 var gridValue = grid.Cells[c.Position.X, c.Position.Z].Value;
                 gridValue.EnableCellRef();
+                gridValue.SetColor(GridIntentColor.Affected(intent));
+            }
+        }
 
-                switch(gridManager.State)
-                {
-                    case UnitWorldGridManager.GridState.Movement:
-                        gridValue.SetColor(Color.white);
-                        break;
-                    case UnitWorldGridManager.GridState.Attack:
-                        gridValue.SetColor(Color.red);
-                        break;
-                    case UnitWorldGridManager.GridState.Interact:
-                        gridValue.SetColor(Color.blue);
-                        break;
-                }
+        private void UpdateAvaiableCells(IGridIntent intent)
+        {
+            foreach(var c in gridIntentQuery.GetAvaiableCells())
+            {
+                var gridValue = grid.Cells[c.Position.X, c.Position.Z].Value;
+                gridValue.EnableCellRef();
+                gridValue.SetColor(GridIntentColor.Avaiable(intent));
             }
         }
 
@@ -86,7 +97,7 @@ namespace GameAssets
             }
         }
 
-        public void CreateWorldView()
+        private void CreateWorldView()
         {
             TransformUtils.RemoveChildObjects(transform);
 

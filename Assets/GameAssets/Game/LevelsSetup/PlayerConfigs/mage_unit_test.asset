@@ -22,10 +22,10 @@ MonoBehaviour:
     <MaxActionPoints>k__BackingField: 99
     <ShootDamage>k__BackingField: 2
     <ShootRange>k__BackingField: 4
-    <GrenadeRange>k__BackingField: 5
     <MeleeRange>k__BackingField: 1
     <MeleeDamage>k__BackingField: 3
     <InteractRange>k__BackingField: 1
+    <AreaAttackRange>k__BackingField: 3
     <GrenadeDamage>k__BackingField: 5
     <ExplosionRange>k__BackingField: 1
     <Actions>k__BackingField: 0000000001000000020000000600000004000000

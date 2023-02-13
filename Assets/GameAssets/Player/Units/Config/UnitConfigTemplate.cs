@@ -30,12 +30,13 @@ namespace GameAssets
             uint maxActionPoints = 0,
             int shootDamage = 0,
             int shootRange = 0,
-            int grenadeRange = 0,
+            int areaAttackRange = 0,
             int meleeRange = 0,
             int initialHealth = 0,
             int interactRange = 0,
             int meleeDamage = 0,
-            int movementSpeed = 0
+            int movementSpeed = 0,
+            int explosionRange = 0
         )
         {
             Portrait = portrait;
@@ -44,12 +45,13 @@ namespace GameAssets
             MaxActionPoints = maxActionPoints;
             ShootDamage = shootDamage;
             ShootRange = shootRange;
-            GrenadeRange = grenadeRange;
+            AreaAttackRange = areaAttackRange;
             MeleeRange = meleeRange;
             InitialHealth = initialHealth;
             InteractRange = interactRange;
             MeleeDamage = meleeDamage;
             MovementSpeed = movementSpeed;
+            ExplosionRange = explosionRange;
         }
 
         [field: SerializeField] public Sprite Portrait { get; private set; }
@@ -60,10 +62,10 @@ namespace GameAssets
         [field: SerializeField] public uint MaxActionPoints { get; private set; }
         [field: SerializeField] public int ShootDamage { get; private set; }
         [field: SerializeField] public int ShootRange { get; private set; }
-        [field: SerializeField] public int GrenadeRange { get; private set; }
         [field: SerializeField] public int MeleeRange { get; private set; }
         [field: SerializeField] public int MeleeDamage { get; private set; }
         [field: SerializeField] public int InteractRange { get; private set; }
+        [field: SerializeField] public int AreaAttackRange { get; private set; }
         [field: SerializeField] public int GrenadeDamage { get; private set; }
         [field: SerializeField] public int ExplosionRange { get; private set; }
         [field: SerializeField] public List<UnitActionsEnum> Actions { get; private set; }

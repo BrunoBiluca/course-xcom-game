@@ -15,7 +15,10 @@ namespace GameAssets.Tests
 
         public List<CharacterUnitMock> Units = new();
 
-        public UnitWorldGridManagerFakeBuilder WithUnit(UnitFactions faction, Vector3 position)
+        public int GridWidth { get; set; } = 3;
+        public int GridDepth { get; set; } = 3;
+
+        public UnitWorldGridManagerFakeBuilder AddUnit(UnitFactions faction, Vector3 position)
         {
             units.Add(new CharacterUnitMock()
                 .WithPosition(position)
@@ -41,8 +44,8 @@ namespace GameAssets.Tests
         public UnitWorldGridManagerFakeBuilder FilledWithUnits()
         {
             Units = new();
-            for(int x = 0; x < 3; x++)
-                for(int z = 0; z < 3; z++)
+            for(int x = 0; x < GridWidth; x++)
+                for(int z = 0; z < GridDepth; z++)
                 {
                     var mock = new CharacterUnitMock().WithPosition(new Vector3(x, 0, z));
                     Units.Add(mock);
@@ -55,7 +58,11 @@ namespace GameAssets.Tests
         protected override IUnitWorldGridManager OnBuild()
         {
             var worldGrid = new GameObject("unit_world_grid").AddComponent<UnitWorldGridXZ>();
-            worldGrid.Setup(new GridXZConfig() { Width = 3, Depth = 3, CellSize = 1 });
+            worldGrid.Setup(new GridXZConfig() {
+                Width = GridWidth,
+                Depth = GridDepth,
+                CellSize = 1
+            });
 
             var gridManager = new UnitWorldGridManager(
                 worldGrid,

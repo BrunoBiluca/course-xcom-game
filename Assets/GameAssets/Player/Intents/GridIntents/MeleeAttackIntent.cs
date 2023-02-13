@@ -1,19 +1,19 @@
-﻿using UnityFoundation.CharacterSystem.ActorSystem;
+﻿using UnityEngine;
+using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
-using UnityFoundation.HealthSystem;
 using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
     public class MeleeAttackIntent : IGridIntent, IContainerProvide
     {
-        private readonly ICharacterSelector selector;
         private readonly IUnitWorldGridManager gridManager;
         private readonly IWorldCursor worldCursor;
+        private readonly ICharacterUnit character;
 
         public int ActionPointsCost { get; set; }
-
         public bool ExecuteImmediatly => false;
+        public GridIntentType IntentType => GridIntentType.Attack;
 
         public IDependencyContainer Container { private get; set; }
 
@@ -25,36 +25,36 @@ namespace GameAssets
         )
         {
             ActionPointsCost = actionsConfig.GetCost(UnitActionsEnum.MELEE);
-            this.selector = selector;
             this.gridManager = gridManager;
             this.worldCursor = worldCursor;
+
+            character = selector.CurrentUnit;
         }
 
         public IAction Create()
         {
             var cellValue = gridManager.Grid.GetValue(worldCursor.WorldPosition.Get());
             var targetUnit = cellValue.Units[0] as IDamageableUnit;
-            return Container.Resolve<MeleeAttackAction>(selector.CurrentUnit, targetUnit);
+            return Container.Resolve<MeleeAttackAction>(character, targetUnit);
         }
 
-        public void GridValidation()
+        public GridValidator AffectedValidation(
+            GridValidator validator, Vector3 position
+        )
         {
-            gridManager
-                .Validator()
-                .WithRange(
-                    selector.CurrentUnit.Transform.Position,
-                    selector.CurrentUnit.UnitConfig.MeleeRange
-                )
-                .WhereUnit((unit) => {
-                    if(unit is not IDamageableUnit target)
-                        return false;
+            return validator
+                .WhereCell(position)
+                .WhereCanDamageUnit(character.Damageable.Layer);
+        }
 
-                    return DamageableLayerManager.I
-                        .LayerCanDamage(
-                            selector.CurrentUnit.Damageable.Layer,
-                            target.Damageable.Layer
-                        );
-                }).Apply(UnitWorldGridManager.GridState.Attack);
+        public GridValidator AvaiableValidation(GridValidator validator)
+        {
+            return validator
+                .WithRange(
+                    character.Transform.Position,
+                    character.UnitConfig.MeleeRange
+                )
+                .WhereCanDamageUnit(character.Damageable.Layer);
         }
     }
 }

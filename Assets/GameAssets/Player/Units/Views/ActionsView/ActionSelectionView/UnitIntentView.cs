@@ -6,15 +6,15 @@ using UnityFoundation.Code;
 
 namespace GameAssets
 {
-    public class UnitActionSelector : MonoBehaviour
+    public class UnitIntentView : MonoBehaviour
     {
-        private UnitActionsView selector;
+        private UnitIntentsView selector;
         public UnitActionsEnum Action { get; private set; }
 
-        public void Setup(UnitActionsView selector, UnitActionsEnum action)
+        public void Setup(UnitIntentsView selector, UnitActionsEnum action)
         {
             this.selector = selector;
-            this.Action = action;
+            Action = action;
 
             Create();
         }
