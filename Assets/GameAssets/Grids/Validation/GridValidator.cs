@@ -85,17 +85,6 @@ namespace GameAssets
             return this;
         }
 
-        public void Apply()
-        {
-            Apply(GridIntentType.Movement);
-        }
-
-        public void Apply(GridIntentType state)
-        {
-            gridManager.State = state;
-            //gridManager.ApplyValidator(gridValidations.ToArray());
-        }
-
         public IGridValidation<UnitValue>[] Build()
         {
             return gridValidations.ToArray();

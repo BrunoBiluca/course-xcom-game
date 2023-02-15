@@ -3,14 +3,14 @@ using UnityFoundation.Code;
 
 namespace GameAssets
 {
-    public class PlayerInputsView : MonoBehaviour, IDependencySetup<ICharacterSelector>
+    public class PlayerInputsView: BaseView, IDependencySetup<ICharacterSelector>
     {
         private ICharacterSelector selector;
 
         private GameObject selectedUnitInput;
         private GameObject unselectedUnitInput;
 
-        public void Awake()
+        protected override void OnAwake()
         {
             selectedUnitInput = transform.FindTransform("select_unit_input").gameObject;
             unselectedUnitInput = transform.FindTransform("unselect_unit_input").gameObject;
@@ -19,6 +19,11 @@ namespace GameAssets
         public void Setup(ICharacterSelector selector)
         {
             this.selector = selector;
+        }
+
+        protected override void OnFirstShow()
+        {
+            Display();
         }
 
         public void Display()

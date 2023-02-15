@@ -34,45 +34,25 @@ namespace GameAssets
             Container = binder.Container;
             Container.RegisterAction<IBilucaLoggable>(b => b.Logger = UnityDebug.I);
 
-            var turnSystemView = FindObjectOfType<TurnSystemView>();
+            var turnSystemView = Container.Resolve<TurnSystemView>();
             turnSystemView.Setup(Container.Resolve<ITurnSystem>());
-
-            var unitActionVisibility = FindObjectOfType<VisibilityHandlerSingleton>();
-            unitActionVisibility.Add(Container.Resolve<PlayerInputsView>().gameObject.Decorate());
-            unitActionVisibility.Add(turnSystemView.gameObject.Decorate());
-            unitActionVisibility.Add(Container.Resolve<UnitsView>().gameObject.Decorate());
-            unitActionVisibility.Add(Container.Resolve<UnitIntentsView>().gameObject.Decorate());
-            unitActionVisibility.Add(Container.Resolve<ActionPointsView>().gameObject.Decorate());
-
-            var unitSelectVisibility = new VisibilityHandler();
-            unitSelectVisibility.Add(Container.Resolve<UnitIntentsView>().gameObject.Decorate());
-            unitSelectVisibility.Add(Container.Resolve<ActionPointsView>().gameObject.Decorate());
-            unitSelectVisibility.Hide();
 
             var gridManager = Container.Resolve<UnitWorldGridManager>();
             // Events
             var unitSelection = Container.Resolve<UnitSelectionMono>();
-            unitSelection.OnUnitUnselected += () => gridManager.ResetValidation();
-            unitSelection.OnUnitSelected += unitSelectVisibility.Show;
-            unitSelection.OnUnitUnselected += unitSelectVisibility.Hide;
-
-            // Add units
-            foreach(var unit in FindObjectsOfType<MonoBehaviour>().OfType<IUnit>())
-            {
-                gridManager.Add(unit);
-            }
 
             Container.Resolve<ITurnSystem>()
                 .OnPlayerTurnEnded += () => unitSelection.UnselectUnit();
 
             OnInstallerFinish?.Invoke();
 
+            Container.Resolve<ViewsManager>().Init();
             Container.Resolve<IWorldCursor>().Enable();
-            Container.Resolve<WorldGridView>().Display();
+
             Container.Resolve<EnemiesManager>().InstantiateUnits();
             Container.Resolve<UnitsManager>().InstantiateUnits();
-            Container.Resolve<UnitsView>().Display();
-            Container.Resolve<PlayerInputsView>().Display();
+            Container.Resolve<UnitWorldGridManager>().InitUnits();
+
             Container.Resolve<GameManager>().StartGame();
             Debug.Log("Finish GameInstaller");
         }

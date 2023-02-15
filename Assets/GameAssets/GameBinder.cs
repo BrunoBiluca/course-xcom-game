@@ -54,7 +54,7 @@ namespace GameAssets
             binder.Register<IAsyncProcessor>(AsyncProcessor.I);
             binder.Register<ICamera>(new CameraDecorator(Camera.main));
 
-            var cursor = FindObjectOfType<UnitGridWorldCursor>();
+            var cursor = FindObject<UnitGridWorldCursor>();
             binder.Register<IWorldCursor>(cursor);
             binder.Register(cursor);
 
@@ -63,30 +63,31 @@ namespace GameAssets
             binder.Register<IActorSelector<ICharacterUnit>>(unitSelector);
             binder.Register(unitSelector);
 
-            binder.Register(FindObjectOfType<UnitIntentsView>());
-            binder.Register(FindObjectOfType<ActionPointsView>());
-            binder.Register(FindObjectOfType<PlayerInputsView>());
+            binder.Register(FindObject<TurnSystemView>());
+            binder.Register(FindObject<UnitIntentsView>());
+            binder.Register(FindObject<ActionPointsView>());
+            binder.Register(FindObject<PlayerInputsView>());
 
-            binder.Register(FindObjectOfType<UnitsManager>());
-            binder.Register(FindObjectOfType<EnemiesManager>());
+            binder.Register(FindObject<UnitsManager>());
+            binder.Register(FindObject<EnemiesManager>());
 
-            binder.Register(FindObjectOfType<WorldGridView>());
-            binder.Register(FindObjectOfType<UnitsView>());
+            binder.Register(FindObject<WorldGridView>());
+            binder.Register(FindObject<UnitsView>());
 
-            UnitWorldGridXZ grid = FindObjectOfType<UnitWorldGridXZ>();
+            UnitWorldGridXZ grid = FindObject<UnitWorldGridXZ>();
             binder.Register(grid);
             binder.Register(grid.Grid);
 
             binder.Register<IProjectileFactory>(
-                FindObjectOfType<TransformProjectileFactory>(),
+                FindObject<TransformProjectileFactory>(),
                 ProjectileFactories.Shoot
             );
             binder.Register<IProjectileFactory>(
-                FindObjectOfType<GrenadeProjectileFactory>(),
+                FindObject<GrenadeProjectileFactory>(),
                 ProjectileFactories.Grenade
             );
             binder.Register<IProjectileFactory>(
-                FindObjectOfType<MeteorProjectileFactory>(),
+                FindObject<MeteorProjectileFactory>(),
                 ProjectileFactories.Meteor
             );
 
@@ -98,12 +99,18 @@ namespace GameAssets
 
             binder.RegisterSingleton<IUnitWorldGridManager, UnitWorldGridManager>();
 
+            binder.Register(ViewsManager.I);
             binder.Register(UnityDebug.I);
 
             Container = binder.Build();
 
             Debug.Log("Finish GameBinder");
             OnBinderFinish?.Invoke();
+        }
+
+        private T FindObject<T>() where T : UnityEngine.Object
+        {
+            return FindObjectOfType<T>(includeInactive: true);
         }
     }
 }

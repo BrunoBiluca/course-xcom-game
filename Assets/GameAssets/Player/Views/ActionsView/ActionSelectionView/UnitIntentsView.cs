@@ -7,7 +7,7 @@ using UnityFoundation.Code.DebugHelper;
 namespace GameAssets
 {
     public class UnitIntentsView
-        : MonoBehaviour,
+        : BaseView,
         IBilucaLoggable,
         IDependencySetup<ICharacterSelector, IGridIntentSelector, UnitIntentsFactory>
     {
@@ -21,7 +21,7 @@ namespace GameAssets
 
         public IBilucaLogger Logger { get; set; }
 
-        public void Awake()
+        protected override void OnAwake()
         {
             InstantiateButtons();
         }

@@ -24,7 +24,7 @@ namespace GameAssets
             if(unit.RightShoulder != null)
             {
                 action.OnFinishAction += HideActionCamera;
-                VisibilityHandlerSingleton.I.Hide();
+                ViewsManager.I.AllViewsHide();
                 CameraManager.I.ShowActionCamera(unit.RightShoulder.Position, target);
                 AsyncProcessor.I.ProcessAsync(callback, 1f);
                 return;
@@ -36,7 +36,7 @@ namespace GameAssets
         {
             action.OnFinishAction -= HideActionCamera;
             CameraManager.I.HideActionCamera(1f);
-            VisibilityHandlerSingleton.I.Show();
+            ViewsManager.I.AllViewsShow();
         }
     }
 }

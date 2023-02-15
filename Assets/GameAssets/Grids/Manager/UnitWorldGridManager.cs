@@ -1,34 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
+using Object = UnityEngine.Object;
 
 namespace GameAssets
 {
-
-    public enum GridIntentType
-    {
-        Movement,
-        Attack,
-        Interact,
-        None
-    }
-
     // TODO: essa classe deve ser severamente refatorada
     // separar as responsabilidades de valida??o do gerenciamento do grid
     public class UnitWorldGridManager : WorldGridManager<UnitValue>, IUnitWorldGridManager
     {
         public List<IUnit> Units { get; private set; }
 
-        public GridIntentType State { get; set; }
-
         public UnitWorldGridManager(
             UnitWorldGridXZ worldGrid, IAsyncProcessor updateProcessor)
             : base(worldGrid.Grid)
         {
             Units = new List<IUnit>();
-            State = GridIntentType.None;
 
             updateProcessor.ExecuteEveryFrame(Update);
         }
@@ -94,12 +84,6 @@ namespace GameAssets
             return units;
         }
 
-        public override void ResetValidation()
-        {
-            base.ResetValidation();
-            State = GridIntentType.None;
-        }
-
         public IEnumerable<Vector3> GetAllAvailableCellsPositions()
         {
             foreach(var c in GetAllAvailableCells())
@@ -108,15 +92,27 @@ namespace GameAssets
             }
         }
 
-        public void GetAllAvailableCells(IGridValidation<UnitValue>[] gridValidations)
-        {
-        }
-
         public override IEnumerable<GridCellXZ<UnitValue>> GetCells(
             IGridValidation<UnitValue>[] validations
         )
         {
             return base.GetCells(validations);
+        }
+
+        public IEnumerable<Vector3> GetCellsPositions(IGridValidation<UnitValue>[] validations)
+        {
+            foreach(var c in base.GetCells(validations))
+            {
+                yield return new Vector3(c.Position.X, 0, c.Position.Z) * Grid.CellSize;
+            }
+        }
+
+        public void InitUnits()
+        {
+            foreach(var unit in Object.FindObjectsOfType<MonoBehaviour>().OfType<IUnit>())
+            {
+                Add(unit);
+            }
         }
     }
 }

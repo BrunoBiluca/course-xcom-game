@@ -7,7 +7,7 @@ using UnityFoundation.WorldCursors;
 namespace GameAssets
 {
     public class WorldGridView
-        : BilucaMono
+        : BaseView
         , IDependencySetup<IGridIntentQuery, IUnitWorldGridManager, IWorldCursor>
     {
         [SerializeField] private GameObject cellPrefab;
@@ -25,6 +25,11 @@ namespace GameAssets
             this.gridIntentQuery = gridIntentQuery;
             this.gridManager = gridManager;
             this.worldCursor = worldCursor;
+        }
+
+        protected override void OnFirstShow()
+        {
+            Display();
         }
 
         public void Display()

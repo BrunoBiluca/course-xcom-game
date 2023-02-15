@@ -9,13 +9,13 @@ using UnityFoundation.Code.DebugHelper;
 namespace GameAssets
 {
     public class ActionPointsView
-        : MonoBehaviour
+        : BaseView
         , IDependencySetup<IActorSelector<IAPActor>>
     {
         private IActorSelector<IAPActor> actorSelector;
         private TextMeshProUGUI text;
 
-        public void Awake()
+        protected override void OnAwake()
         {
             text = transform.FindComponent<TextMeshProUGUI>("text");
         }

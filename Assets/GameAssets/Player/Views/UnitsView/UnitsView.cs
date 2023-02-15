@@ -7,7 +7,7 @@ using UnityFoundation.UI.Components;
 
 namespace GameAssets
 {
-    public class UnitsView : MonoBehaviour, IDependencySetup<UnitsManager>
+    public class UnitsView : BaseView, IDependencySetup<UnitsManager>
     {
         [SerializeField] private Transform unitsViewHolder;
         [SerializeField] private GameObject unitViewPrefab;
@@ -16,6 +16,11 @@ namespace GameAssets
         public void Setup(UnitsManager unitsManager)
         {
             this.unitsManager = unitsManager;
+        }
+
+        protected override void OnFirstShow()
+        {
+            Display();
         }
 
         public void Display()

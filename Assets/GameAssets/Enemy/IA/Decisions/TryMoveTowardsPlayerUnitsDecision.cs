@@ -47,24 +47,22 @@ namespace GameAssets
 
         private bool TryEvalMovePosition(Vector3 characterPos, out Vector3 movePosition)
         {
-            gridManager
+            var validations = gridManager
                 .Validator()
-                .WithRange(
-                    unit.Transform.Position, unit.UnitConfig.MovementRange
-                )
                 .WhereIsEmpty()
-                .Apply();
+                .WithRange(unit.Transform.Position, unit.UnitConfig.MovementRange)
+                .Build();
 
             movePosition = default;
             var maxDistance = 0f;
-            foreach(var cPos in gridManager.GetAllAvailableCellsPositions())
+            foreach(var centerPosition in gridManager.GetCellsPositions(validations))
             {
-                var distance = Vector3.Distance(unit.Transform.Position, cPos);
+                var distance = Vector3.Distance(unit.Transform.Position, centerPosition);
 
                 if(distance > maxDistance)
                 {
                     maxDistance = distance;
-                    movePosition = cPos;
+                    movePosition = centerPosition;
                 }
             }
 
