@@ -15,10 +15,23 @@ namespace GameAssets
         }
         protected override bool OnDecide(EnemyBrainContext context)
         {
-            var characterPos = Vector3.zero;
+            if(!TryFindClosestCharacter(out Vector3 characterPos))
+                return false;
+
+            Debug.Log("Try to move to character on: " + characterPos);
+
+            if(!TryEvalMovePosition(characterPos, out Vector3 movePosition))
+                return false;
+
+            context.TargetPosition = movePosition;
+            return true;
+        }
+
+        private bool TryFindClosestCharacter(out Vector3 characterPos)
+        {
+            characterPos = default;
             var minDistance = float.MaxValue;
 
-            // TODO: deve ser adicionado ao gridManager (como se fosse uma query)
             foreach(var gridUnit in gridManager.Units)
             {
                 if(gridUnit.Faction != UnitFactions.Player)
@@ -38,10 +51,6 @@ namespace GameAssets
             if(minDistance == float.MaxValue)
                 return false;
 
-            if(!TryEvalMovePosition(characterPos, out Vector3 movePosition))
-                return false;
-
-            context.TargetPosition = movePosition;
             return true;
         }
 
@@ -54,19 +63,21 @@ namespace GameAssets
                 .Build();
 
             movePosition = default;
-            var maxDistance = 0f;
+            var minDistance = float.MaxValue;
             foreach(var centerPosition in gridManager.GetCellsPositions(validations))
             {
-                var distance = Vector3.Distance(unit.Transform.Position, centerPosition);
+                var distance = Vector3.Distance(characterPos, centerPosition);
 
-                if(distance > maxDistance)
+                Debug.Log(centerPosition + ": " + distance);
+
+                if(distance < minDistance)
                 {
-                    maxDistance = distance;
+                    minDistance = distance;
                     movePosition = centerPosition;
                 }
             }
 
-            return maxDistance > 0;
+            return minDistance < float.MaxValue;
         }
     }
 }

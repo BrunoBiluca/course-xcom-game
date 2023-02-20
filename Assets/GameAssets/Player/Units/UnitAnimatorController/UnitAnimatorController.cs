@@ -1,14 +1,9 @@
 using System;
 using UnityEngine;
-using UnityFoundation.Code.Extensions;
 using UnityFoundation.Code.UnityAdapter;
 
 namespace GameAssets
 {
-    public interface ICharacterAnimatorController : IAnimatorController<UnitAnimationEvents>
-    {
-    }
-
     public class UnitAnimatorController : BilucaMono, ICharacterAnimatorController
     {
         private IAnimator animator;

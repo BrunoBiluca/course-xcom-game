@@ -13,6 +13,7 @@ namespace GameAssets
 {
     public class EnemyUnit : BilucaMono, IAIUnit
     {
+        [SerializeField] private UnitConfigTemplate unitConfigTemplate;
         [SerializeField] private GameObject ragdoll;
 
         [SerializeField] private Transform root;
@@ -44,21 +45,19 @@ namespace GameAssets
 
         private EnemyBrain brain;
 
+        protected override void OnAwake()
+        {
+            if(unitConfigTemplate != null)
+                UnitConfig = unitConfigTemplate.UnitConfig;
+        }
+
         public void Setup(
-            UnitConfig unitConfigTemplate,
             UnitWorldGridManager gridManager,
             IEnemyActionIntentFactory intentFactory
         )
         {
-            UnitConfig = unitConfigTemplate;
+            brain = new EnemyBrain(this, intentFactory, gridManager);
 
-            brain = new EnemyBrain(this, intentFactory, gridManager) { Logger = Logger };
-
-            OnSetup();
-        }
-
-        private void OnSetup()
-        {
             Actor = new APActor(new FiniteResourceManager(UnitConfig.MaxActionPoints, true));
 
             ProjectileStart = projectileStart.transform.Decorate();
@@ -80,6 +79,12 @@ namespace GameAssets
 
         private void DieHandler()
         {
+            if(ragdoll == null)
+            {
+                AnimatorController.PlayCallback(a => a.SetTrigger("died"));
+                return;
+            }
+
             var ragdollHandler = Instantiate(ragdoll, transform.position, transform.rotation)
                 .GetComponent<RagdollHandler>();
 

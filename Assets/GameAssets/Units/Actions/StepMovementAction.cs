@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
-using UnityFoundation.Code.Algorithms;
 using UnityFoundation.Code.DebugHelper;
 using UnityFoundation.Code.Grid;
-using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
@@ -21,7 +22,7 @@ namespace GameAssets
         private IEnemyActionIntentFactory enemyActionIntentFactory;
         private ITurnSystem turnSystem;
 
-        private List<EnemyUnit> enemies;
+        private List<EnemyUnit> enemies = new();
 
         public int CurrentEnemiesCount => enemies.Count;
         public event Action OnEnemiesDied;
@@ -68,6 +69,15 @@ namespace GameAssets
 
         public void SetupEnemies()
         {
+            foreach(var enemy in gridManager.Units.OfType<EnemyUnit>())
+            {
+                enemy.Setup(gridManager, enemyActionIntentFactory);
+                enemies.Add(enemy);
+            }
+        }
+
+        public void InstantiateEnemies()
+        {
             Logger?.LogHighlight("Instantiating enemy units");
             enemies = new List<EnemyUnit>();
             var count = 1;
@@ -77,7 +87,6 @@ namespace GameAssets
                 newEnemy.Transform.Name = "Enemy " + count++;
                 newEnemy.Logger = Logger;
                 newEnemy.Setup(
-                    enemy.UnitTemplate.UnitConfig,
                     gridManager,
                     enemyActionIntentFactory
                 );
@@ -104,6 +113,7 @@ namespace GameAssets
         public void InstantiateUnits()
         {
             turnSystem.OnEnemyTurnStarted += EnemyStartTurn;
+            //InstantiateEnemies();
             SetupEnemies();
         }
     }
