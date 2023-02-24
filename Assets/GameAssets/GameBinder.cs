@@ -11,13 +11,6 @@ using UnityFoundation.WorldCursors;
 
 namespace GameAssets
 {
-    public enum ProjectileFactories
-    {
-        Shoot,
-        Grenade,
-        Meteor
-    }
-
     public class GameBinder : MonoBehaviour
     {
         public event Action OnBinderFinish;
@@ -89,6 +82,10 @@ namespace GameAssets
             binder.Register<IProjectileFactory>(
                 FindObject<MeteorProjectileFactory>(),
                 ProjectileFactories.Meteor
+            );
+            binder.Register<IProjectileFactory>(
+                FindObject<ProjectileByTimeFactory>(),
+                ProjectileFactories.WerewolfShot
             );
 
             binder.RegisterSingleton<ITurnSystem, TurnSystem>();

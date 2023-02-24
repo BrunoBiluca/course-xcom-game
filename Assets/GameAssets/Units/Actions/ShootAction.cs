@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
 using UnityFoundation.Code.DebugHelper;
-using static UnityEngine.UI.CanvasScaler;
 
 namespace GameAssets
 {

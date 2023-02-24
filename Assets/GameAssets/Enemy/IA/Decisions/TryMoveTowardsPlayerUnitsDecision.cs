@@ -68,8 +68,6 @@ namespace GameAssets
             {
                 var distance = Vector3.Distance(characterPos, centerPosition);
 
-                Debug.Log(centerPosition + ": " + distance);
-
                 if(distance < minDistance)
                 {
                     minDistance = distance;

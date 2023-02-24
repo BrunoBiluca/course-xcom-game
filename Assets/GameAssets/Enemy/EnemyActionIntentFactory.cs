@@ -20,8 +20,12 @@ public class EnemyActionIntentFactory : IEnemyActionIntentFactory, IContainerPro
 
     public IAPIntent IntentShoot(ICharacterUnit unit, Vector3 position)
     {
-        var projectileFactory = Container.Resolve<IProjectileFactory>(ProjectileFactories.Shoot);
-        return new EnemyShootIntent(unit, position, gridManager, projectileFactory);
+        return new EnemyShootIntent(
+            unit,
+            position,
+            gridManager,
+            Container.Resolve<IProjectileFactory>(ProjectileFactories.WerewolfShot)
+        );
     }
 
     public IAPIntent IntentMove(ICharacterUnit unit, Vector3 position)

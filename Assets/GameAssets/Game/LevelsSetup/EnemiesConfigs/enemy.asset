@@ -17,13 +17,17 @@ MonoBehaviour:
     <Name>k__BackingField: Enemy
     <InitialHealth>k__BackingField: 6
     <MovementRange>k__BackingField: 3
+    <MovementSpeed>k__BackingField: 2
     <MaxActionPoints>k__BackingField: 1
     <ShootDamage>k__BackingField: 1
     <ShootRange>k__BackingField: 4
-    <GrenadeRange>k__BackingField: 0
     <MeleeRange>k__BackingField: 0
     <MeleeDamage>k__BackingField: 0
     <InteractRange>k__BackingField: 0
+    <AreaAttackRange>k__BackingField: 0
+    <GrenadeDamage>k__BackingField: 0
+    <ExplosionRange>k__BackingField: 0
+    <Actions>k__BackingField: 
   <SoundEffects>k__BackingField:
     <Melee>k__BackingField: {fileID: 8300000, guid: fed2b464c01fea24885a85755ffdd30b,
       type: 3}

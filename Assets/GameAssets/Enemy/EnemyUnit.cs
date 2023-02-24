@@ -72,7 +72,7 @@ namespace GameAssets
             healthController.AddHealthBar(transform.FindComponent<IHealthBar>("health_bar"));
 
             TransformNav = new TransformNavegationAgent(Transform) {
-                Speed = 10f,
+                Speed = unitConfigTemplate.UnitConfig.MovementSpeed,
                 StoppingDistance = 0.1f
             };
         }

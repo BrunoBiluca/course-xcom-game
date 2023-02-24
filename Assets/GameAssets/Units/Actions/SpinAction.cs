@@ -33,9 +33,9 @@ namespace GameAssets
 
             var initialAngle = transform.Rotation.eulerAngles.y;
             unitRotation = new LerpAngle(initialAngle) {
-                CheckMinPath = false
+                CheckMinPath = false,
+                InterpolationSpeed = 300f
             }
-                .SetInterpolationSpeed(300)
                 .SetEndValue(initialAngle + 360f);
 
             asyncProcessor.ExecuteEveryFrame(RotateUnit);
