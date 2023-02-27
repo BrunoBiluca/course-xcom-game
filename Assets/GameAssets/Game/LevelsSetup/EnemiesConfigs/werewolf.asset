@@ -20,7 +20,7 @@ MonoBehaviour:
     <MovementSpeed>k__BackingField: 3
     <MaxActionPoints>k__BackingField: 2
     <ShootDamage>k__BackingField: 1
-    <ShootRange>k__BackingField: 4
+    <ShootRange>k__BackingField: 3
     <MeleeRange>k__BackingField: 0
     <MeleeDamage>k__BackingField: 0
     <InteractRange>k__BackingField: 0

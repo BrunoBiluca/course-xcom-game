@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
 using Object = UnityEngine.Object;
@@ -40,6 +41,7 @@ namespace GameAssets
 
             Units.RemoveAll(u => u == null);
             Units.RemoveAll(u => !u.Transform.IsValid);
+            Units.RemoveAll(u => u is ICharacterUnit c && c.HealthSystem.IsDead);
 
             foreach(var transform in Units)
             {

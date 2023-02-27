@@ -7,7 +7,6 @@ using UnityFoundation.HealthSystem;
 using UnityFoundation.Physics3D;
 using UnityFoundation.ResourceManagement;
 using UnityFoundation.SettingsSystem;
-using UnityFoundation.UI.Components;
 
 namespace GameAssets
 {
@@ -66,10 +65,10 @@ namespace GameAssets
 
             HealthSystem = GetComponent<HealthSystemMono>();
             HealthSystem.Setup(UnitConfig.InitialHealth);
-            HealthSystem.OnDied += DieHandler;
 
             var healthController = new HealthSystemController(HealthSystem);
             healthController.AddHealthBar(transform.FindComponent<IHealthBar>("health_bar"));
+            healthController.SetOnDiedCallback(DieHandler);
 
             TransformNav = new TransformNavegationAgent(Transform) {
                 Speed = unitConfigTemplate.UnitConfig.MovementSpeed,

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
-using UnityFoundation.UI.Components;
+using UnityFoundation.HealthSystem;
 
 namespace GameAssets
 {

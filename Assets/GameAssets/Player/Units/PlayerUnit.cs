@@ -5,7 +5,6 @@ using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
 using UnityFoundation.ResourceManagement;
 using UnityFoundation.SettingsSystem;
-using UnityFoundation.UI.Components;
 
 namespace GameAssets
 {

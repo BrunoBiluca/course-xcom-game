@@ -72,6 +72,9 @@ namespace GameAssets
             foreach(var enemy in gridManager.Units.OfType<EnemyUnit>())
             {
                 enemy.Setup(gridManager, enemyActionIntentFactory);
+
+                enemy.HealthSystem.OnDied += () => HandleEnemyDestroyed(enemy);
+
                 enemies.Add(enemy);
             }
         }

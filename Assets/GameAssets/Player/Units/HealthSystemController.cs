@@ -1,6 +1,6 @@
+using System;
 using UnityFoundation.Code;
 using UnityFoundation.HealthSystem;
-using UnityFoundation.UI.Components;
 
 namespace GameAssets
 {
@@ -9,6 +9,7 @@ namespace GameAssets
         private readonly IHealthSystem healthSystem;
         private IHealthBar healthBar;
         private IGameObject diedView;
+        private Action diedCallback;
 
         public HealthSystemController(IHealthSystem healthSystem)
         {
@@ -17,6 +18,11 @@ namespace GameAssets
             healthSystem.OnTakeDamage += Update;
             healthSystem.OnFullyHeal += Update;
             healthSystem.OnDied += DiedHandler;
+        }
+
+        public void SetOnDiedCallback(Action diedHandler)
+        {
+            diedCallback = diedHandler;
         }
 
         public HealthSystemController AddHealthBar(IHealthBar healthBar)
@@ -46,6 +52,8 @@ namespace GameAssets
             {
                 diedView.SetActive(true);
             }
+
+            diedCallback?.Invoke();
         }
     }
 }
