@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityFoundation.Code;
+using UnityFoundation.UI;
 
 namespace GameAssets
 {
@@ -11,10 +12,17 @@ namespace GameAssets
         private UnitIntentsView selector;
         public UnitActionsEnum Action { get; private set; }
 
-        public void Setup(UnitIntentsView selector, UnitActionsEnum action)
+        private string actionDescription;
+
+        public void Setup(
+            UnitIntentsView selector,
+            UnitActionsEnum action,
+            string actionDescription
+        )
         {
             this.selector = selector;
             Action = action;
+            this.actionDescription = actionDescription;
 
             Create();
         }
@@ -25,6 +33,8 @@ namespace GameAssets
 
             var text = transform.FindComponent<TextMeshProUGUI>("text");
             text.text = Action.ToString();
+
+            GetComponent<TextTooltip>().SetContentText(actionDescription);
         }
 
         public void Select()

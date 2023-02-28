@@ -12,6 +12,7 @@ namespace GameAssets
 
         public void Hide()
         {
+            OnHide();
             gameObject.SetActive(false);
         }
 
@@ -37,6 +38,7 @@ namespace GameAssets
 
         protected virtual void OnAwake() { }
         protected virtual void OnShow() { }
+        protected virtual void OnHide() { }
         protected virtual void OnFirstShow() { }
     }
 }

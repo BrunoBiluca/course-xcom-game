@@ -9,51 +9,68 @@ namespace GameAssets
     public class UnitIntentsView
         : BaseView,
         IBilucaLoggable,
-        IDependencySetup<ICharacterSelector, IGridIntentSelector, UnitIntentsFactory>
+        IDependencySetup<ICharacterSelector, IGridIntentSelector, UnitIntentsFactory, ActionsConfig>
     {
         [SerializeField] private GameObject actionSelectorPrefab;
         private UnitActionsEnum? currentAction;
 
         private IGridIntentSelector intentSelector;
+        private ActionsConfig actionsConfig;
         private ICharacterSelector selector;
         private UnitIntentsFactory factory;
-        private List<UnitIntentView> buttons;
+        private List<UnitIntentView> buttons = new();
 
         public IBilucaLogger Logger { get; set; }
 
-        protected override void OnAwake()
+        protected override void OnFirstShow()
         {
             InstantiateButtons();
         }
 
         private void InstantiateButtons()
         {
-            buttons = new List<UnitIntentView>();
             foreach(UnitActionsEnum a in Enum.GetValues(typeof(UnitActionsEnum)))
             {
                 var selector = Instantiate(actionSelectorPrefab, transform)
                     .GetComponent<UnitIntentView>();
 
-                selector.Setup(this, a);
+                var desc = $"(AP: {actionsConfig.GetCost(a)}) - {GetActionDescription(a)}";
+                selector.Setup(this, a, desc);
                 buttons.Add(selector);
             }
+        }
+
+        private string GetActionDescription(UnitActionsEnum action)
+        {
+            return action switch {
+                UnitActionsEnum.MOVE => "Move unit to designated place.",
+                UnitActionsEnum.SPIN => "Turn around, that is it.",
+                UnitActionsEnum.SHOOT => "Shot on enemy unit.",
+                UnitActionsEnum.GRENADE => "Throw grenade to designated place.",
+                UnitActionsEnum.MELEE => "Attack physically an enemy unit",
+                UnitActionsEnum.INTERACT => "Interact with objects",
+                UnitActionsEnum.METEOR => "Redirect a meteor to designated place.",
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public void Setup(
             ICharacterSelector selector,
             IGridIntentSelector intentSelector,
-            UnitIntentsFactory factory
+            UnitIntentsFactory factory,
+            ActionsConfig actionsConfig
         )
         {
             this.factory = factory;
             this.intentSelector = intentSelector;
+            this.actionsConfig = actionsConfig;
 
             this.selector = selector;
-            selector.OnUnitSelected += HandleUnitSelected;
-            intentSelector.OnIntentUnselected += CleanActions;
+            selector.OnUnitSelected += Show;
+            intentSelector.OnIntentUnselected += Hide;
         }
 
-        private void HandleUnitSelected()
+        protected override void OnShow()
         {
             foreach(var b in buttons)
             {
@@ -92,6 +109,8 @@ namespace GameAssets
                 b.SetColorIfActive(actionType, Color.red, Color.white);
             }
         }
+
+        protected override void OnHide() => CleanActions();
 
         private void CleanActions()
         {

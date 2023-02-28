@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3209705afc2ec8b4181cde53ef55e3cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltipPrefab: {fileID: 3210328302560127788, guid: eaa0bc26e47a7c64da0f3c10190206f3,
+  tooltipPrefab: {fileID: 3210328302560127788, guid: 1260dd5d499327e44821e5ebc749b42e,
     type: 3}
   <TooltipTarget>k__BackingField: {fileID: 2222046508944718810}
   tooltipScreenTimer: 0

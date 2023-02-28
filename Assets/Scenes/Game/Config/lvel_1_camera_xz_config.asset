@@ -21,7 +21,7 @@ MonoBehaviour:
     end: 8
   <MoveLimitsZ>k__BackingField:
     start: 0
-    end: 10
+    end: 13
   <EnableEdgeMovement>k__BackingField: 0
   <EdgeOffset>k__BackingField: 10
   <EnableZoom>k__BackingField: 1
