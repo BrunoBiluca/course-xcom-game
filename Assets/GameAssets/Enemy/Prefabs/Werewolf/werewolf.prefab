@@ -34,6 +34,7 @@ Transform:
   - {fileID: 1578523691137790505}
   - {fileID: 8905134669088546845}
   - {fileID: 1750762026778187978}
+  - {fileID: 7403387780803250740}
   - {fileID: 8629921639723974066}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -54,6 +55,7 @@ MonoBehaviour:
   ragdoll: {fileID: 0}
   root: {fileID: 0}
   projectileStart: {fileID: 6101603285911985923}
+  projectileHit: {fileID: 7403387780803250740}
 --- !u!114 &8951495666268825346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +116,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4286383640999972435}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &6677218327042874628
 Light:
@@ -228,6 +230,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4286383640999972435}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6575316703562511669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7403387780803250740}
+  m_Layer: 0
+  m_Name: projectile_hit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7403387780803250740
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6575316703562511669}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.463, z: 0.109}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4286383640999972435}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1526032395100815706
 PrefabInstance:

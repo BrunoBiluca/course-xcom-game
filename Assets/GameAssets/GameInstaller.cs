@@ -46,13 +46,13 @@ namespace GameAssets
 
             OnInstallerFinish?.Invoke();
 
-            Container.Resolve<ViewsManager>().Init();
             Container.Resolve<IWorldCursor>().Enable();
 
             Container.Resolve<UnitWorldGridManager>().InitUnits();
             Container.Resolve<EnemiesManager>().InstantiateUnits();
             Container.Resolve<UnitsManager>().InstantiateUnits();
 
+            Container.Resolve<ViewsManager>().Init();
             Container.Resolve<GameManager>().StartGame();
             Debug.Log("Finish GameInstaller");
         }

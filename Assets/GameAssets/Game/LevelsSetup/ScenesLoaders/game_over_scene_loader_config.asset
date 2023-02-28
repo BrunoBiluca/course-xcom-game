@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96e54d38b5843fa46b651bd22c7bb5e6, type: 3}
-  m_Name: level_1_gameplay
+  m_Name: game_over_scene_loader_config
   m_EditorClassIdentifier: 
   <Config>k__BackingField:
-    <ExecuteOnAwake>k__BackingField: 1
-    <ScenesToLoad>k__BackingField:
+    <ExecuteOnAwake>k__BackingField: 0
+    <ScenesToLoad>k__BackingField: []
+    <ScenesToReload>k__BackingField:
+    - gameplay
     - level_1_scenary
-    <ScenesToReload>k__BackingField: []
     <ScenesToUnLoad>k__BackingField: []

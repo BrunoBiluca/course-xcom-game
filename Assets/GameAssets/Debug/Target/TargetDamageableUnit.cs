@@ -19,6 +19,8 @@ namespace GameAssets
 
         public UnitFactions Faction => UnitFactions.Enemy;
 
+        public ITransform ProjectileHit => Transform;
+
         public void Awake()
         {
             Transform = transform.Decorate();

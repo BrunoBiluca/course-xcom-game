@@ -11,6 +11,7 @@ namespace GameAssets
     public class PlayerUnit : BilucaMono, ICharacterUnit
     {
         [SerializeField] private UnitConfigTemplate unitConfigTemplate;
+        [SerializeField] private Transform projectileHit;
 
         public UnitConfig UnitConfig { get; private set; }
 
@@ -38,6 +39,8 @@ namespace GameAssets
         public ISoundEffectsController SoundEffectsController => soundController;
         public SoundEffects SoundEffects { get; private set; }
 
+        public ITransform ProjectileHit { get; private set; }
+
         public APActor unitActionsManager;
 
         private UnitGridWorldCursor worldCursor;
@@ -52,6 +55,12 @@ namespace GameAssets
             HealthSystem.OnDied += HandleOnDied;
 
             ProjectileStart = projectileStart.transform.Decorate();
+
+            if(projectileHit != null)
+                ProjectileHit = projectileHit.transform.Decorate();
+            else
+                ProjectileHit = Transform;
+            
             RightShoulder = rightShoulderRef.transform.Decorate();
 
             Selectable = new SelectableObject(this);

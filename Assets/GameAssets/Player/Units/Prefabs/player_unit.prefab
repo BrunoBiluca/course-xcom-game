@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitConfigTemplate: {fileID: 0}
+  projectileHit: {fileID: 0}
   projectileStart: {fileID: 0}
   rightShoulderRef: {fileID: 3055935281781606448}
 --- !u!114 &3334379358309684529

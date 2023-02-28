@@ -19,6 +19,7 @@ namespace GameAssets
     {
         [field: SerializeField] public bool ExecuteOnAwake { get; private set; }
         [field: SerializeField] public List<string> ScenesToLoad { get; private set; }
+        [field: SerializeField] public List<string> ScenesToReload { get; private set; }
         [field: SerializeField] public List<string> ScenesToUnLoad { get; private set; }
     }
 }

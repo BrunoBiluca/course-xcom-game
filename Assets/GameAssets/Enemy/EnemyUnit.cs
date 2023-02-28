@@ -17,6 +17,7 @@ namespace GameAssets
 
         [SerializeField] private Transform root;
         [SerializeField] private GameObject projectileStart;
+        [SerializeField] private Transform projectileHit;
 
         public string Name => Transform.Name;
 
@@ -42,6 +43,8 @@ namespace GameAssets
 
         public SoundEffects SoundEffects => throw new System.NotImplementedException();
 
+        public ITransform ProjectileHit { get; private set; }
+
         private EnemyBrain brain;
 
         protected override void OnAwake()
@@ -60,6 +63,11 @@ namespace GameAssets
             Actor = new APActor(new FiniteResourceManager(UnitConfig.MaxActionPoints, true));
 
             ProjectileStart = projectileStart.transform.Decorate();
+            if(projectileHit != null)
+                ProjectileHit = projectileHit.transform.Decorate();
+            else
+                ProjectileHit = Transform;
+
 
             AnimatorController = GetComponent<UnitAnimatorController>();
 

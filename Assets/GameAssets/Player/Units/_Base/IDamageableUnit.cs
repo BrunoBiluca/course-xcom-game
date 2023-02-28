@@ -1,4 +1,5 @@
-﻿using UnityFoundation.HealthSystem;
+﻿using UnityFoundation.Code.UnityAdapter;
+using UnityFoundation.HealthSystem;
 
 namespace GameAssets
 {
@@ -6,5 +7,6 @@ namespace GameAssets
     {
         IDamageable Damageable { get; }
         IHealthSystem HealthSystem { get; }
+        ITransform ProjectileHit { get; }
     }
 }

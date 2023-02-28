@@ -72,7 +72,7 @@ namespace GameAssets
 
             var proj = projectileFactory.Create(
                 unit.ProjectileStart.Position,
-                targetUnit.Transform.Position
+                targetUnit.ProjectileHit.Position
             );
 
             proj.OnReachTarget += HandleProjectileReachTarget;

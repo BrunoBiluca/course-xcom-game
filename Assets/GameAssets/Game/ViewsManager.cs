@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
@@ -47,11 +45,13 @@ namespace GameAssets
 
         public void AllViewsHide()
         {
+            Debug.Log("hide all views");
             allViews.Hide();
         }
 
         public void AllViewsShow()
         {
+            Debug.Log("show all views");
             allViews.Show();
         }
 

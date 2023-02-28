@@ -20,10 +20,10 @@ namespace GameAssets
 
         protected override void OnFirstShow()
         {
-            Display();
+            InstantiateUnitsView();
         }
 
-        public void Display()
+        public void InstantiateUnitsView()
         {
             gameObject.SetActive(true);
             foreach(var unit in unitsManager.GetAllUnits())

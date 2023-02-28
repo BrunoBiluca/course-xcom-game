@@ -7,7 +7,7 @@ namespace GameAssets
 {
     public class GameManager
         : Singleton<GameManager>
-        , IDependencySetup<UnitsManager, EnemiesManager>
+        , IDependencySetup<UnitsManager, EnemiesManager, ICharacterSelector>
     {
         [SerializeField] private GameOverMenu gameOverMenu;
         public event Action OnPlayerWon;
@@ -15,14 +15,17 @@ namespace GameAssets
 
         private UnitsManager unitsManager;
         private EnemiesManager enemiesManager;
+        private ICharacterSelector characterSelector;
 
         public void Setup(
             UnitsManager unitsManager,
-            EnemiesManager enemiesManager
+            EnemiesManager enemiesManager,
+            ICharacterSelector characterSelector
         )
         {
             this.unitsManager = unitsManager;
             this.enemiesManager = enemiesManager;
+            this.characterSelector = characterSelector;
         }
 
         public void StartGame()
@@ -33,14 +36,22 @@ namespace GameAssets
 
         private void FinishWithWinnerPlayer()
         {
-            OnPlayerWon?.Invoke();
-            gameOverMenu.Show("Jogador ganhou");
+            AsyncProcessor.I.ExecuteWithDelay(2f, () => {
+                characterSelector.UnselectUnit();
+                ViewsManager.I.AllViewsHide();
+                OnPlayerWon?.Invoke();
+                gameOverMenu.Show("Jogador ganhou");
+            });
         }
 
         private void FinishWithLoserPlayer()
         {
-            OnPlayerLost?.Invoke();
-            gameOverMenu.Show("Jogador perdeu");
+            AsyncProcessor.I.ExecuteWithDelay(2f, () => {
+                characterSelector.UnselectUnit();
+                ViewsManager.I.AllViewsHide();
+                OnPlayerLost?.Invoke();
+                gameOverMenu.Show("Jogador perdeu");
+            });
         }
     }
 }

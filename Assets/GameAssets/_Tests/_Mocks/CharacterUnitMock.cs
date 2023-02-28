@@ -10,7 +10,7 @@ namespace GameAssets.Tests
 {
     public class CharacterUnitMock : MockBuilder<ICharacterUnit>
     {
-        public Mock<IDamageable> Damageable { get; private set; }
+        public Mock<IHealthSystem> Damageable { get; private set; }
         public Mock<ICharacterAnimatorController> AnimatorController { get; private set; }
 
         public bool WasDamaged { get; private set; } = false;
@@ -50,7 +50,7 @@ namespace GameAssets.Tests
 
         protected override Mock<ICharacterUnit> OnBuild()
         {
-            Damageable ??= new Mock<IDamageable>();
+            Damageable ??= new Mock<IHealthSystem>();
             Damageable
                 .Setup(d => d.Damage(It.IsAny<float>(), null))
                 .Callback(() => WasDamaged = true);
@@ -65,6 +65,7 @@ namespace GameAssets.Tests
 
             unit.Setup(u => u.IsBlockable).Returns(true);
             unit.Setup(u => u.Damageable).Returns(Damageable.Object);
+            unit.Setup(u => u.HealthSystem).Returns(Damageable.Object);
             unit.Setup((u) => u.Transform.Position).Returns(startPosition);
             unit.Setup((u) => u.Transform.IsValid).Returns(true);
 
