@@ -12,6 +12,7 @@ namespace GameAssets
     {
         [SerializeField] private UnitConfigTemplate unitConfigTemplate;
         [SerializeField] private Transform projectileHit;
+        [SerializeField] private Transform projectileHitHigher;
 
         public UnitConfig UnitConfig { get; private set; }
 
@@ -60,7 +61,7 @@ namespace GameAssets
                 ProjectileHit = projectileHit.transform.Decorate();
             else
                 ProjectileHit = Transform;
-            
+
             RightShoulder = rightShoulderRef.transform.Decorate();
 
             Selectable = new SelectableObject(this);
@@ -75,6 +76,7 @@ namespace GameAssets
         public void Start()
         {
             var healthController = new HealthSystemController(HealthSystem);
+            healthController.SetPopupTransform(projectileHitHigher.Decorate());
             healthController.AddHealthBar(transform.FindComponent<IHealthBar>("health_bar"));
 
             GetComponent<SelectionMarkMono>().Setup(Selectable);

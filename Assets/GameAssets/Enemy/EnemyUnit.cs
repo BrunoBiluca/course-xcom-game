@@ -76,6 +76,7 @@ namespace GameAssets
 
             var healthController = new HealthSystemController(HealthSystem);
             healthController.AddHealthBar(transform.FindComponent<IHealthBar>("health_bar"));
+            healthController.SetPopupTransform(ProjectileHit);
             healthController.SetOnDiedCallback(DieHandler);
 
             TransformNav = new TransformNavegationAgent(Transform) {

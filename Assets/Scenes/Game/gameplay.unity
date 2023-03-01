@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 69300425}
   - component: {fileID: 69300426}
   - component: {fileID: 69300427}
+  - component: {fileID: 69300428}
   m_Layer: 0
   m_Name: managers
   m_TagString: Untagged
@@ -325,6 +326,20 @@ MonoBehaviour:
   explosionPrefab: {fileID: 0}
   projectileSpeed: 0
   timeToReachTarget: 0.5
+--- !u!114 &69300428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 69300413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3973adb332a11924bb1cf731dd7d35ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DamagePopupPrefab>k__BackingField: {fileID: 5707957992725587181, guid: e4cd9ee514d2e6d4facbeb835bcd377c,
+    type: 3}
 --- !u!1 &83674401
 GameObject:
   m_ObjectHideFlags: 0

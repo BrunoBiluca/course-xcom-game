@@ -1,5 +1,7 @@
+using Assets.UnityFoundation.DamagePopup.Scripts;
 using System;
 using UnityFoundation.Code;
+using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
 
 namespace GameAssets
@@ -10,14 +12,21 @@ namespace GameAssets
         private IHealthBar healthBar;
         private IGameObject diedView;
         private Action diedCallback;
+        private ITransform popupTransformRef;
 
         public HealthSystemController(IHealthSystem healthSystem)
         {
             this.healthSystem = healthSystem;
 
             healthSystem.OnTakeDamage += Update;
+            healthSystem.OnTakeDamageAmount += TakeDamageAmountHandler;
             healthSystem.OnFullyHeal += Update;
             healthSystem.OnDied += DiedHandler;
+        }
+
+        public void SetPopupTransform(ITransform popupTransformRef)
+        {
+            this.popupTransformRef = popupTransformRef;
         }
 
         public void SetOnDiedCallback(Action diedHandler)
@@ -44,14 +53,21 @@ namespace GameAssets
             healthBar.SetCurrentHealth(healthSystem.CurrentHealth);
         }
 
+        private void TakeDamageAmountHandler(float amount)
+        {
+            if(popupTransformRef == null)
+                return;
+
+            DamagePopup
+                .Create(amount.ToString(), popupTransformRef.Position)
+                .SetFontSize(5f);
+        }
+
         private void DiedHandler()
         {
             healthBar.Hide();
 
-            if(diedView != null)
-            {
-                diedView.SetActive(true);
-            }
+            diedView?.SetActive(true);
 
             diedCallback?.Invoke();
         }
