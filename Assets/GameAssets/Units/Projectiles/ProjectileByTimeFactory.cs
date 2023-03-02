@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code;
+using UnityFoundation.Code.Math;
 
 namespace GameAssets
 {

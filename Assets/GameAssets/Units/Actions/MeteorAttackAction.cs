@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityFoundation.CharacterSystem.ActorSystem;
 using UnityFoundation.Code;
+using UnityFoundation.Code.Math;
 
 namespace GameAssets
 {
