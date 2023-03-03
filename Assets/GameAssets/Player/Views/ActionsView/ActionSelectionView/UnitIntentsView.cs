@@ -67,7 +67,7 @@ namespace GameAssets
 
             this.selector = selector;
             selector.OnUnitSelected += Show;
-            intentSelector.OnIntentUnselected += Hide;
+            selector.OnUnitUnselected += Hide;
         }
 
         protected override void OnShow()

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
-using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.WorldCursors;
 
 namespace GameAssets
