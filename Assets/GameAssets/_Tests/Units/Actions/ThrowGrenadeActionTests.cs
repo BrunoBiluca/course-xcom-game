@@ -55,10 +55,10 @@ namespace GameAssets.Tests
             yield return new TestCaseData(new UnitWorldGridManagerFakeBuilder(), Vector3.one, 0, 1)
                 .SetName("when unit is in the certer of explosion");
 
-            yield return new TestCaseData(new UnitWorldGridManagerFakeBuilder(), Vector3.one, 1, 9)
+            yield return new TestCaseData(new UnitWorldGridManagerFakeBuilder(), Vector3.one, 1, 5)
                 .SetName("when units are in explosion range");
 
-            yield return new TestCaseData(new UnitWorldGridManagerFakeBuilder(), Vector3.zero, 1, 4)
+            yield return new TestCaseData(new UnitWorldGridManagerFakeBuilder(), Vector3.zero, 1, 3)
                 .SetName("when explosion was in the corner");
         }
     }

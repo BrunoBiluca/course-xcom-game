@@ -32,7 +32,7 @@ namespace GameAssets.Tests
         [Test]
         public void Should_shoot_when_unit_is_in_shooting_range()
         {
-            var targetPosition = Vector3.one;
+            var targetPosition = new Vector3(0, 0, 1);
             var gridManagerMock = new UnitWorldGridManagerFakeBuilder()
                 .AddUnit(UnitFactions.Player, targetPosition);
             var enemyMock = new AIUnitMockBuilder() { InitialAP = 1 };

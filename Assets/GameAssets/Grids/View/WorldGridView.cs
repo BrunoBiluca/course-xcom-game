@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
@@ -15,6 +16,8 @@ namespace GameAssets
         private IUnitWorldGridManager gridManager;
         private IWorldCursor worldCursor;
         private WorldGridXZ<GridViewValue> grid;
+        private IGridIntent currentIntent;
+        private List<GridCellXZ<UnitValue>> cache;
 
         public void Setup(
             IGridIntentQuery gridIntentQuery,
@@ -86,7 +89,13 @@ namespace GameAssets
 
         private void UpdateAvaiableCells(IGridIntent intent)
         {
-            foreach(var c in gridIntentQuery.GetAvaiableCells())
+            if(intent != currentIntent)
+            {
+                currentIntent = intent;
+                cache = gridIntentQuery.GetAvaiableCells();
+            }
+
+            foreach(var c in cache)
             {
                 var gridValue = grid.Cells[c.Position.X, c.Position.Z].Value;
                 gridValue.EnableCellRef();

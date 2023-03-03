@@ -19,7 +19,6 @@ namespace GameAssets
                 return;
 
             Units.Add(unit);
-            unit.Transform.OnInvalidState += () => Remove(unit);
         }
 
         public void Remove(IUnit unit)

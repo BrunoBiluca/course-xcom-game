@@ -10,17 +10,17 @@ namespace GameAssets
 {
     public class UnitDirectRangeValidation : IGridValidation<UnitValue>
     {
-        private readonly IGridXZCells<UnitValue> grid;
+        private readonly IUnitWorldGridManager gridManager;
         private readonly GridCellXZ<UnitValue> baseCell;
         private readonly int range;
 
         public UnitDirectRangeValidation(
-            IGridXZCells<UnitValue> grid,
+            IUnitWorldGridManager gridManager,
             GridCellXZ<UnitValue> baseCell,
             int range
         )
         {
-            this.grid = grid;
+            this.gridManager = gridManager;
             this.baseCell = baseCell;
             this.range = range;
         }
@@ -30,8 +30,7 @@ namespace GameAssets
             if(!cell.IsInRange(baseCell, range))
                 return false;
 
-            var path = new GridPathFinding(grid).Evaluate(baseCell, cell);
-
+            var path = gridManager.GridPathFinding.Evaluate(baseCell, cell);
             return path.Steps > 0 && path.Steps <= range;
         }
     }

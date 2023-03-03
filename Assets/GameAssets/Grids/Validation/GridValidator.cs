@@ -57,7 +57,7 @@ namespace GameAssets
         public GridValidator WithDirectRange(Vector3 position, int range)
         {
             var currCell = gridManager.Grid.GetCell(position);
-            gridValidations.Add(new UnitDirectRangeValidation(gridManager.Grid, currCell, range));
+            gridValidations.Add(new UnitDirectRangeValidation(gridManager, currCell, range));
             return this;
         }
 

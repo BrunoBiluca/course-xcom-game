@@ -18,6 +18,8 @@ namespace GameAssets
     {
         public List<IUnit> Units { get; private set; }
 
+        public GridPathFinding GridPathFinding { get; private set; }
+
         public UnitWorldGridManager(
             UnitWorldGridXZ worldGrid, IAsyncProcessor updateProcessor)
             : base(worldGrid.Grid)
@@ -25,6 +27,8 @@ namespace GameAssets
             Units = new List<IUnit>();
 
             updateProcessor.ExecuteEveryFrame(Update);
+
+            GridPathFinding = new GridPathFinding(worldGrid.Grid);
         }
 
         public void Add(IUnit unit)
@@ -50,6 +54,8 @@ namespace GameAssets
             {
                 UpdateGridPosition(transform);
             }
+
+            GridPathFinding.BuildPathFindingGrid();
         }
 
         private void UpdateGridPosition(IUnit unit)

@@ -1,8 +1,7 @@
-using UnityEngine;
 using UnityFoundation.Code.Algorithms;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.Code;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace GameAssets
 {
@@ -21,6 +20,7 @@ namespace GameAssets
     public class GridPathFinding
     {
         private readonly IGridXZCells<UnitValue> grid;
+        private PathFinding pathFindingGrid;
 
         public GridPathFinding(IGridXZCells<UnitValue> grid)
         {
@@ -29,28 +29,28 @@ namespace GameAssets
 
         public GridPath Evaluate(GridCellXZ<UnitValue> start, GridCellXZ<UnitValue> end)
         {
-            var pathFinding = BuildPathFindingGrid();
-
-            var path = pathFinding.FindPath(
+            var path = pathFindingGrid.FindPath(
                 new Int2(start.Position.X, start.Position.Z),
                 new Int2(end.Position.X, end.Position.Z)
             );
 
-            var steps = path.Count() - 1;
-            return new GridPath(steps, path.ToArray());
+            List<Int2> steps = new();
+            foreach(var step in path)
+                steps.Add(step);
+
+            return new GridPath(steps.Count - 1, steps.ToArray());
         }
 
-        private PathFinding BuildPathFindingGrid()
+        public void BuildPathFindingGrid()
         {
             var gridSize = new PathFinding.GridSize(grid.Width, grid.Depth);
-            var pathFinding = new PathFinding(gridSize);
+            pathFindingGrid = new PathFinding(gridSize);
 
             foreach(var cell in grid.Cells)
             {
                 if(IsCellBlocked(cell))
-                    pathFinding.AddBlocked(new Int2(cell.Position.X, cell.Position.Z));
+                    pathFindingGrid.AddBlocked(new Int2(cell.Position.X, cell.Position.Z));
             }
-            return pathFinding;
         }
 
         private bool IsCellBlocked(GridCellXZ<UnitValue> cell)
