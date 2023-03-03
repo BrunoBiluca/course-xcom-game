@@ -24,9 +24,17 @@ namespace GameAssets
         public void Setup(IWorldCursor worldCursor, ISelector selector)
         {
             this.worldCursor = worldCursor;
-            worldCursor.OnClick += TrySelectUnit;
-
             this.selector = selector;
+        }
+
+        public void Enable()
+        {
+            worldCursor.OnClick += TrySelectUnit;
+        }
+
+        public void Disable()
+        {
+            worldCursor.OnClick -= TrySelectUnit;
         }
 
         private void TrySelectUnit()

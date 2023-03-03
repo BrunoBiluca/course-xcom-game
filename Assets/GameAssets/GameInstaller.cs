@@ -35,16 +35,16 @@ namespace GameAssets
             Container.RegisterAction<IBilucaLoggable>(b => b.Logger = UnityDebug.I);
 
             var turnSystemView = Container.Resolve<TurnSystemView>();
-            turnSystemView.Setup(Container.Resolve<ITurnSystem>());
+            var turnSystem = Container.Resolve<ITurnSystem>();
+            turnSystemView.Setup(turnSystem);
 
             var gridManager = Container.Resolve<UnitWorldGridManager>();
-            // Events
+
             var unitSelection = Container.Resolve<UnitSelectionMono>();
 
-            Container.Resolve<ITurnSystem>()
-                .OnPlayerTurnEnded += () => unitSelection.UnselectUnit();
-
-            OnInstallerFinish?.Invoke();
+            // Events
+            turnSystem.OnPlayerTurnStarted += unitSelection.Enable;
+            turnSystem.OnPlayerTurnEnded += unitSelection.Disable;
 
             Container.Resolve<IWorldCursor>().Enable();
 
@@ -54,6 +54,10 @@ namespace GameAssets
 
             Container.Resolve<ViewsManager>().Init();
             Container.Resolve<GameManager>().StartGame();
+
+            unitSelection.Enable();
+
+            OnInstallerFinish?.Invoke();
             Debug.Log("Finish GameInstaller");
         }
 
