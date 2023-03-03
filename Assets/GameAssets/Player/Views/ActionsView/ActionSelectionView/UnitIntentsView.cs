@@ -62,6 +62,7 @@ namespace GameAssets
         )
         {
             this.factory = factory;
+
             this.intentSelector = intentSelector;
             this.actionsConfig = actionsConfig;
 
@@ -72,6 +73,7 @@ namespace GameAssets
 
         protected override void OnShow()
         {
+            intentSelector.OnIntentUnselected += CleanActions;
             foreach(var b in buttons)
             {
                 b.gameObject.SetActive(selector.CurrentUnit.UnitConfig.Actions.Contains(b.Action));
@@ -110,7 +112,11 @@ namespace GameAssets
             }
         }
 
-        protected override void OnHide() => CleanActions();
+        protected override void OnHide()
+        {
+            intentSelector.OnIntentUnselected += CleanActions;
+            CleanActions();
+        }
 
         private void CleanActions()
         {

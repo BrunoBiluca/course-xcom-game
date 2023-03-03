@@ -1,4 +1,3 @@
-using CodiceApp.EventTracking.Plastic;
 using UnityEngine;
 using UnityFoundation.Code.Extensions;
 using UnityFoundation.Code.UnityAdapter;

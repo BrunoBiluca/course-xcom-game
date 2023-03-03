@@ -40,7 +40,7 @@ namespace GameAssets
 
             var unitCell = gridManager.Grid.GetCell(unit.Transform.Position);
             var targetCell = gridManager.Grid.GetCell(position);
-            path = new GridPathFinding(gridManager.Grid).Evaluate(unitCell, targetCell);
+            path = gridManager.GridPathFinding.Evaluate(unitCell, targetCell);
 
             if(path.Steps == 0)
             {

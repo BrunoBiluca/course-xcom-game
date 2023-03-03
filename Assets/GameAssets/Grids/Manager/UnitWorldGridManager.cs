@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
-using UnityEngine.TextCore.Text;
 using UnityFoundation.Code;
 using UnityFoundation.Code.Grid;
 using UnityFoundation.Code.Math;
-using static UnityEditor.PlayerSettings;
 using Object = UnityEngine.Object;
 
 namespace GameAssets

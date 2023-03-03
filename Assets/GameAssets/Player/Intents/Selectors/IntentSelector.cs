@@ -45,8 +45,8 @@ namespace GameAssets
             currentActor.OnCantExecuteAction -= CantExecuteActionHandle;
             currentActor.OnCantExecuteAction += CantExecuteActionHandle;
 
-            currentActor.OnActionFinished -= UnselectIntent;
-            currentActor.OnActionFinished += UnselectIntent;
+            currentActor.OnActionExecuted -= UnselectIntent;
+            currentActor.OnActionExecuted += UnselectIntent;
 
             currentActor.Set(action);
         }
