@@ -20,6 +20,7 @@ namespace GameAssets
         [SerializeField] private SceneLoaderConfigSO configSO;
 
         private SceneLoaderConfig Config => configSO.Config;
+        private GameObject transitionObj;
 
         public void Awake()
         {
@@ -32,6 +33,12 @@ namespace GameAssets
             areScenesLoaded = false;
             areScenesReloaded = false;
             areScenesUnloaded = false;
+
+            if(configSO.TransitionPrefab != null)
+            {
+                transitionObj = Instantiate(configSO.TransitionPrefab);
+                DontDestroyOnLoad(transitionObj);
+            }
 
             AsyncProcessor.I.StartCoroutine(Load(Config.ScenesToLoad));
             AsyncProcessor.I.StartCoroutine(Unload(Config.ScenesToUnLoad));
@@ -62,6 +69,9 @@ namespace GameAssets
         {
             while(!areScenesLoaded || !areScenesUnloaded || !areScenesReloaded)
                 yield return null;
+
+            if(transitionObj != null)
+                Destroy(transitionObj);
 
             OnAllScenesLoaded?.Invoke();
         }
@@ -100,6 +110,10 @@ namespace GameAssets
         {
             foreach(var sceneName in scenes)
             {
+                var scene = SceneManager.GetSceneByName(sceneName);
+                if(!scene.IsValid())
+                    continue;
+
                 var operation = SceneManager.UnloadSceneAsync(sceneName);
                 if(operation == null)
                     continue;

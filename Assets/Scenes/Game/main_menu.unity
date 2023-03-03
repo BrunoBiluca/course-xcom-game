@@ -1595,6 +1595,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configSO: {fileID: 11400000, guid: 89663b4919f90a1439318e354cc76b49, type: 2}
+  transitionPrefab: {fileID: 4968834889286449013, guid: 88aedba5c1cf366468265eb522945c0b,
+    type: 3}
 --- !u!114 &1751445316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1639,6 +1641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configSO: {fileID: 11400000, guid: c9b4e11aaecd40c4cbad6a758fca6bd7, type: 2}
+  transitionPrefab: {fileID: 0}
 --- !u!1 &1957358444
 GameObject:
   m_ObjectHideFlags: 0

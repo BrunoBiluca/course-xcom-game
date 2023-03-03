@@ -16,6 +16,9 @@ MonoBehaviour:
     <ExecuteOnAwake>k__BackingField: 0
     <ScenesToLoad>k__BackingField: []
     <ScenesToReload>k__BackingField:
-    - gameplay
     - level_1_scenary
+    - gameplay
+    - settings_menu
     <ScenesToUnLoad>k__BackingField: []
+  <TransitionPrefab>k__BackingField: {fileID: 4968834889286449013, guid: 88aedba5c1cf366468265eb522945c0b,
+    type: 3}

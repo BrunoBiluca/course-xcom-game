@@ -12,6 +12,7 @@ namespace GameAssets
     public class SceneLoaderConfigSO : ScriptableObject
     {
         [field: SerializeField] public SceneLoaderConfig Config { get; private set; }
+        [field: SerializeField] public GameObject TransitionPrefab { get; private set; }
     }
 
     [Serializable]
