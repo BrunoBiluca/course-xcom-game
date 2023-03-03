@@ -16,5 +16,6 @@ MonoBehaviour:
     <ExecuteOnAwake>k__BackingField: 1
     <ScenesToLoad>k__BackingField:
     - level_1_scenary
+    - settings_menu
     <ScenesToReload>k__BackingField: []
     <ScenesToUnLoad>k__BackingField: []

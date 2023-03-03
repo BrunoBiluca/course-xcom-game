@@ -114,7 +114,8 @@ namespace GameAssets
 
         protected override void OnHide()
         {
-            intentSelector.OnIntentUnselected += CleanActions;
+            if(intentSelector != null)
+                intentSelector.OnIntentUnselected -= CleanActions;
             CleanActions();
         }
 
