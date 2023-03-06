@@ -27,12 +27,7 @@ namespace GameAssets
             this.intentSelector = intentSelector;
         }
 
-        protected override void OnFirstShow()
-        {
-            Display();
-        }
-
-        public void Display()
+        protected override void OnShow()
         {
             selector.OnUnitSelected += HandleUnitSelected;
             selector.OnUnitUnselected += HandleUnitUnselected;
@@ -60,6 +55,7 @@ namespace GameAssets
         {
             takeActionInput.SetActive(true);
         }
+
         private void HandleIntentUnselected()
         {
             takeActionInput.SetActive(false);

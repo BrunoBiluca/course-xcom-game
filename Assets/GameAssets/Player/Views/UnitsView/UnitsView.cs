@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityFoundation.Code;
 using UnityFoundation.Code.UnityAdapter;
 using UnityFoundation.HealthSystem;
+using UnityFoundation.ResourceManagement;
 
 namespace GameAssets
 {
@@ -12,6 +13,8 @@ namespace GameAssets
         [SerializeField] private Transform unitsViewHolder;
         [SerializeField] private GameObject unitViewPrefab;
         private UnitsManager unitsManager;
+
+        private TextMeshProUGUI actionPointsText;
 
         public void Setup(UnitsManager unitsManager)
         {
@@ -33,7 +36,7 @@ namespace GameAssets
             }
         }
 
-        private static void SetupView(ICharacterUnit unit, Transform view)
+        private void SetupView(ICharacterUnit unit, Transform view)
         {
             view.Setup<Image>(
                 "portrait_holder.portrait",
@@ -42,15 +45,9 @@ namespace GameAssets
 
             view.Setup<TextMeshProUGUI>("container.name", t => t.text = unit.Name);
 
-            view.Setup<TextMeshProUGUI>(
-                "container.action_points.value",
-                t => {
-                    var actionPointsText = unit.Actor.ActionPoints.CurrentAmount.ToString();
-                    actionPointsText += " / ";
-                    actionPointsText += unit.Actor.ActionPoints.MaxAmount.ToString();
-                    t.text = actionPointsText;
-                }
-            );
+            actionPointsText = view.FindComponent<TextMeshProUGUI>("container.action_points.value");
+            HandleActionPointsChanged(unit.Actor.ActionPoints);
+            unit.Actor.ActionPoints.OnResourceChanged += HandleActionPointsChanged;
 
             var healthController = new HealthSystemController(unit.HealthSystem);
             healthController
@@ -62,6 +59,14 @@ namespace GameAssets
                         .FindTransform("container.health_bar_holder.died_icon")
                         .gameObject.Decorate()
                 );
+        }
+
+        private void HandleActionPointsChanged(IResourceManager resourceManager)
+        {
+            var text = resourceManager.CurrentAmount.ToString();
+            text += " / ";
+            text += resourceManager.MaxAmount.ToString();
+            actionPointsText.text = text;
         }
     }
 }
