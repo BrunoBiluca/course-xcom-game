@@ -44,7 +44,12 @@ namespace GameAssets
 
             view.Setup<TextMeshProUGUI>(
                 "container.action_points.value",
-                t => t.text = unit.Actor.ActionPoints.MaxAmount.ToString()
+                t => {
+                    var actionPointsText = unit.Actor.ActionPoints.CurrentAmount.ToString();
+                    actionPointsText += " / ";
+                    actionPointsText += unit.Actor.ActionPoints.MaxAmount.ToString();
+                    t.text = actionPointsText;
+                }
             );
 
             var healthController = new HealthSystemController(unit.HealthSystem);

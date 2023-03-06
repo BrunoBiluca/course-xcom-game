@@ -45,6 +45,8 @@ namespace GameAssets
                 return;
             }
 
+            UnselectUnit();
+
             selector.Select<SelectableObject>(pos)
                 .Some(SelectUnit)
                 .OrElse(UnselectUnit);
@@ -57,7 +59,6 @@ namespace GameAssets
             if(CurrentUnit == unit)
                 return;
 
-            UnselectUnit();
             Logger?.Log("Unit", unit.Name, "was selected");
 
             CurrentUnit = unit;

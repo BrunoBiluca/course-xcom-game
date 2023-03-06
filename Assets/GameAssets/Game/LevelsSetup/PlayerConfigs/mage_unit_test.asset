@@ -19,7 +19,7 @@ MonoBehaviour:
     <InitialHealth>k__BackingField: 8
     <MovementRange>k__BackingField: 4
     <MovementSpeed>k__BackingField: 2
-    <MaxActionPoints>k__BackingField: 99
+    <MaxActionPoints>k__BackingField: 5
     <ShootDamage>k__BackingField: 2
     <ShootRange>k__BackingField: 4
     <MeleeRange>k__BackingField: 1
